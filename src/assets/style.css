@@ -1,0 +1,74 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    font-family: Roboto;
+}
+
+#main {
+    display: flex;
+    height: 100%;
+}
+
+#nav {
+    width: 256px;
+    background-color: #d1d1d1;
+    flex-shrink: 0;
+    box-shadow: 2px 0px 8px #b7b7b7;
+}
+
+#content {
+    width: 100%;
+}
+
+.tab-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.tab-content.visible-tab {
+    display: flex;
+}
+
+.tab-button-active span.tab-name {
+    color: white;
+}
+
+button.tab-button:not(.tab-button-active):hover {
+    background-color: #b9b9b9;
+}
+
+button.tab-button {
+    border: none;
+    width: calc(100% - 30px);
+    height: 64px;
+    text-align: left;
+    padding: 20px;
+    cursor: pointer;
+    background-color: #afafaf;
+    border-radius: 0 12px 12px 0;
+    display: block;
+    background: transparent;
+}
+
+.tab {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.tab-button.tab-button-active {
+    cursor: default;
+    width: 100%;
+    background-color: #7e7e7e;
+    box-shadow: -4px 9px 9px #a3a3a3;
+}
+
+span.tab-name {
+    color: #606060;
+    font-size: 16px;
+}
