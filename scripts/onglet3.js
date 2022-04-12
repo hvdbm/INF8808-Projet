@@ -16,7 +16,7 @@ function buildHeatmap(div) {
   // append the svg object to the body of the page
   const svg = div.select("#tab-3-heatmap")
   .append("svg")
-    .attr("width", width + margin.left + margin.right)
+    .attr("width", width + margin.left + margin.right + 50)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`)
@@ -121,7 +121,7 @@ function buildHeatmap(div) {
       .style("fill", function(d) { return myColor(d.count) })
     
       initLegend(svg,myColor)
-      drawLegend(margin.left / 2, margin.top + 5, graphSize.height - 10, 15, 'ffffff', myColor)
+      drawLegend(width + margin.right + 10, 0, height, 15, 'url(#gradient)', myColor)
   })
 }
 
@@ -172,7 +172,7 @@ function initLegend(svg, colorScale) {
   linearGradient.selectAll('stop')
   .data(colorScale.ticks().map((tick, i, nodes) => (
     {
-      offset: `${100 * (i / nodes.length)}%`,
+      offset: `${ (100*i / nodes.length)}%`,
       color: colorScale(tick)
     })))
   .join('stop')
@@ -192,11 +192,11 @@ function drawLegend(x, y, height, width, fill, colorScale) {
   .domain(colorScale.domain())
   .range([height, 0])
 
-  let axis = d3.axisLeft()
+  let axis = d3.axisRight()
   .ticks(7)
   .scale(scale);
 
   d3.select('.legend.axis')
   .call(axis)
-  .attr('transform', 'translate('+ x + ',' + y + ')')
+  .attr('transform', 'translate('+ (x+15) + ',' + y + ')')
 }
