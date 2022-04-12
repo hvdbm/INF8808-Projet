@@ -1,4 +1,4 @@
-import { crossfilter } from './crossfilter'
+// import { crossfilter } from './crossfilter'
 
 export function removeDuplicate(name) {
     if (name == 'Saint John NB') {
