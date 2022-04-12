@@ -682,8 +682,11 @@ function buildHeatmap(div) {
 
   function transformData(d, departureDate, arrivalDate) {
     var map = heatmapMap();
-    d.forEach(function (line) {
-      if (departureDate <= d['Departure Date'] && arrivalDate >= d['Arrival Date']) return;
+    var data = d.filter(function (line) {
+      return departureDate <= line['Departure Date'] && arrivalDate >= line['Arrival Date'];
+    });
+    data.forEach(function (line) {
+      // if (departureDate <= d['Departure Date'] && arrivalDate >= d['Arrival Date']) return;
       var keyStart = line['Departure Region'] + line['Global Vessel Type'];
       var keyStop = line['Arrival Region'] + line['Global Vessel Type'];
 
@@ -718,12 +721,11 @@ function buildHeatmap(div) {
       p.push({
         'Region': value.Region,
         'Type': value.Type,
-        'count': value.count / (2 * 311859) * 100 // TODO : Trouver le nombre total de voyage dans la période sélectionnée
-
+        'count': value.count / (2 * data.length) * 100
       });
 
-      if (value.count / (2 * 311859) * 100 >= max) {
-        max = value.count / (2 * 311859) * 100;
+      if (value.count / (2 * data.length) * 100 >= max) {
+        max = value.count / (2 * data.length) * 100;
       }
     });
     myColor.domain([0, max]);
@@ -826,7 +828,7 @@ function build(div, data) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
   var bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect();
   var margin = {
-    top: bounds.width * 0.22,
+    top: bounds.width * 0.24,
     right: bounds.width * 0.25,
     bottom: bounds.width * 0.25,
     left: bounds.width * 0.25
@@ -984,4 +986,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet2.js":"nI8S","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.2faf2c52.js.map
+//# sourceMappingURL=/INF8808-Projet.fa10ac47.js.map
