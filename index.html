@@ -32,20 +32,26 @@
             </div>
             <div id="content">
                 <div class="tab-content visible-tab" id="tab-1-content">
-                    <div id="intro">
-                        <h1>À propos de ces visualisations</h1>
-                        <p>INF8808 - Polytechnique Montréal - Hiver 2022</p>
-                        <p>Hugo Vandenbroucke-Menu <br>Louri Compain<br>Charles-Éric Langlois<br>Philippe Leclerc</p>
-                        <p>Naviguez entre ces visualisations à l'aide des onglets à gauche :</p>
-                        <ul>
-                            <li> <b>Aperçu global :</b> résumé des données intégrant la dimension temporelle</p></li>
-                            <li> <b>Les ports :</b> données liées aux caractéristiques des navires et aux ports et régions qu'ils fréquentent</p></li>
-                            <li> <b>Les trajets :</b> permet d'étudier les liens entre les différentes régions</p></li>
-                        </ul>
-                        <p>Les valeurs aberrantes ont été ignorées</p>
-                    </div>
-                    <div id="tab-1-tooltip">
-                        <p> <b> Tooltip :</b> Passer la souris sur la légende permet d'isoler la répartition d'un type de navire </p>
+                    <div id="tab-1-text">
+                        <div id="intro">
+                            <h1>À propos de ces visualisations</h1>
+                            <p>INF8808 - Polytechnique Montréal - Hiver 2022</p>
+                            <p>Hugo Vandenbroucke-Menu <br>Louri Compain<br>Charles-Éric Langlois<br>Philippe Leclerc</p>
+                            <p>Naviguez entre ces visualisations à l'aide des onglets à gauche :</p>
+                            <ul>
+                                <li> <b>Aperçu global :</b> résumé des données intégrant la dimension temporelle</p></li>
+                                <li> <b>Les ports :</b> données liées aux caractéristiques des navires et aux ports et régions qu'ils fréquentent</p></li>
+                                <li> <b>Les trajets :</b> permet d'étudier les liens entre les différentes régions</p></li>
+                            </ul>
+                            <p>Les valeurs aberrantes ont été ignorées</p>
+                            <p id="warning">
+                                Note : Il est possible d'avoir un ralentissement / figement de l'application lors du chargement des données.
+                                Attendre quelques instants réglera le problème.
+                            </p>
+                        </div>
+                        <div id="tab-1-tooltip">
+                            <p> <b> Tooltip :</b> Passer la souris sur la légende permet d'isoler la répartition d'un type de navire </p>
+                        </div>
                     </div>
 					<div class="viz-container">
 						<div class="graph" id="stacked-area-chart"></div>
@@ -166,6 +172,7 @@
                                 <span id="time-select-title">
                                     Sélection de la période :
                                 </span>
+                                <svg id="time-select-graph"></svg>
                             </div>
                         </div>
                     </div>
@@ -217,7 +224,7 @@
                             </div>
                         </div>
                         <div id="tab-3-heatmap">
-                            <div class="tab-3-title">RÉPARTITION DES RÉGIONS SELON LE TYPE DE NAVIRE</div>
+                            <div class="tab-3-title">RÉPARTITION DES TRAJETS SELON LA RÉGION ET LE TYPE DE NAVIRE</div>
                         </div>
                     </div>
                     <div id="tab-3-right">
