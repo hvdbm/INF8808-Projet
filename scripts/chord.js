@@ -82,6 +82,8 @@ export function build(div, data) {
       .attr("id",function(d) {
         return (`${preproc.REGION_NAME_ALT[d.source.index]}${preproc.REGION_NAME_ALT[d.source.subindex]}`);})
       .attr("class", "tooltip")
+      .attr("x",0)
+      .attr("y",outerRadius+15)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
       .text(function(d) {
