@@ -1,5 +1,5 @@
 import * as preproc from './preprocess.js'
-import d3Tip from 'd3-tip'
+
 // https://d3-graph-gallery.com/chord.html
 // https://observablehq.com/@d3/directed-chord-diagram
 // https://jyu-theartofml.github.io/posts/circos_plot
@@ -8,7 +8,11 @@ export function build(div, data) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
   const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
 
-  var margin = {top: bounds.width*0.22, right: bounds.width*0.25, bottom: bounds.width*0.25, left: bounds.width*0.25}, // TODO : Revoir valeur
+  var margin = {
+    top: bounds.width*0.22,
+    right: bounds.width*0.25, 
+    bottom: bounds.width*0.25,
+    left: bounds.width*0.25 }, // TODO : Revoir valeur
   width = bounds.width - margin.left - margin.right,
   height = bounds.width - margin.top - margin.bottom;
 
@@ -85,9 +89,6 @@ export function build(div, data) {
       })
       .style("visibility", "hidden")
 
-
-
-  // Version sans ticks :
   // add the groups on the outer part of the circle
   svg.datum(res)
     .append("g")
@@ -129,72 +130,11 @@ export function build(div, data) {
     .style("fill", function(_, i){ return(colors[i]) })
     .style("font-weight", "bold")
     .text(function(d) { return preproc.REGION_NAME[d.index] })
-
-  /* 
-  // Version avec ticks :
-  // this group object use each group of the data.groups object
-  var group = svg
-  .datum(res)
-  .append("g")
-  .selectAll("g")
-  .data(function(d) { return d.groups; })
-  .enter()
-
-  // add the group arcs on the outer part of the circle
-  group.append("g")
-    .append("path")
-    .style("fill", function(_,i){ return colors[i] })
-    .style("stroke", "black")
-    .attr("d", d3.arc()
-      .innerRadius(300)
-      .outerRadius(310)
-    )
-
-  // Add the ticks
-  group
-  .selectAll(".group-tick")
-  .data(function(d) { return groupTicks(d, 25); })    // Controls the number of ticks: one tick each 25 here.
-  .enter()
-  .append("g")
-    .attr("transform", function(d) { return "rotate(" + (d.angle * 180 / Math.PI - 90) + ") translate(" + 305 + ",0)"; })
-  .append("line")               // By default, x1 = y1 = y2 = 0, so no need to specify it.
-    .attr("x2", 6)
-    .attr("stroke", "black")
-
-
-  const tick = 25000
-  // Add the labels of a few ticks:
-  group
-  .selectAll(".group-tick-label")
-  .data(function(d) { return groupTicks(d, tick); })
-  .enter()
-  .filter(function(d) { return d.value % tick === 0; })
-  .append("g")
-    .attr("transform", function(d) { return "rotate(" + (d.angle * 180 / Math.PI - 90) + ") translate(" + 305 + ",0)"; })
-  .append("text")
-    .attr("x", 8)
-    .attr("dy", ".35em")
-    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180) translate(-16)" : null; })
-    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-    .text(function(d) { return d.value })
-    .style("font-size", 9)
-  
-  // Returns an array of tick angles and values for a given group and step.
-  function groupTicks(d, step) {
-    var k = (d.endAngle - d.startAngle) / d.value;
-    return d3.range(0, d.value, step).map(function(value) {
-      return {value: value, angle: value * k + d.startAngle};
-    });
-  }
-  */
 }
 
 function highlightGroup(event, links) {
   links
-    .filter(function(d) {
-      // TODO : Seulement source ? ou source et target ?
-      return d.source.index != event.index // && d.target.index != event.index
-    })
+    .filter(function(d) { return d.source.index != event.index })
     .attr("opacity", 0.1)
 }
 

@@ -561,7 +561,7 @@ function setStackedBar(data) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.REGION_NAME = exports.REGION_COLOR = exports.GLOBAL_VESSEL_TYPE = void 0;
+exports.REGION_NAME_ALT = exports.REGION_NAME = exports.REGION_COLOR = exports.GLOBAL_VESSEL_TYPE = void 0;
 exports.chordMatrix = chordMatrix;
 exports.clean = clean;
 var GLOBAL_VESSEL_TYPE = ['Barges', 'Excursion', 'Fishing', 'Merchant', 'Other', 'Pleasure Crafts', 'Tanker', 'Tugs'];
@@ -570,6 +570,8 @@ var REGION_NAME = ['Arctic', 'Central', 'East Canadian Water', 'Newfoundland', '
 exports.REGION_NAME = REGION_NAME;
 var REGION_COLOR = ['#CAB2D6', '#6A3D9A', '#33A02C', '#FB9A99', '#FDBF6F', '#E31A1C', '#1F78B4', '#A6CEE3', '#FF7F00'];
 exports.REGION_COLOR = REGION_COLOR;
+var REGION_NAME_ALT = ['Arctic', 'Central', 'East_Canadian_Water', 'Newfoundland', 'Maritimes', 'Pacific', 'Quebec', 'St_Lawrence_Seaway', 'West_Canadian_Water'];
+exports.REGION_NAME_ALT = REGION_NAME_ALT;
 
 function findGlobalVesselType(vesselType) {
   if (['Barge Bulk Cargo', 'Barge Chemical', 'Barge Chips', 'Barge Derrick', 'Barge General', 'Barge Log', 'Barge Miscellaneous', 'Barge Oil Drilling Rig', 'Barge Oil/Petroleum', 'Barge Rail/Trailer', 'Barge Self-Propelled', 'Barge Towed', "Don't use", 'Landing Craft', 'Logs Raft Section'].includes(vesselType)) {
@@ -824,7 +826,7 @@ function build(div, data) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
   var bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect();
   var margin = {
-    top: Math.max(bounds.width * 0.22, 400),
+    top: bounds.width * 0.22,
     right: bounds.width * 0.25,
     bottom: bounds.width * 0.25,
     left: bounds.width * 0.25
@@ -842,19 +844,41 @@ function build(div, data) {
   var colors = preproc.REGION_COLOR; // give this matrix to d3.chord(): it will calculates all the info we need to draw arc and ribbon
 
   var res = d3.chord().padAngle(0.05) // padding between entities (black arc)
-  .sortSubgroups(d3.descending)(matrix); // add the links between groups
+  .sortSubgroups(d3.descending)(matrix);
+  /*// create a tooltip
+  const tooltip = d3.select("#tab-3-chord-diagram")
+    .append("div")
+    .attr("id","tooltip")
+    .attr("x", 8)
+    .style("position", "absolute")
+    .style("visibility", "hidden")
+    .text("I'm a circle!");
+  */
+  // add the links between groups
 
   var links = svg.datum(res).append("g").attr("id", "links").selectAll("path").data(function (d) {
     return d;
   }).enter().append("path").attr("class", "chord").on('mouseenter', function (_ref, _) {
     var source = _ref.source,
         target = _ref.target;
-    console.log("".concat(preproc.REGION_NAME[source.index], " --> ").concat(preproc.REGION_NAME[source.subindex], " : ").concat(source.value, " navires"));
+    var tooltip = d3.select("#".concat(preproc.REGION_NAME_ALT[source.index]).concat(preproc.REGION_NAME_ALT[source.subindex]));
+    return tooltip.style("visibility", "visible");
+  }).on('mouseleave', function (_ref2, _) {
+    var source = _ref2.source,
+        target = _ref2.target;
+    var tooltip = d3.select("#".concat(preproc.REGION_NAME_ALT[source.index]).concat(preproc.REGION_NAME_ALT[source.subindex]));
+    return tooltip.style("visibility", "hidden");
   }).attr("d", d3.ribbon().radius(innerRadius)).style("fill", function (d) {
     return colors[d.source.index];
   }) // colors depend on the source group. Change to target otherwise.
-  .style("stroke", "black").attr("opacity", 0.5); // Version sans ticks :
-  // add the groups on the outer part of the circle
+  .style("stroke", "black").attr("opacity", 0.5);
+  var tooltips = svg.datum(res).append("g").attr("id", "tooltip").selectAll("path").data(function (d) {
+    return d;
+  }).enter().append("text").attr("id", function (d) {
+    return "".concat(preproc.REGION_NAME_ALT[d.source.index]).concat(preproc.REGION_NAME_ALT[d.source.subindex]);
+  }).attr("class", "tooltip").attr('text-anchor', 'middle').attr('dominant-baseline', 'middle').text(function (d) {
+    return "".concat(preproc.REGION_NAME[d.source.index], " --> ").concat(preproc.REGION_NAME[d.source.subindex], " : ").concat(d.source.value, " navires");
+  }).style("visibility", "hidden"); // add the groups on the outer part of the circle
 
   svg.datum(res).append("g").attr("id", "groups").selectAll("g").data(function (d) {
     return d.groups;
@@ -881,59 +905,6 @@ function build(div, data) {
   }).style("font-weight", "bold").text(function (d) {
     return preproc.REGION_NAME[d.index];
   });
-  /* 
-  // Version avec ticks :
-  // this group object use each group of the data.groups object
-  var group = svg
-  .datum(res)
-  .append("g")
-  .selectAll("g")
-  .data(function(d) { return d.groups; })
-  .enter()
-   // add the group arcs on the outer part of the circle
-  group.append("g")
-    .append("path")
-    .style("fill", function(_,i){ return colors[i] })
-    .style("stroke", "black")
-    .attr("d", d3.arc()
-      .innerRadius(300)
-      .outerRadius(310)
-    )
-   // Add the ticks
-  group
-  .selectAll(".group-tick")
-  .data(function(d) { return groupTicks(d, 25); })    // Controls the number of ticks: one tick each 25 here.
-  .enter()
-  .append("g")
-    .attr("transform", function(d) { return "rotate(" + (d.angle * 180 / Math.PI - 90) + ") translate(" + 305 + ",0)"; })
-  .append("line")               // By default, x1 = y1 = y2 = 0, so no need to specify it.
-    .attr("x2", 6)
-    .attr("stroke", "black")
-    const tick = 25000
-  // Add the labels of a few ticks:
-  group
-  .selectAll(".group-tick-label")
-  .data(function(d) { return groupTicks(d, tick); })
-  .enter()
-  .filter(function(d) { return d.value % tick === 0; })
-  .append("g")
-    .attr("transform", function(d) { return "rotate(" + (d.angle * 180 / Math.PI - 90) + ") translate(" + 305 + ",0)"; })
-  .append("text")
-    .attr("x", 8)
-    .attr("dy", ".35em")
-    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180) translate(-16)" : null; })
-    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-    .text(function(d) { return d.value })
-    .style("font-size", 9)
-  
-  // Returns an array of tick angles and values for a given group and step.
-  function groupTicks(d, step) {
-    var k = (d.endAngle - d.startAngle) / d.value;
-    return d3.range(0, d.value, step).map(function(value) {
-      return {value: value, angle: value * k + d.startAngle};
-    });
-  }
-  */
 }
 
 function highlightGroup(event, links) {
@@ -945,10 +916,33 @@ function highlightGroup(event, links) {
 function unhighlightGroup(links) {
   links.attr("opacity", 0.5);
 }
+/*
+function getContents (source) {
+  // TODO : Generate tooltip contents
+  return `
+  <div>
+    <div>
+      <label style="font-weight: bold;">Region de départ : </label>
+      <label class="tooltip-value">${preproc.REGION_NAME[source.index]}</label>
+    </div>
+    <div>
+      <label style="font-weight: bold;">Région d'arrivée : </label>
+      <label class="tooltip-value">${preproc.REGION_NAME[source.subindex]}</label>
+    </div>
+    <div>
+      <label style="font-weight: bold;">Nombre de navires : </label>
+      <label class="tooltip-value">${source.value} $ (navires)</label>
+    </div>
+  </div>
+  `
+}
 
-function showTooltip() {}
+function showTooltip(event, links) {
+  
+}
 
 function unshowTooltip() {}
+*/
 },{"./preprocess.js":"LFDw"}],"Focm":[function(require,module,exports) {
 "use strict";
 
@@ -990,4 +984,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet2.js":"nI8S","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.6632c7b7.js.map
+//# sourceMappingURL=/INF8808-Projet.2faf2c52.js.map
