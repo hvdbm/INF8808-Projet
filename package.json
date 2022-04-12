@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "parcel build index.html",
+    "build": "parcel build --no-minify index.html",
     "start": "parcel index.html --log-level=2 --port=8080",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

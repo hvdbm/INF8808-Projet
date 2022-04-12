@@ -1,0 +1,69 @@
+﻿Class,Type
+<All Barges>,Barge Bulk Cargo
+<All Barges>,Barge Chemical
+<All Barges>,Barge Chips
+<All Barges>,Barge Derrick
+<All Barges>,Barge General
+<All Barges>,Barge Log
+<All Barges>,Barge Miscellaneous
+<All Barges>,Barge Oil Drilling Rig
+<All Barges>,Barge Oil/Petroleum
+<All Barges>,Barge Rail/Trailer
+<All Barges>,Barge Self-Propelled
+<All Barges>,Barge Towed
+<All Barges>,Don't use
+<All Barges>,Landing Craft
+<All Barges>,Logs Raft Section
+<All Excursion Vessels>,Excursion Passenger
+<All Fishing Vessels>,Crab Boat
+<All Fishing Vessels>,"Dragger (Scallop, Clam, etc.)"
+<All Fishing Vessels>,Factory Ship
+<All Fishing Vessels>,Fishery Patrol
+<All Fishing Vessels>,Fishing Vessel
+<All Fishing Vessels>,Gillnetter
+<All Fishing Vessels>,Groundfish Boat (Open Boat)
+<All Fishing Vessels>,Lobster Boat
+<All Fishing Vessels>,Longliner
+<All Fishing Vessels>,Other Fishing VSL (Open Boat)
+<All Fishing Vessels>,Seiner
+<All Fishing Vessels>,Shrimp Boat
+<All Fishing Vessels>,Trawler
+<All Fishing Vessels>,Troller
+<All Merchant Vessels>,Cruise
+<All Merchant Vessels>,Merchant (Dry)
+<All Merchant Vessels>,Merchant Auto
+<All Merchant Vessels>,Merchant Bulk
+<All Merchant Vessels>,Merchant Cement
+<All Merchant Vessels>,Merchant Coastal
+<All Merchant Vessels>,Merchant Container
+<All Merchant Vessels>,Merchant Ferry
+<All Merchant Vessels>,Merchant General
+<All Merchant Vessels>,Merchant Lash
+<All Merchant Vessels>,Merchant Livestock
+<All Merchant Vessels>,Merchant Ore
+<All Merchant Vessels>,Merchant Passenger
+<All Merchant Vessels>,Merchant Rail/Trailer Ferry
+<All Merchant Vessels>,Merchant Reefer
+<All Merchant Vessels>,Merchant RO/RO
+<All Other type Vessels>,<Other type>
+<All Pleasure Crafts>,Yacht - Pleasure Crafts
+<All Pleasure Crafts>,Yacht Power
+<All Pleasure Crafts>,Yacht Sails
+<All Tankers>,Merchant (Tanker)
+<All Tankers>,Merchant Chemical
+<All Tankers>,Merchant Chemical/Oil Products Tanker
+<All Tankers>,Merchant Crude
+<All Tankers>,Merchant Gasoline
+<All Tankers>,Merchant Liquified Gas
+<All Tankers>,Merchant Molasses
+<All Tankers>,Merchant Ore/Bulk/Oil
+<All Tankers>,Merchant Super Tanker
+<All Tankers>,Merchant ULCC
+<All Tankers>,Merchant VLCC
+<All Tankers>,Merchant Water
+<All Tugs>,Tug
+<All Tugs>,Tug Fire
+<All Tugs>,Tug Harbour
+<All Tugs>,Tug Ocean
+<All Tugs>,Tug Supply
+<All Tugs>,Tugs Workboat

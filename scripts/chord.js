@@ -8,7 +8,12 @@ export function build(div, data) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
   const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
 
-  var margin = {top: bounds.width*0.22, right: bounds.width*0.25, bottom: bounds.width*0.25, left: bounds.width*0.25}, // TODO : Revoir valeur
+  var margin = {
+    top: Math.max(bounds.width*0.22, 400), 
+    right: bounds.width*0.25, 
+    bottom: bounds.width*0.25, 
+    left: bounds.width*0.25
+  }, // TODO : Revoir valeur
   width = bounds.width - margin.left - margin.right,
   height = bounds.width - margin.top - margin.bottom;
 
@@ -158,10 +163,7 @@ export function build(div, data) {
 
 function highlightGroup(event, links) {
   links
-    .filter(function(d) {
-      // TODO : Seulement source ? ou source et target ?
-      return d.source.index != event.index // && d.target.index != event.index
-    })
+    .filter(function(d) { return d.source.index != event.index })
     .attr("opacity", 0.1)
 }
 

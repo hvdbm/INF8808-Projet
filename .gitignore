@@ -108,7 +108,4 @@ Thumbs.db
 !.phpcs.xml.dist
 !.env.example
 
-#INF8808
-*dist
-
 !.observableinfo
