@@ -124,15 +124,16 @@ function formatV1_2() {
     if (!map.has(key)) {
       const line = {
         'date': d.date,
-        'Barges': 0,
-        'Excursion': 0,
-        'Fishing': 0,
         'Merchant': 0,
+        'Barges': 0,
         'Other': 0,
-        'Pleasure Crafts': 0,
+        'Tugs': 0,
         'Tanker': 0,
-        'Tugs': 0
+        'Fishing': 0,
+        'Pleasure Crafts': 0,
+        'Excursion': 0
       }
+      
       line[d.type] += Number(d.count)
       map.set(key, line)
     } else {

@@ -17,15 +17,15 @@ export function build(div) {
 
   d3.csv('./TRIP_STACK.csv', function(d){
       return { 
-        date : d3.timeParse("%Y-%m-%d")(d.date), 
-        Barges : d.Barges, 
-        Excursion : d.Excursion,
-        Fishing : d.Fishing,
-        Merchant : d.Merchant,
+        date : d3.timeParse("%Y-%m-%d")(d.date),
+        Barges : d.Barges,
         Other : d.Other,
-        'Pleasure Crafts': d['Pleasure Crafts'],
-        Tanker : d.Tanker,
         Tugs : d.Tugs,
+        Tanker : d.Tanker,
+        Fishing : d.Fishing,
+        'Pleasure Crafts': d['Pleasure Crafts'],
+        Excursion : d.Excursion,
+        Merchant : d.Merchant,
       }
   }).then( function(data) {
     const keys = data.columns.slice(1)  // List of Vessel Types = header of the csv files
