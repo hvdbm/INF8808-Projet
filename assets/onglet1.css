@@ -21,7 +21,11 @@
     margin: 30px;
     width: 27%;
     padding: 10px;
-    float: right;
+    float: left;
     background-color: #F1F1F1;
     font-size:12;
+}
+
+#warning {
+    color: red;
 }

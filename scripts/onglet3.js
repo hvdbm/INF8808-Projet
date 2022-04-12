@@ -54,8 +54,12 @@ function buildHeatmap(div) {
   function transformData(d, departureDate, arrivalDate) {
     let map = heatmapMap()
 
-    d.forEach(line => {
-      if (departureDate <= d['Departure Date'] && arrivalDate >= d['Arrival Date']) return;
+    const data = d.filter((line) => {
+      return departureDate <= line['Departure Date'] && arrivalDate >= line['Arrival Date']
+    })
+
+    data.forEach(line => {
+      // if (departureDate <= d['Departure Date'] && arrivalDate >= d['Arrival Date']) return;
 
       const keyStart = line['Departure Region']+line['Global Vessel Type'];
       const keyStop = line['Arrival Region']+line['Global Vessel Type'];
@@ -89,10 +93,10 @@ function buildHeatmap(div) {
       p.push({
         'Region': value.Region,
         'Type': value.Type,
-        'count' : (value.count / (2*311859)) * 100    // TODO : Trouver le nombre total de voyage dans la période sélectionnée
+        'count' : (value.count / (2*data.length)) * 100
       })
-      if ((value.count / (2*311859)) * 100 >= max) {
-        max = (value.count / (2*311859)) * 100
+      if ((value.count / (2*data.length)) * 100 >= max) {
+        max = (value.count / (2*data.length)) * 100
       }
     })
     myColor.domain([0,max])

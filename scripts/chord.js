@@ -9,7 +9,7 @@ export function build(div, data) {
   const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
 
   var margin = {
-    top: bounds.width*0.22,
+    top: bounds.width*0.24,
     right: bounds.width*0.25, 
     bottom: bounds.width*0.25,
     left: bounds.width*0.25 }, // TODO : Revoir valeur
