@@ -9,9 +9,9 @@ function buildHeatmap(div) {
   // TODO : adapt to div size
 
   // set the dimensions and margins of the graph
-  const margin = {top: 30, right: 0, bottom: 70, left: 120},
-    width = 500 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+  const margin = {top: 10, right: 5, bottom: 90, left: 115},
+    width = 450 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
   const svg = div.select("#tab-3-heatmap")
