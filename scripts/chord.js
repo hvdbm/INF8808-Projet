@@ -7,25 +7,27 @@ import * as preproc from './preprocess.js'
 export function build(div, data) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
   const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
-
+  let chordWidth = screen.width/2;
+  console.log(chordWidth);
   var margin = {
-    top: bounds.width*0.24,
-    right: bounds.width*0.25, 
-    bottom: bounds.width*0.25,
-    left: bounds.width*0.25 }, // TODO : Revoir valeur
-  width = bounds.width - margin.left - margin.right,
-  height = bounds.width - margin.top - margin.bottom;
+    top: chordWidth*0.17,
+    right: chordWidth*0.05, 
+    bottom: chordWidth*0.07,
+    left: chordWidth*0.20 }, // TODO : Revoir valeur
+  width = chordWidth - margin.left - margin.right,
+  height = chordWidth - margin.top - margin.bottom;
 
-  const innerRadius = bounds.width / 6.5 // TODO : Revoir valeur
-  const outerRadius = innerRadius + 10
-
+  //const innerRadius = chordWidth / 4 // TODO : Revoir valeur
+  //const outerRadius = innerRadius + 10
+  const outerRadius = width/3.5;
+  const innerRadius = outerRadius-10
   // create the svg area
   const svg = div.select('#tab-3-chord-diagram')
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + (margin.left+outerRadius) + "," + (margin.top+outerRadius) + ")");
 
   // create input data: a square matrix that provides flow between entities
   const matrix = preproc.chordMatrix(data, "2010-01-01", "2023-01-01")
@@ -83,7 +85,7 @@ export function build(div, data) {
         return (`${preproc.REGION_NAME_ALT[d.source.index]}${preproc.REGION_NAME_ALT[d.source.subindex]}`);})
       .attr("class", "tooltip")
       .attr("x",0)
-      .attr("y",outerRadius+15)
+      .attr("y",outerRadius+25)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
       .text(function(d) {
@@ -126,12 +128,23 @@ export function build(div, data) {
     .attr("transform", function(d) { return "rotate(" + (d.startAngle * 180 / Math.PI - 90) + ") translate(" + outerRadius + ",0)"; })  // TODO : Revoir valeur
     .append("text")
     .attr("x", 8)
-    .attr("dy", ".35em")
+    .attr("dy", ".25em")
     .attr("transform", function(d) { return d.startAngle > Math.PI ? "rotate(180) translate(-16)" : null; })
     .style("text-anchor", function(d) { return d.startAngle > Math.PI ? "end" : null; })
     .style("fill", function(_, i){ return(colors[i]) })
     .style("font-weight", "bold")
-    .text(function(d) { return preproc.REGION_NAME[d.index] })
+    .style("font-size",12)
+    .text(function(d) {
+      if (d.index != 7 && d.index != 8) {
+        return preproc.REGION_NAME[d.index]
+      } else if (d.index == 7) {
+        console.log(preproc.REGION_NAME[d.index])
+        return preproc.REGION_NAME[d.index].slice(0, 12) + "tspan" + preproc.REGION_NAME[d.index].slice(12,)
+      } else {
+        console.log(preproc.REGION_NAME[d.index])
+        return preproc.REGION_NAME[d.index].slice(0, 13) 
+      }
+    })
 }
 
 function highlightGroup(event, links) {
