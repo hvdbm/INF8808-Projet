@@ -73,4 +73,12 @@ span.tab-name {
     font-size: 16px;
 }
 
-/*# sourceMappingURL=/style.7ce97c08.css.map */
+#warning {
+    color: #606060;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 20px;
+}
+
+/*# sourceMappingURL=/style.5f8f2ddf.css.map */

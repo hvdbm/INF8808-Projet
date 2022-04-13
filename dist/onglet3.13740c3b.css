@@ -68,4 +68,22 @@
     height: 80%;
 }
 
-/*# sourceMappingURL=/onglet3.caaf9f49.css.map */
+span#date-control-title {
+    display: inline-block;
+    padding: 4px 16px;
+    font-size: 14px;
+}
+
+input#date-start-control {
+    width: 115px;
+}
+
+input#date-end-control {
+    width: 115px;
+}
+
+button#date-control-refresh {
+    margin: 3px 8px;
+}
+
+/*# sourceMappingURL=/onglet3.13740c3b.css.map */

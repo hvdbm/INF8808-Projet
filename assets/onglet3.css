@@ -67,3 +67,21 @@
 #tab-3-chord-diagram {
     height: 80%;
 }
+
+span#date-control-title {
+    display: inline-block;
+    padding: 4px 16px;
+    font-size: 14px;
+}
+
+input#date-start-control {
+    width: 115px;
+}
+
+input#date-end-control {
+    width: 115px;
+}
+
+button#date-control-refresh {
+    margin: 3px 8px;
+}

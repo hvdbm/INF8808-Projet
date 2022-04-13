@@ -16,7 +16,8 @@ fs.createReadStream('TRIP_V1.csv')
     // console.log('data', data[0])
     console.log('CSV file successfully processed');
     // formatV1()
-    formatV1_2()
+    // formatV1_2()
+    groupByThirdMonth()
     // console.log('v1:', v1.length)
     console.log('map;', map.size)
     console.log('Format V1 succeed')
@@ -142,5 +143,191 @@ function formatV1_2() {
       map.set(key, line)
     }
 
+  })
+}
+
+function groupByMonth() {
+  data.forEach((d) => {
+    // console.log(d)
+    const key = d.date.slice(0, 7)
+    if (!map.has(key)) {
+      const line = {
+        'date': key+"-01",
+        'Merchant': 0,
+        'Barges': 0,
+        'Other': 0,
+        'Tugs': 0,
+        'Tanker': 0,
+        'Fishing': 0,
+        'Pleasure Crafts': 0,
+        'Excursion': 0
+      }
+
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    } else {
+      const line = map.get(key)
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    }
+  })
+}
+
+function groupByHalfMonth() {
+  data.forEach((d) => {
+    // console.log(d)
+    const month = d.date.slice(0, 7)
+    const day = Number(d.date.slice(8)) > 15 ? '15' : '01'
+
+    const key = `${month}-${day}`
+
+    if (!map.has(key)) {
+      const line = {
+        'date': key,
+        'Merchant': 0,
+        'Barges': 0,
+        'Other': 0,
+        'Tugs': 0,
+        'Tanker': 0,
+        'Fishing': 0,
+        'Pleasure Crafts': 0,
+        'Excursion': 0
+      }
+
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    } else {
+      const line = map.get(key)
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    }
+  })
+}
+
+function groupByWeek() {
+  data.forEach((d) => {
+    // console.log(d)
+    const month = d.date.slice(0, 7)
+    const dayNumber = Number(d.date.slice(8))
+    let day;
+
+    if (dayNumber < 8) {
+      day = "01"
+    } else if (dayNumber < 15) {
+      day = "08"
+    } else if (dayNumber < 22) {
+      day = "15"
+    } else {
+      day = "22"
+    }
+
+    const key = `${month}-${day}`
+
+    if (!map.has(key)) {
+      const line = {
+        'date': key,
+        'Merchant': 0,
+        'Barges': 0,
+        'Other': 0,
+        'Tugs': 0,
+        'Tanker': 0,
+        'Fishing': 0,
+        'Pleasure Crafts': 0,
+        'Excursion': 0
+      }
+
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    } else {
+      const line = map.get(key)
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    }
+  })
+}
+
+function groupByThirdMonth() {
+  data.forEach((d) => {
+    // console.log(d)
+    const month = d.date.slice(0, 7)
+    const dayNumber = Number(d.date.slice(8))
+    let day;
+
+    if (dayNumber < 11) {
+      day = "10"
+    } else if (dayNumber < 21) {
+      day = "20"
+    } else {
+      day = "30"
+    }
+
+    const key = `${month}-${day}`
+
+    if (!map.has(key)) {
+      const line = {
+        'date': key,
+        'Merchant': 0,
+        'Barges': 0,
+        'Other': 0,
+        'Tugs': 0,
+        'Tanker': 0,
+        'Fishing': 0,
+        'Pleasure Crafts': 0,
+        'Excursion': 0
+      }
+
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    } else {
+      const line = map.get(key)
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    }
+  })
+}
+
+function groupBy5() {
+  data.forEach((d) => {
+    // console.log(d)
+    const month = d.date.slice(0, 7)
+    const dayNumber = Number(d.date.slice(8))
+    let day;
+
+    if (dayNumber < 6) {
+      day = "01"
+    } else if (dayNumber < 11) {
+      day = "06"
+    } else if (dayNumber < 16) {
+      day = "11"
+    } else if (dayNumber < 21) {
+      day = "16"
+    } else if (dayNumber < 26) {
+      day = "21"
+    } else {
+      day = "26"
+    }
+
+    const key = `${month}-${day}`
+
+    if (!map.has(key)) {
+      const line = {
+        'date': key,
+        'Merchant': 0,
+        'Barges': 0,
+        'Other': 0,
+        'Tugs': 0,
+        'Tanker': 0,
+        'Fishing': 0,
+        'Pleasure Crafts': 0,
+        'Excursion': 0
+      }
+
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    } else {
+      const line = map.get(key)
+      line[d.type] += Number(d.count)
+      map.set(key, line)
+    }
   })
 }

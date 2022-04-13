@@ -139,17 +139,17 @@ function build(div) {
       height = 800 - margin.top - margin.bottom; // append the svg object to the body of the page
 
   var svg = div.select("#stacked-area-chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  d3.csv('./TRIP_STACK.csv', function (d) {
+  d3.csv('./TRIP_STACK_HALF_MONTH.csv', function (d) {
     return {
       date: d3.timeParse("%Y-%m-%d")(d.date),
       Barges: d.Barges,
-      Excursion: d.Excursion,
-      Fishing: d.Fishing,
-      Merchant: d.Merchant,
       Other: d.Other,
-      'Pleasure Crafts': d['Pleasure Crafts'],
+      Tugs: d.Tugs,
       Tanker: d.Tanker,
-      Tugs: d.Tugs
+      Fishing: d.Fishing,
+      'Pleasure Crafts': d['Pleasure Crafts'],
+      Excursion: d.Excursion,
+      Merchant: d.Merchant
     };
   }).then(function (data) {
     var keys = data.columns.slice(1); // List of Vessel Types = header of the csv files
@@ -164,7 +164,7 @@ function build(div) {
 
     svg.append("text").attr("text-anchor", "end").attr("x", width).attr("y", height + 40).text("Temps"); // Add Y axis
 
-    var y = d3.scaleLinear().domain([0, 800]) // TODO : Y Automatique ?
+    var y = d3.scaleLinear().domain([0, 12000]) // TODO : Y Automatique ?
     .range([height, 0]);
     svg.append("g").call(d3.axisLeft(y).ticks(15)); // Add Y axis label:
 
@@ -878,7 +878,7 @@ function build(div, data) {
     return d;
   }).enter().append("text").attr("id", function (d) {
     return "".concat(preproc.REGION_NAME_ALT[d.source.index]).concat(preproc.REGION_NAME_ALT[d.source.subindex]);
-  }).attr("class", "tooltip").attr('text-anchor', 'middle').attr('dominant-baseline', 'middle').text(function (d) {
+  }).attr("class", "tooltip").attr("x", 0).attr("y", outerRadius + 15).attr('text-anchor', 'middle').attr('dominant-baseline', 'middle').text(function (d) {
     return "".concat(preproc.REGION_NAME[d.source.index], " --> ").concat(preproc.REGION_NAME[d.source.subindex], " : ").concat(d.source.value, " navires");
   }).style("visibility", "hidden"); // add the groups on the outer part of the circle
 
@@ -961,19 +961,17 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 (function (d3) {
-  onglet1.build(d3.select('#tab-1-content')); // onglet2.build(d3.select('#tab-2-content'))
-  // onglet3.build(d3.select('#tab-3-content'))
-  // d3.csv('./TRIP_V1.csv', d3.autoType).then((data) => {   
-  //     onglet1.build(d3.select('#tab-1-content'))
-  // })
-  // window.addEventListener('resize', () => {
-  //    onglet1.rebuild(d3.select('#tab-1-content'))
-  // })
-
+  onglet1.build(d3.select('#tab-1-content'));
   d3.csv('./TRIP_CHORD.csv').then(function (chordData) {
     chord.build(d3.select('#tab-3-content'), chordData);
   });
-  onglet3.build(d3.select('#tab-3-content')); // TODO : Resize automatique ?
+  onglet3.build(d3.select('#tab-3-content')); // d3.select('#tab-3-content #date-control-refresh').on('click', function() {
+  //     console.log('cc')
+  //     const start = d3.select('#date-start-control').property('value')
+  //     const end = d3.select('#date-end-control').property('value')
+  //     console.log(start, end)
+  // })
+  // TODO : Resize automatique ?
 })(d3);
 
 $('.tab-button').click(function () {
@@ -986,4 +984,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet2.js":"nI8S","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.fa10ac47.js.map
+//# sourceMappingURL=/INF8808-Projet.810f2fdf.js.map

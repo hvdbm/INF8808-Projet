@@ -15,7 +15,7 @@ export function build(div) {
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-  d3.csv('./TRIP_STACK.csv', function(d){
+  d3.csv('./TRIP_STACK_HALF_MONTH.csv', function(d){
       return { 
         date : d3.timeParse("%Y-%m-%d")(d.date),
         Barges : d.Barges,
@@ -55,7 +55,7 @@ export function build(div) {
 
     // Add Y axis
     const y = d3.scaleLinear()
-      .domain([0, 800])     // TODO : Y Automatique ?
+      .domain([0, 12000])     // TODO : Y Automatique ?
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y).ticks(15))

@@ -5,22 +5,20 @@ import * as chord from './scripts/chord.js'
 
 (function (d3) {
     onglet1.build(d3.select('#tab-1-content'))
-    // onglet2.build(d3.select('#tab-2-content'))
-    // onglet3.build(d3.select('#tab-3-content'))
-
-    // d3.csv('./TRIP_V1.csv', d3.autoType).then((data) => {   
-    //     onglet1.build(d3.select('#tab-1-content'))
-    // })
-
-    // window.addEventListener('resize', () => {
-    //    onglet1.rebuild(d3.select('#tab-1-content'))
-    // })
 
     d3.csv('./TRIP_CHORD.csv').then(function(chordData) {
         chord.build(d3.select('#tab-3-content'), chordData)
     })
 
     onglet3.build(d3.select('#tab-3-content'))
+
+    // d3.select('#tab-3-content #date-control-refresh').on('click', function() {
+    //     console.log('cc')
+    //     const start = d3.select('#date-start-control').property('value')
+    //     const end = d3.select('#date-end-control').property('value')
+
+    //     console.log(start, end)
+    // })
 
     // TODO : Resize automatique ?
 

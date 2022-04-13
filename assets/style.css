@@ -72,3 +72,11 @@ span.tab-name {
     color: #606060;
     font-size: 16px;
 }
+
+#warning {
+    color: #606060;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 20px;
+}

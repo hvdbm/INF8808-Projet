@@ -14,6 +14,7 @@
     <body class="ui-active">
         <div id="main">
             <div id="nav">
+                <hr>
                 <div class="tab" id="tab-1">
                     <button class="tab-button tab-button-active" id="tab-button-1" data-tab="1">
                         <span class="tab-name">Aperçu global</span>
@@ -29,14 +30,19 @@
                         <span class="tab-name">Les trajets</span>
                     </button>
                 </div>
+                <hr>
+                <div>
+                    <p class="tab-name" id="warning">
+                        Note : Il est possible d'avoir un ralentissement / figement de l'application lors du chargement des données.
+                        Attendre quelques instants réglera le problème.
+                    </p>
+                </div>
             </div>
             <div id="content">
                 <div class="tab-content visible-tab" id="tab-1-content">
                     <div id="tab-1-text">
                         <div id="intro">
                             <h1>À propos de ces visualisations</h1>
-                            <p>INF8808 - Polytechnique Montréal - Hiver 2022</p>
-                            <p>Hugo Vandenbroucke-Menu <br>Louri Compain<br>Charles-Éric Langlois<br>Philippe Leclerc</p>
                             <p>Naviguez entre ces visualisations à l'aide des onglets à gauche :</p>
                             <ul>
                                 <li> <b>Aperçu global :</b> résumé des données intégrant la dimension temporelle</p></li>
@@ -44,10 +50,6 @@
                                 <li> <b>Les trajets :</b> permet d'étudier les liens entre les différentes régions</p></li>
                             </ul>
                             <p>Les valeurs aberrantes ont été ignorées</p>
-                            <p id="warning">
-                                Note : Il est possible d'avoir un ralentissement / figement de l'application lors du chargement des données.
-                                Attendre quelques instants réglera le problème.
-                            </p>
                         </div>
                         <div id="tab-1-tooltip">
                             <p> <b> Tooltip :</b> Passer la souris sur la légende permet d'isoler la répartition d'un type de navire </p>
@@ -237,7 +239,18 @@
                                     Sélection de la période :
                                 </span>
                             </div>
-                            <svg id="time-select-graph"></svg>
+                            <!-- svg id="time-select-graph"></svg -->
+                            <!--div>
+                                <span id="date-control-title">Définir la date de début</span>
+                                <input id="date-start-control" type="date" value="2010-01-01">
+                            </div>
+                            <div>
+                                <span id="date-control-title">Définir la date de fin</span>
+                                <input id="date-end-control" type="date" value="2023-01-01">
+                            </div>
+                            <div>
+                                <button id="date-control-refresh">Actualiser</button>
+                            </div-->
                         </div>
                     </div>
                 </div>
