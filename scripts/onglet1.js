@@ -23,7 +23,7 @@ export function build(div) {
         Tugs : d.Tugs,
         Tanker : d.Tanker,
         Fishing : d.Fishing,
-        'Pleasure Crafts': d['Pleasure Crafts'],
+        PleasureCrafts: d['PleasureCrafts'],
         Excursion : d.Excursion,
         Merchant : d.Merchant,
       }
@@ -86,7 +86,7 @@ export function build(div) {
       .attr("d", area)
 
     // What to do when one group is hovered
-    const highlight = function(d){
+    const highlight = function(d) {
       d3.selectAll(".myArea").style("opacity", .1)  // reduce opacity of all groups
       d3.select("."+d).style("opacity", 1)  // expect the one that is hovered
     }
