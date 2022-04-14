@@ -1,11 +1,15 @@
 import * as preproc from './preprocess.js'
 
-export function build(div) {
-  buildHeatmap(div)
+export function rebuild(div, startDate, endDate) {
+  div.select("#tab-3-heatmap")
+    .select('svg')
+    .remove()
+
+  buildHeatmap(div, startDate, endDate)
 }
 
 // https://d3-graph-gallery.com/heatmap.html
-function buildHeatmap(div) {
+export function buildHeatmap(div, startDate, endDate) {
   // TODO : adapt to div size
 
   // set the dimensions and margins of the graph
@@ -48,7 +52,6 @@ function buildHeatmap(div) {
   // Build color scale
   const myColor = d3.scaleLinear()
     .range(["white", "#ff0000"])
-    .domain([0,15]) //maximum hardocodé sur la valeur max
 
 
   function transformData(d, departureDate, arrivalDate) {
@@ -59,8 +62,6 @@ function buildHeatmap(div) {
     })
 
     data.forEach(line => {
-      // if (departureDate <= d['Departure Date'] && arrivalDate >= d['Arrival Date']) return;
-
       const keyStart = line['Departure Region']+line['Global Vessel Type'];
       const keyStop = line['Arrival Region']+line['Global Vessel Type'];
       if (!map.has(keyStart)) {
@@ -107,7 +108,7 @@ function buildHeatmap(div) {
   //Read the data
   d3.csv("./TRIP_HEATMAP.csv").then( function(data) {
     // add the squares and interaction
-    const transformedData = transformData(data, "2010-01-01", "2023-01-01")
+    const transformedData = transformData(data, startDate, endDate)
     svg.selectAll()
     .data(transformedData, function(d) {
       return d.Type+':'+d.Region;

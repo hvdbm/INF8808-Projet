@@ -6,21 +6,22 @@ import * as chord from './scripts/chord.js'
 (function (d3) {
     onglet1.build(d3.select('#tab-1-content'))
 
-    d3.csv('./TRIP_CHORD.csv').then(function(chordData) {
-        chord.build(d3.select('#tab-3-content'), chordData)
+    let chordData;
+    d3.csv('./TRIP_CHORD.csv').then(function(data) {
+        chordData = data
+        chord.build(d3.select('#tab-3-content'), data, "2010-01-01", "2023-01-01")
     })
 
-    onglet3.build(d3.select('#tab-3-content'))
+    onglet3.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01")
 
-    // d3.select('#tab-3-content #date-control-refresh').on('click', function() {
-    //     console.log('cc')
-    //     const start = d3.select('#date-start-control').property('value')
-    //     const end = d3.select('#date-end-control').property('value')
+    d3.select('#tab-3-content #date-control-refresh').on('click', function() {
+        const start = d3.select('#date-start-control').property('value')
+        const end = d3.select('#date-end-control').property('value')
 
-    //     console.log(start, end)
-    // })
-
-    // TODO : Resize automatique ?
+        console.log(start, end)
+        chord.rebuild(d3.select('#tab-3-content'), chordData, start, end)
+        onglet3.rebuild(d3.select('#tab-3-content'), start, end)
+    })
 
 })(d3)
 
