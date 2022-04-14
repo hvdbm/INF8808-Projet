@@ -147,7 +147,7 @@ function build(div) {
       Tugs: d.Tugs,
       Tanker: d.Tanker,
       Fishing: d.Fishing,
-      'Pleasure Crafts': d['Pleasure Crafts'],
+      PleasureCrafts: d['PleasureCrafts'],
       Excursion: d.Excursion,
       Merchant: d.Merchant
     };
@@ -642,7 +642,8 @@ function chordMatrix(data, departureDate, arrivalDate) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.build = build;
+exports.buildHeatmap = buildHeatmap;
+exports.rebuild = rebuild;
 
 var preproc = _interopRequireWildcard(require("./preprocess.js"));
 
@@ -650,22 +651,23 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function build(div) {
-  buildHeatmap(div);
+function rebuild(div, startDate, endDate) {
+  div.select("#tab-3-heatmap").select('svg').remove();
+  buildHeatmap(div, startDate, endDate);
 } // https://d3-graph-gallery.com/heatmap.html
 
 
-function buildHeatmap(div) {
+function buildHeatmap(div, startDate, endDate) {
   // TODO : adapt to div size
   // set the dimensions and margins of the graph
   var margin = {
-    top: 30,
-    right: 0,
-    bottom: 70,
-    left: 120
+    top: 10,
+    right: 5,
+    bottom: 90,
+    left: 115
   },
-      width = 500 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom; // append the svg object to the body of the page
+      width = 450 - margin.left - margin.right,
+      height = 450 - margin.top - margin.bottom; // append the svg object to the body of the page
 
   var svg = div.select("#tab-3-heatmap").append("svg").attr("width", width + margin.left + margin.right + 50).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ",").concat(margin.top, ")")); // Labels of row and columns
 
@@ -678,7 +680,7 @@ function buildHeatmap(div) {
   var y = d3.scaleBand().range([height, 0]).domain(myVars).padding(0.01);
   svg.append("g").call(d3.axisLeft(y)); // Build color scale
 
-  var myColor = d3.scaleLinear().range(["white", "#ff0000"]).domain([0, 15]); //maximum hardocodé sur la valeur max
+  var myColor = d3.scaleLinear().range(["white", "#ff0000"]);
 
   function transformData(d, departureDate, arrivalDate) {
     var map = heatmapMap();
@@ -686,7 +688,6 @@ function buildHeatmap(div) {
       return departureDate <= line['Departure Date'] && arrivalDate >= line['Arrival Date'];
     });
     data.forEach(function (line) {
-      // if (departureDate <= d['Departure Date'] && arrivalDate >= d['Arrival Date']) return;
       var keyStart = line['Departure Region'] + line['Global Vessel Type'];
       var keyStop = line['Arrival Region'] + line['Global Vessel Type'];
 
@@ -735,7 +736,7 @@ function buildHeatmap(div) {
 
   d3.csv("./TRIP_HEATMAP.csv").then(function (data) {
     // add the squares and interaction
-    var transformedData = transformData(data, "2010-01-01", "2023-01-01");
+    var transformedData = transformData(data, startDate, endDate);
     svg.selectAll().data(transformedData, function (d) {
       return d.Type + ':' + d.Region;
     }).enter().append("g").attr("class", "square").on('mouseenter', function () {
@@ -813,6 +814,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.build = build;
+exports.rebuild = rebuild;
 
 var preproc = _interopRequireWildcard(require("./preprocess.js"));
 
@@ -824,39 +826,31 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // https://observablehq.com/@d3/directed-chord-diagram
 // https://jyu-theartofml.github.io/posts/circos_plot
 // http://strongriley.github.io/d3/ex/chord.html
-function build(div, data) {
+function build(div, data, startDate, endDate) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
-  var bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect();
+  var chordWidth = screen.width / 2; // console.log(chordWidth);
+
   var margin = {
-    top: bounds.width * 0.24,
-    right: bounds.width * 0.25,
-    bottom: bounds.width * 0.25,
-    left: bounds.width * 0.25
+    top: chordWidth * 0.17,
+    right: chordWidth * 0.05,
+    bottom: chordWidth * 0.07,
+    left: chordWidth * 0.20
   },
       // TODO : Revoir valeur
-  width = bounds.width - margin.left - margin.right,
-      height = bounds.width - margin.top - margin.bottom;
-  var innerRadius = bounds.width / 6.5; // TODO : Revoir valeur
+  width = chordWidth - margin.left - margin.right,
+      height = chordWidth - margin.top - margin.bottom; //const innerRadius = chordWidth / 4 // TODO : Revoir valeur
+  //const outerRadius = innerRadius + 10
 
-  var outerRadius = innerRadius + 10; // create the svg area
+  var outerRadius = width / 3.5;
+  var innerRadius = outerRadius - 10; // create the svg area
 
-  var svg = div.select('#tab-3-chord-diagram').append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"); // create input data: a square matrix that provides flow between entities
+  var svg = div.select('#tab-3-chord-diagram').append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + (margin.left + outerRadius) + "," + (margin.top + outerRadius) + ")"); // create input data: a square matrix that provides flow between entities
 
-  var matrix = preproc.chordMatrix(data, "2010-01-01", "2023-01-01");
+  var matrix = preproc.chordMatrix(data, startDate, endDate);
   var colors = preproc.REGION_COLOR; // give this matrix to d3.chord(): it will calculates all the info we need to draw arc and ribbon
 
   var res = d3.chord().padAngle(0.05) // padding between entities (black arc)
-  .sortSubgroups(d3.descending)(matrix);
-  /*// create a tooltip
-  const tooltip = d3.select("#tab-3-chord-diagram")
-    .append("div")
-    .attr("id","tooltip")
-    .attr("x", 8)
-    .style("position", "absolute")
-    .style("visibility", "hidden")
-    .text("I'm a circle!");
-  */
-  // add the links between groups
+  .sortSubgroups(d3.descending)(matrix); // add the links between groups
 
   var links = svg.datum(res).append("g").attr("id", "links").selectAll("path").data(function (d) {
     return d;
@@ -878,7 +872,7 @@ function build(div, data) {
     return d;
   }).enter().append("text").attr("id", function (d) {
     return "".concat(preproc.REGION_NAME_ALT[d.source.index]).concat(preproc.REGION_NAME_ALT[d.source.subindex]);
-  }).attr("class", "tooltip").attr("x", 0).attr("y", outerRadius + 15).attr('text-anchor', 'middle').attr('dominant-baseline', 'middle').text(function (d) {
+  }).attr("class", "tooltip").attr("x", 0).attr("y", outerRadius + 25).attr('text-anchor', 'middle').attr('dominant-baseline', 'middle').text(function (d) {
     return "".concat(preproc.REGION_NAME[d.source.index], " --> ").concat(preproc.REGION_NAME[d.source.subindex], " : ").concat(d.source.value, " navires");
   }).style("visibility", "hidden"); // add the groups on the outer part of the circle
 
@@ -898,14 +892,23 @@ function build(div, data) {
   }).enter().append("g").attr("transform", function (d) {
     return "rotate(" + (d.startAngle * 180 / Math.PI - 90) + ") translate(" + outerRadius + ",0)";
   }) // TODO : Revoir valeur
-  .append("text").attr("x", 8).attr("dy", ".35em").attr("transform", function (d) {
+  .append("text").attr("x", 8).attr("dy", ".25em").attr("transform", function (d) {
     return d.startAngle > Math.PI ? "rotate(180) translate(-16)" : null;
   }).style("text-anchor", function (d) {
     return d.startAngle > Math.PI ? "end" : null;
   }).style("fill", function (_, i) {
     return colors[i];
-  }).style("font-weight", "bold").text(function (d) {
-    return preproc.REGION_NAME[d.index];
+  }).style("font-weight", "bold") // .style("font-size",12)
+  .text(function (d) {
+    return preproc.REGION_NAME[d.index]; // if (d.index != 7 && d.index != 8) {
+    //   return preproc.REGION_NAME[d.index]
+    // } else if (d.index == 7) {
+    //   console.log(preproc.REGION_NAME[d.index])
+    //   return preproc.REGION_NAME[d.index].slice(0, 12) + "tspan" + preproc.REGION_NAME[d.index].slice(12,)
+    // } else {
+    //   console.log(preproc.REGION_NAME[d.index])
+    //   return preproc.REGION_NAME[d.index].slice(0, 13) 
+    // }
   });
 }
 
@@ -918,33 +921,11 @@ function highlightGroup(event, links) {
 function unhighlightGroup(links) {
   links.attr("opacity", 0.5);
 }
-/*
-function getContents (source) {
-  // TODO : Generate tooltip contents
-  return `
-  <div>
-    <div>
-      <label style="font-weight: bold;">Region de départ : </label>
-      <label class="tooltip-value">${preproc.REGION_NAME[source.index]}</label>
-    </div>
-    <div>
-      <label style="font-weight: bold;">Région d'arrivée : </label>
-      <label class="tooltip-value">${preproc.REGION_NAME[source.subindex]}</label>
-    </div>
-    <div>
-      <label style="font-weight: bold;">Nombre de navires : </label>
-      <label class="tooltip-value">${source.value} $ (navires)</label>
-    </div>
-  </div>
-  `
-}
 
-function showTooltip(event, links) {
-  
+function rebuild(div, data, startDate, endDate) {
+  div.select('#tab-3-chord-diagram').select('svg').remove();
+  build(div, data, startDate, endDate);
 }
-
-function unshowTooltip() {}
-*/
 },{"./preprocess.js":"LFDw"}],"Focm":[function(require,module,exports) {
 "use strict";
 
@@ -962,16 +943,19 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 (function (d3) {
   onglet1.build(d3.select('#tab-1-content'));
-  d3.csv('./TRIP_CHORD.csv').then(function (chordData) {
-    chord.build(d3.select('#tab-3-content'), chordData);
+  var chordData;
+  d3.csv('./TRIP_CHORD.csv').then(function (data) {
+    chordData = data;
+    chord.build(d3.select('#tab-3-content'), data, "2010-01-01", "2023-01-01");
   });
-  onglet3.build(d3.select('#tab-3-content')); // d3.select('#tab-3-content #date-control-refresh').on('click', function() {
-  //     console.log('cc')
-  //     const start = d3.select('#date-start-control').property('value')
-  //     const end = d3.select('#date-end-control').property('value')
-  //     console.log(start, end)
-  // })
-  // TODO : Resize automatique ?
+  onglet3.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01");
+  d3.select('#tab-3-content #date-control-refresh').on('click', function () {
+    var start = d3.select('#date-start-control').property('value');
+    var end = d3.select('#date-end-control').property('value');
+    console.log(start, end);
+    chord.rebuild(d3.select('#tab-3-content'), chordData, start, end);
+    onglet3.rebuild(d3.select('#tab-3-content'), start, end);
+  });
 })(d3);
 
 $('.tab-button').click(function () {
@@ -984,4 +968,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet2.js":"nI8S","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.810f2fdf.js.map
+//# sourceMappingURL=/INF8808-Projet.82eba087.js.map

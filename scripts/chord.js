@@ -4,11 +4,11 @@ import * as preproc from './preprocess.js'
 // https://observablehq.com/@d3/directed-chord-diagram
 // https://jyu-theartofml.github.io/posts/circos_plot
 // http://strongriley.github.io/d3/ex/chord.html
-export function build(div, data) {
+export function build(div, data, startDate, endDate) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
-  const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
+
   let chordWidth = screen.width/2;
-  console.log(chordWidth);
+  // console.log(chordWidth);
   var margin = {
     top: chordWidth*0.17,
     right: chordWidth*0.05, 
@@ -30,7 +30,7 @@ export function build(div, data) {
     .attr("transform", "translate(" + (margin.left+outerRadius) + "," + (margin.top+outerRadius) + ")");
 
   // create input data: a square matrix that provides flow between entities
-  const matrix = preproc.chordMatrix(data, "2010-01-01", "2023-01-01")
+  const matrix = preproc.chordMatrix(data, startDate, endDate)
   
   const colors = preproc.REGION_COLOR
 
@@ -39,15 +39,7 @@ export function build(div, data) {
     .padAngle(0.05)     // padding between entities (black arc)
     .sortSubgroups(d3.descending)
     (matrix)
-  /*// create a tooltip
-  const tooltip = d3.select("#tab-3-chord-diagram")
-    .append("div")
-    .attr("id","tooltip")
-    .attr("x", 8)
-    .style("position", "absolute")
-    .style("visibility", "hidden")
-    .text("I'm a circle!");
-*/
+
   // add the links between groups
   const links = svg
   .datum(res)
@@ -133,17 +125,18 @@ export function build(div, data) {
     .style("text-anchor", function(d) { return d.startAngle > Math.PI ? "end" : null; })
     .style("fill", function(_, i){ return(colors[i]) })
     .style("font-weight", "bold")
-    .style("font-size",12)
+    // .style("font-size",12)
     .text(function(d) {
-      if (d.index != 7 && d.index != 8) {
-        return preproc.REGION_NAME[d.index]
-      } else if (d.index == 7) {
-        console.log(preproc.REGION_NAME[d.index])
-        return preproc.REGION_NAME[d.index].slice(0, 12) + "tspan" + preproc.REGION_NAME[d.index].slice(12,)
-      } else {
-        console.log(preproc.REGION_NAME[d.index])
-        return preproc.REGION_NAME[d.index].slice(0, 13) 
-      }
+      return preproc.REGION_NAME[d.index]
+      // if (d.index != 7 && d.index != 8) {
+      //   return preproc.REGION_NAME[d.index]
+      // } else if (d.index == 7) {
+      //   console.log(preproc.REGION_NAME[d.index])
+      //   return preproc.REGION_NAME[d.index].slice(0, 12) + "tspan" + preproc.REGION_NAME[d.index].slice(12,)
+      // } else {
+      //   console.log(preproc.REGION_NAME[d.index])
+      //   return preproc.REGION_NAME[d.index].slice(0, 13) 
+      // }
     })
 }
 
@@ -156,30 +149,11 @@ function highlightGroup(event, links) {
 function unhighlightGroup(links) {
   links.attr("opacity", 0.5)
 }
-/*
-function getContents (source) {
-  // TODO : Generate tooltip contents
-  return `
-  <div>
-    <div>
-      <label style="font-weight: bold;">Region de départ : </label>
-      <label class="tooltip-value">${preproc.REGION_NAME[source.index]}</label>
-    </div>
-    <div>
-      <label style="font-weight: bold;">Région d'arrivée : </label>
-      <label class="tooltip-value">${preproc.REGION_NAME[source.subindex]}</label>
-    </div>
-    <div>
-      <label style="font-weight: bold;">Nombre de navires : </label>
-      <label class="tooltip-value">${source.value} $ (navires)</label>
-    </div>
-  </div>
-  `
-}
 
-function showTooltip(event, links) {
-  
-}
+export function rebuild(div, data, startDate, endDate) {
+  div.select('#tab-3-chord-diagram')
+    .select('svg')
+    .remove()
 
-function unshowTooltip() {}
-*/
+  build(div, data, startDate, endDate)
+}
