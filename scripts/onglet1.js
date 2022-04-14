@@ -4,7 +4,7 @@ export function build(div) {
   const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
   var margin = {top: 60, right: 230, bottom: 50, left: 70},
   width = bounds.width - margin.left - margin.right,
-  height = 800 - margin.top - margin.bottom;
+  height = 550 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
   var svg = div.select("#stacked-area-chart")
@@ -23,7 +23,7 @@ export function build(div) {
         Fishing : d.Fishing,
         Barges : d.Barges,
         Tanker : d.Tanker,
-        PleasureCrafts: d['PleasureCrafts'],
+        PleasureCrafts: d.PleasureCrafts,
         Excursion : d.Excursion,
         Merchant : d.Merchant,
       }
@@ -122,6 +122,8 @@ export function build(div) {
         .text(function(d){ return d})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
+        // .attr("stroke-width", 0.2)
+        // .attr("stroke", "black")
         .on("mouseover", highlight)
         .on("mouseleave", noHighlight)
     })

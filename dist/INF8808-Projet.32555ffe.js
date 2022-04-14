@@ -136,18 +136,18 @@ function build(div) {
     left: 70
   },
       width = bounds.width - margin.left - margin.right,
-      height = 800 - margin.top - margin.bottom; // append the svg object to the body of the page
+      height = 550 - margin.top - margin.bottom; // append the svg object to the body of the page
 
   var svg = div.select("#stacked-area-chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   d3.csv('./TRIP_STACK_HALF_MONTH.csv', function (d) {
     return {
       date: d3.timeParse("%Y-%m-%d")(d.date),
-      Barges: d.Barges,
       Other: d.Other,
       Tugs: d.Tugs,
-      Tanker: d.Tanker,
       Fishing: d.Fishing,
-      PleasureCrafts: d['PleasureCrafts'],
+      Barges: d.Barges,
+      Tanker: d.Tanker,
+      PleasureCrafts: d.PleasureCrafts,
       Excursion: d.Excursion,
       Merchant: d.Merchant
     };
@@ -213,7 +213,9 @@ function build(div) {
       return color(d);
     }).text(function (d) {
       return d;
-    }).attr("text-anchor", "left").style("alignment-baseline", "middle").on("mouseover", highlight).on("mouseleave", noHighlight);
+    }).attr("text-anchor", "left").style("alignment-baseline", "middle") // .attr("stroke-width", 0.2)
+    // .attr("stroke", "black")
+    .on("mouseover", highlight).on("mouseleave", noHighlight);
   });
 }
 },{}],"nI8S":[function(require,module,exports) {
@@ -828,7 +830,7 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // http://strongriley.github.io/d3/ex/chord.html
 function build(div, data, startDate, endDate) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
-  var chordWidth = screen.width / 2; // console.log(chordWidth);
+  var chordWidth = window.innerWidth / 2; // screen.width/2;
 
   var margin = {
     top: chordWidth * 0.17,
@@ -898,8 +900,7 @@ function build(div, data, startDate, endDate) {
     return d.startAngle > Math.PI ? "end" : null;
   }).style("fill", function (_, i) {
     return colors[i];
-  }).style("font-weight", "bold") // .style("font-size",12)
-  .text(function (d) {
+  }).style("font-weight", "bold").style("font-size", 12).text(function (d) {
     return preproc.REGION_NAME[d.index]; // if (d.index != 7 && d.index != 8) {
     //   return preproc.REGION_NAME[d.index]
     // } else if (d.index == 7) {
@@ -968,4 +969,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet2.js":"nI8S","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.82eba087.js.map
+//# sourceMappingURL=/INF8808-Projet.32555ffe.js.map

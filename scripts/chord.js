@@ -7,8 +7,8 @@ import * as preproc from './preprocess.js'
 export function build(div, data, startDate, endDate) {
   // TODO : Comment trouver la taille d'une div encore non chargée ?
 
-  let chordWidth = screen.width/2;
-  // console.log(chordWidth);
+  let chordWidth = window.innerWidth / 2 // screen.width/2;
+
   var margin = {
     top: chordWidth*0.17,
     right: chordWidth*0.05, 
@@ -125,7 +125,7 @@ export function build(div, data, startDate, endDate) {
     .style("text-anchor", function(d) { return d.startAngle > Math.PI ? "end" : null; })
     .style("fill", function(_, i){ return(colors[i]) })
     .style("font-weight", "bold")
-    // .style("font-size",12)
+    .style("font-size",12)
     .text(function(d) {
       return preproc.REGION_NAME[d.index]
       // if (d.index != 7 && d.index != 8) {
