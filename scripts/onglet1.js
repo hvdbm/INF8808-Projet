@@ -18,11 +18,11 @@ export function build(div) {
   d3.csv('./TRIP_STACK_HALF_MONTH.csv', function(d){
       return { 
         date : d3.timeParse("%Y-%m-%d")(d.date),
-        Barges : d.Barges,
         Other : d.Other,
         Tugs : d.Tugs,
-        Tanker : d.Tanker,
         Fishing : d.Fishing,
+        Barges : d.Barges,
+        Tanker : d.Tanker,
         PleasureCrafts: d['PleasureCrafts'],
         Excursion : d.Excursion,
         Merchant : d.Merchant,

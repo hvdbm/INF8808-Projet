@@ -125,14 +125,14 @@ function formatV1_2() {
     if (!map.has(key)) {
       const line = {
         'date': d.date,
-        'Merchant': 0,
-        'Barges': 0,
+        'Fishing': 0,
         'Other': 0,
+        'Barges': 0,
         'Tugs': 0,
         'Tanker': 0,
-        'Fishing': 0,
         'Pleasure Crafts': 0,
-        'Excursion': 0
+        'Excursion': 0,
+        'Merchant': 0
       }
       
       line[d.type] += Number(d.count)
@@ -266,14 +266,15 @@ function groupByThirdMonth() {
     if (!map.has(key)) {
       const line = {
         'date': key,
-        'Merchant': 0,
-        'Barges': 0,
         'Other': 0,
         'Tugs': 0,
-        'Tanker': 0,
         'Fishing': 0,
+        'Barges': 0,
+        'Tanker': 0,
         'Pleasure Crafts': 0,
-        'Excursion': 0
+        'Excursion': 0,
+        'Merchant': 0
+
       }
 
       line[d.type] += Number(d.count)
