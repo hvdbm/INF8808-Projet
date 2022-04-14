@@ -17,7 +17,7 @@ fs.createReadStream('TRIP_V1.csv')
     console.log('CSV file successfully processed');
     // formatV1()
     // formatV1_2()
-    groupByThirdMonth()
+    groupByHalfMonth()
     // console.log('v1:', v1.length)
     console.log('map;', map.size)
     console.log('Format V1 succeed')
@@ -184,14 +184,14 @@ function groupByHalfMonth() {
     if (!map.has(key)) {
       const line = {
         'date': key,
-        'Merchant': 0,
-        'Barges': 0,
         'Other': 0,
         'Tugs': 0,
-        'Tanker': 0,
         'Fishing': 0,
+        'Barges': 0,
+        'Tanker': 0,
         'Pleasure Crafts': 0,
-        'Excursion': 0
+        'Excursion': 0,
+        'Merchant': 0
       }
 
       line[d.type] += Number(d.count)
