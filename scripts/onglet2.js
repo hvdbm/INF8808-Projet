@@ -1,7 +1,3 @@
-
-let crossfilter = require('./crossfilter')
-let dc = require('./dc')
-
 import { vesselTypeClasses } from './vesselTypeClasses.js'
 
 export function build() {
@@ -63,7 +59,7 @@ export function build() {
 
                     const timeSelectWidth = 950
 
-                    const ndx = crossfilter.crossfilter(data)
+                    const ndx = crossfilter(data)
 
                     const vesselLengthRange = 400
                     const vesselLengthBarWidth = vesselLengthRange / chartNbBars
