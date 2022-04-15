@@ -126,7 +126,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.vesselTypeClasses = vesselTypeClasses;
 
 function vesselTypeClasses() {
-  return ["Barges", "Excursion", "Fishing", "Merchant", "Other", "Pleasure Crafts", "Tankers", "Tugs", "Other"];
+  return ["Barges", "Excursion", "Fishing", "Merchant", "Other", "PleasureCrafts", "Tanker", "Tugs", "Other"];
 }
 },{}],"DNGJ":[function(require,module,exports) {
 "use strict";
@@ -45304,9 +45304,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.build = build;
 
-var crossfilter = _interopRequireWildcard(require("./crossfilter"));
+var crossfilter = _interopRequireWildcard(require("./crossfilter.js"));
 
-var dc = _interopRequireWildcard(require("./dc"));
+var dc = _interopRequireWildcard(require("./dc.js"));
 
 var _vesselTypeClasses = require("./vesselTypeClasses.js");
 
@@ -45524,7 +45524,7 @@ function remove_empty_bins(source_group) {
     }
   };
 }
-},{"./crossfilter":"gVr5","./dc":"b8Mp","./vesselTypeClasses.js":"LdDo"}],"LFDw":[function(require,module,exports) {
+},{"./crossfilter.js":"gVr5","./dc.js":"b8Mp","./vesselTypeClasses.js":"LdDo"}],"LFDw":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45937,4 +45937,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet2.js":"nI8S","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet3.464c0e42.js.map
+//# sourceMappingURL=/INF8808-Projet3.4c6a87b1.js.map
