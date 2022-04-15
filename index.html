@@ -4,12 +4,14 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://d3js.org/d3.v5.js"></script>
         <script src="./scripts/crossfilter.js"></script>
+        <script src="./scripts/dc.js" charset="utf-8"></script>
         <script src="index.js" type="module"></script>
 
         <link href="./assets/style.css" rel="stylesheet" />
         <link href="./assets/onglet1.css" rel="stylesheet" />
         <link href="./assets/onglet2.css" rel="stylesheet" />
         <link href="./assets/onglet3.css" rel="stylesheet" />
+        <link href="./assets/dc.css" rel="stylesheet" />
     </head>
     <body class="ui-active">
         <div id="main">
@@ -63,109 +65,21 @@
                 <div class="tab-content" id="tab-2-content">
                     <div id="tab-2-left">
                         <div id="ports">
-                            <div id="port-tables-container">
-                                <table id="port-table-header">
-                                    <thead>
-                                        <tr>
-                                            <th class="column-rank">
-                                                <span id="titre-colonne-ports">Rang</span>
-                                            </th>
-                                            <th class="column-port">
-                                                <span id="titre-colonne-ports">Port</span>
-                                            </th>
-                                            <th class="column-traffic">
-                                                <span id="titre-colonne-ports">Trafic</span>
-                                            </th>
-                                            <th style="width: 100%;"></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <div id="port-table-body-container">
-                                    <table id="port-table">
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                                <table id="port-table-footer">
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="4">
-                                                <div>
-                                                    <span id="row-nb-control-title">Définir le nombre de ports à afficher</span>
-                                                    <input id="row-nb-control" type="number" value="20">
-                                                    <button id="row-nb-control-refresh">Actualiser</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div id="port-chart">
                             </div>
                         </div>
                     </div>
                     <div id="tab-2-right">
                         <div id="caracteristics">
-                            <div id="caracteristics-title">
-                                <span id="caracteristics-title-main">
-                                    PORT :
-                                </span>
-                                <span id="caracteristics-title-port">
-                                    AUCUN PORT SÉLECTIONNÉ - CARACTÉRISTIQUES GLOBALES
-                                </span>
-                            </div>
                             <div id="caracteristics-content">
                                 <div id="continuous-caracteristics">
-                                    <div class="tab-2-histogram-container">
-                                        <span class="tab-2-histogram-title">Longueur</span>
-                                        <div class="continuous-repartition-container" id="repartition-length"></div>
-                                    </div>
-                                    <div class="tab-2-histogram-container">
-                                        <span class="tab-2-histogram-title">Largeur</span>
-                                        <div class="continuous-repartition-container" id="repartition-width"></div>
-                                    </div>
-                                    <div class="tab-2-histogram-container">
-                                        <span class="tab-2-histogram-title">Capacité</span>
-                                        <div class="continuous-repartition-container" id="repartition-tonnage"></div>
-                                    </div>
-                                    <div id="tab-2-last-histogram-container">
-                                        <span class="tab-2-histogram-title">Tirant d'eau</span>
-                                        <div class="continuous-repartition-container" id="repartition-draught"></div>
-                                    </div>
+                                    <div id="length-chart" class="chart"></div>
+                                    <div id="width-chart" class="chart"></div>
+                                    <div id="capacity-chart" class="chart"></div>
+                                    <div id="draught-chart" class="chart"></div>
                                 </div>
                                 <div id="discrete-caracteristics">
-                                    <div class="discrete-repartition-container" id="repartition-types"></div>
-                                    <div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#66c2a5"/></svg>
-                                            <span style="color:#66c2a5">Barges</span>
-                                        </div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#fc8d62"/></svg>
-                                            <span style="color:#fc8d62">Excursion</span>
-                                        </div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#8da0cb"/></svg>
-                                            <span style="color:#8da0cb">Fishing</span>
-                                        </div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#e78ac3"/></svg>
-                                            <span style="color:#e78ac3">Merchant</span>
-                                        </div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#a6d854"/></svg>
-                                            <span style="color:#a6d854">Other</span>
-                                        </div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#ffd92f"/></svg>
-                                            <span style="color:#ffd92f">Pleasure Crafts</span>
-                                        </div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#e5c494"/></svg>
-                                            <span style="color:#e5c494">Tanker</span>
-                                        </div>
-                                        <div class="tab-2-barchart-legend-item">
-                                            <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#b3b3b3"/></svg>
-                                            <span style="color:#b3b3b3">Tugs</span>
-                                        </div>
-                                    </div>
+                                    <div id="type-chart" class="chart"></div>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +88,7 @@
                                 <span id="time-select-title">
                                     Sélection de la période :
                                 </span>
-                                <svg id="time-select-graph"></svg>
+                                <div id="traffic-chart" class="chart"></div>
                             </div>
                         </div>
                     </div>

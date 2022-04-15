@@ -1,3 +1,5 @@
+import { vesselTypeClasses } from './vesselTypeClasses.js'
+
 // Source : https://d3-graph-gallery.com/graph/stackedarea_template.html
 export function build(div) {
   // set the dimensions and margins of the graph
@@ -31,7 +33,7 @@ export function build(div) {
     const keys = data.columns.slice(1)  // List of Vessel Types = header of the csv files
 
     const color = d3.scaleOrdinal()
-      .domain(keys)
+      .domain(vesselTypeClasses())
       .range(d3.schemeSet2);
 
     const stackedData = d3.stack()

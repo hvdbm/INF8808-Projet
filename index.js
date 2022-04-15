@@ -6,6 +6,8 @@ import * as chord from './scripts/chord.js'
 (function (d3) {
     onglet1.build(d3.select('#tab-1-content'))
 
+    onglet2.build()
+
     let chordData;
     d3.csv('./TRIP_CHORD.csv').then(function(data) {
         chordData = data

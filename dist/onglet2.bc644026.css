@@ -98,9 +98,9 @@ table#port-table-footer {
     height: 100%;
     margin-left: 60px;
     margin-bottom: 10px;
-    /* border-color: #868686; */
-    /* border-width: 1px;
-    border-style: none none solid solid; */
+    border-color: #868686;
+    border-width: 1px;
+    border-style: none none solid solid;
     display: flex;
     flex-direction: column;
 }
@@ -122,7 +122,7 @@ span#caracteristics-title-port {
 
 #caracteristics-content {
     height: 100%;
-    /* border-top: 1px solid #868686; */
+    border-top: 1px solid #868686;
     display: flex;
 }
 
@@ -269,18 +269,4 @@ svg#time-select-graph {
     flex-direction: column;
 }
 
-#traffic-chart {
-    background-color: white;
-}
-
-#traffic-chart rect.bar {
-    width: 3px;
-}
-
-#port-chart .row {
-    fill: black;
-}
-
-#port-chart {
-    overflow-y: scroll;
-}
+/*# sourceMappingURL=/onglet2.bc644026.css.map */
