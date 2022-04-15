@@ -1,5 +1,5 @@
-import * as crossfilter from './crossfilter.js'
-import * as dc from './dc.js'
+import crossfilter from 'crossfilter'
+import dc from 'dc'
 import { vesselTypeClasses } from './vesselTypeClasses.js'
 
 export function build() {
