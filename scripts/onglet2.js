@@ -60,7 +60,7 @@ export function build() {
 
                     const timeSelectWidth = 950
 
-                    const ndx = crossfilter(data)
+                    const ndx = crossfilter.crossfilter(data)
 
                     const vesselLengthRange = 400
                     const vesselLengthBarWidth = vesselLengthRange / chartNbBars
