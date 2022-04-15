@@ -1,5 +1,7 @@
-import * as crossfilter from 'crossfilter'
-import * as dc from 'dc'
+
+let crossfilter = require('./crossfilter')
+let dc = require('./dc')
+
 import { vesselTypeClasses } from './vesselTypeClasses.js'
 
 export function build() {
@@ -18,6 +20,7 @@ export function build() {
                     // 23079000000766035,   2011-01-01 00:57:00.000,Whiffen Head,Newfoundland Region,47.7727836111111,-54.0171797222222,2011-01-02 12:45:00.000,Virtual Harbour (Newfoundland Region),Newfoundland Region,47.75,-53,Merchant Crude,271.799987792969,46.0499992370606,126646,15.3459997177124
         
                     let data = data1.concat(data2).concat(data3)
+
                     let dataVesselTypes = new Map()
     
                     const dataVesselTypesArray = dataTypes.map((d) => {
