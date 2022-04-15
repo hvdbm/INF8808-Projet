@@ -1,0 +1,69 @@
+﻿Class,Type
+Barges,Barge Bulk Cargo
+Barges,Barge Chemical
+Barges,Barge Chips
+Barges,Barge Derrick
+Barges,Barge General
+Barges,Barge Log
+Barges,Barge Miscellaneous
+Barges,Barge Oil Drilling Rig
+Barges,Barge Oil/Petroleum
+Barges,Barge Rail/Trailer
+Barges,Barge Self-Propelled
+Barges,Barge Towed
+Barges,Don't use
+Barges,Landing Craft
+Barges,Logs Raft Section
+Excursion,Excursion Passenger
+Fishing,Crab Boat
+Fishing,"Dragger (Scallop, Clam, etc.)"
+Fishing,Factory Ship
+Fishing,Fishery Patrol
+Fishing,Fishing Vessel
+Fishing,Gillnetter
+Fishing,Groundfish Boat (Open Boat)
+Fishing,Lobster Boat
+Fishing,Longliner
+Fishing,Other Fishing VSL (Open Boat)
+Fishing,Seiner
+Fishing,Shrimp Boat
+Fishing,Trawler
+Fishing,Troller
+Merchant,Cruise
+Merchant,Merchant (Dry)
+Merchant,Merchant Auto
+Merchant,Merchant Bulk
+Merchant,Merchant Cement
+Merchant,Merchant Coastal
+Merchant,Merchant Container
+Merchant,Merchant Ferry
+Merchant,Merchant General
+Merchant,Merchant Lash
+Merchant,Merchant Livestock
+Merchant,Merchant Ore
+Merchant,Merchant Passenger
+Merchant,Merchant Rail/Trailer Ferry
+Merchant,Merchant Reefer
+Merchant,Merchant RO/RO
+Other,<Other type>
+PleasureCrafts,Yacht - Pleasure Crafts
+PleasureCrafts,Yacht Power
+PleasureCrafts,Yacht Sails
+Tanker,Merchant (Tanker)
+Tanker,Merchant Chemical
+Tanker,Merchant Chemical/Oil Products Tanker
+Tanker,Merchant Crude
+Tanker,Merchant Gasoline
+Tanker,Merchant Liquified Gas
+Tanker,Merchant Molasses
+Tanker,Merchant Ore/Bulk/Oil
+Tanker,Merchant Super Tanker
+Tanker,Merchant ULCC
+Tanker,Merchant VLCC
+Tanker,Merchant Water
+Tugs,Tug
+Tugs,Tug Fire
+Tugs,Tug Harbour
+Tugs,Tug Ocean
+Tugs,Tug Supply
+Tugs,Tugs Workboat
