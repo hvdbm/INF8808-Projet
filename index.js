@@ -1,12 +1,9 @@
 import * as onglet1 from './scripts/onglet1.js'
-import * as onglet2 from './scripts/onglet2.js'
 import * as onglet3 from './scripts/onglet3.js'
 import * as chord from './scripts/chord.js'
 
 (function (d3) {
     onglet1.build(d3.select('#tab-1-content'))
-
-    onglet2.build()
 
     let chordData;
     d3.csv('./TRIP_CHORD.csv').then(function(data) {
