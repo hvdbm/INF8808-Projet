@@ -1,5 +1,3 @@
-import { vesselTypeClasses } from './vesselTypeClasses.js'
-
 const ROW_CHART_HEIGHT = 16.68
 const ROW_CHART_HEIGHT_MARGIN = 21.75
 
@@ -240,4 +238,18 @@ function remove_empty_bins(source_group) {
             });
         }
     };
+}
+
+function vesselTypeClasses() {
+    return [
+        "Barges",
+        "Excursion",
+        "Fishing",
+        "Merchant",
+        "Other",
+        "PleasureCrafts",
+        "Tanker",
+        "Tugs",
+        "Other"
+    ]
 }
