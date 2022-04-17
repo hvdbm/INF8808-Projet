@@ -5,11 +5,12 @@ let data = []
 let v1 = []
 let map = new Map();
 
-fs.createReadStream('Input.csv')
+fs.createReadStream('TRIP_Part3.csv')
   .pipe(csv())
   .on('data', (row) => {
     // clean(row)
-    data.push(row)
+    clean2(row)
+    // data.push(row)
   })
   .on('end', () => {
     console.log('data:', data.length)
@@ -17,11 +18,11 @@ fs.createReadStream('Input.csv')
     console.log('CSV file successfully processed');
     // formatV1()
     // formatV1_2()
-    groupByHalfMonth()
+    // groupByHalfMonth()
     // console.log('v1:', v1.length)
     console.log('map;', map.size)
     console.log('Format V1 succeed')
-    fs.writeFile('Output.csv', writeClean(), (err) => {
+    fs.writeFile('TRIP_PART_3.csv', writeClean2(), (err) => {
       if (err) throw err;
     }) 
 });
@@ -68,6 +69,27 @@ function clean(element) {
   }
 }
 
+function clean2(element) {
+  // 'Arrival Date'
+  // data.push({
+  //   'Arrival Date': element['Arrival Date'],
+  //   'Arrival Hardour': element['Arrival Hardour'],
+  //   'DeadWeight Tonnage': element['DeadWeight Tonnage'],
+  //   'Departure Date': element['Departure Date'],
+  //   'Departure Hardour': element['Departure Hardour'],
+  //   'Lenght': element['Lenght'],
+  //   'Maximum Draugth': element['Maximum Draugth'],
+  //   'Vessel Type': element['Vessel Type'],
+  //   'Global Vessel Type': element['Global Vessel Type'],
+  //   'Width': element['Width']
+  // })
+  // console.log(element)
+
+  delete element['Arrival Region']
+  delete element['Departure Region']
+  data.push(element)
+}
+
 function writeClean() {
   let csv2 = []
   const mapArray = Array.from(map.values())
@@ -82,6 +104,22 @@ function writeClean() {
   // csv2.push(Object.keys(data[0]).join(','))
 
   mapArray.forEach(element => {
+    csv2.push(Object.values(element).map((value) => {
+      if (value.toString().includes(',')) return `"${value}"`
+      return value
+    }).join(','));
+  })
+
+  return csv2.join('\n')
+}
+
+function writeClean2() {
+  let csv2 = []
+
+  csv2.push(Object.keys(data[0]).join(','))
+
+  data.forEach(element => {
+    // console.log(element)
     csv2.push(Object.values(element).map((value) => {
       if (value.toString().includes(',')) return `"${value}"`
       return value

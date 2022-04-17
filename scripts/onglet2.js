@@ -2,9 +2,9 @@ const ROW_CHART_HEIGHT = 16.68
 const ROW_CHART_HEIGHT_MARGIN = 21.75
 
 // Reading the data
-d3.csv("./TRIP_Part1.csv").then( function(data1) {
-    d3.csv("./TRIP_Part2.csv").then( function(data2) {
-        d3.csv("./TRIP_Part3.csv").then( function(data3) {
+d3.csv("./TRIP_PART_1.csv").then( function(data1) {
+    d3.csv("./TRIP_PART_2.csv").then( function(data2) {
+        d3.csv("./TRIP_PART_3.csv").then( function(data3) {
             d3.csv("./Vessel Type Class.csv").then(function(dataTypes) {
                 // Id,Departure Date,Departure Hardour,Departure Region,Departure Latitude,Departure Longitude,Arrival Date,Arrival Hardour,Arrival Region,Arrival Latitude,Arrival Longitude,Vessel Type,Lenght,Width,DeadWeight Tonnage,Maximum Draugth
                 // 6079000000783579,    2011-01-01 00:00:00.000,Virtual Harbour (Central Region),Central Region,45.71666667,-84.24861111,2011-01-01 15:30:00.000,Goderich,Central Region,43.745,-81.7294441666667,Merchant Bulk,222.509994506836,22.9400005340576,31751,8.72999954223633
