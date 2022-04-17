@@ -5,7 +5,7 @@ let data = []
 let v1 = []
 let map = new Map();
 
-fs.createReadStream('TRIP_V1.csv')
+fs.createReadStream('Input.csv')
   .pipe(csv())
   .on('data', (row) => {
     // clean(row)
@@ -122,17 +122,19 @@ function formatV1_2() {
   data.forEach((d) => {
     const key = d.date;
 
+    console.log(d)
+
     if (!map.has(key)) {
       const line = {
         'date': d.date,
-        'Fishing': 0,
-        'Other': 0,
-        'Barges': 0,
         'Tugs': 0,
+        'Fishing': 0,
+        'Barges': 0,
+        'Other': 0,
+        'Merchant': 0,
         'Tanker': 0,
         'Pleasure Crafts': 0,
-        'Excursion': 0,
-        'Merchant': 0
+        'Excursion': 0
       }
       
       line[d.type] += Number(d.count)
@@ -153,12 +155,12 @@ function groupByMonth() {
     if (!map.has(key)) {
       const line = {
         'date': key+"-01",
-        'Merchant': 0,
+        'Tugs': 0,
+        'Fishing': 0,
         'Barges': 0,
         'Other': 0,
-        'Tugs': 0,
+        'Merchant': 0,
         'Tanker': 0,
-        'Fishing': 0,
         'Pleasure Crafts': 0,
         'Excursion': 0
       }
@@ -173,6 +175,8 @@ function groupByMonth() {
   })
 }
 
+const TYPES = ['Tugs', 'Fishing', 'Barges', 'Other', 'Merchant', 'Tanker', 'Pleasure Crafts', 'Excursion']
+
 function groupByHalfMonth() {
   data.forEach((d) => {
     // console.log(d)
@@ -184,21 +188,30 @@ function groupByHalfMonth() {
     if (!map.has(key)) {
       const line = {
         'date': key,
-        'Other': 0,
         'Tugs': 0,
         'Fishing': 0,
         'Barges': 0,
+        'Other': 0,
         'Tanker': 0,
+        'Merchant': 0,
         'Pleasure Crafts': 0,
-        'Excursion': 0,
-        'Merchant': 0
+        'Excursion': 0
       }
 
-      line[d.type] += Number(d.count)
+      // line[d.type] += Number(d.count)
+
+      TYPES.forEach((type) => {
+        console.log(d.type)
+        line[type] += Number(d[type])
+      })
+
       map.set(key, line)
     } else {
       const line = map.get(key)
-      line[d.type] += Number(d.count)
+      // line[d.type] += Number(d.count)
+      TYPES.forEach((type) => {
+        line[type] += Number(d[type])
+      })
       map.set(key, line)
     }
   })

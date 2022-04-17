@@ -177,8 +177,7 @@ function build(div) {
 
     svg.append("text").attr("text-anchor", "end").attr("x", width).attr("y", height + 40).text("Temps"); // Add Y axis
 
-    var y = d3.scaleLinear().domain([0, 12000]) // TODO : Y Automatique ?
-    .range([height, 0]);
+    var y = d3.scaleLinear().domain([0, 12000]).range([height, 0]);
     svg.append("g").call(d3.axisLeft(y).ticks(15)); // Add Y axis label:
 
     svg.append("text").attr("text-anchor", "end").attr("x", 0).attr("y", -20).text("Nombre de navires").attr("text-anchor", "start"); // Area generator
@@ -212,23 +211,21 @@ function build(div) {
 
     var size = 20;
     svg.selectAll("myrect") // Add one dot in the legend for each name.
-    .data(keys).enter().append("rect").attr("x", width).attr("y", function (_, i) {
+    .data(keys.sort()).enter().append("rect").attr("x", width).attr("y", function (_, i) {
       return 10 + i * (size + 5);
     }) // 100 is where the first dot appears. 25 is the distance between dots
-    .attr("width", size).attr("height", size).attr("stroke-width", 0.5).attr("stroke", "black").style("fill", function (d) {
+    .attr("width", size).attr("height", size).attr("rx", 4).attr("ry", 4).style("fill", function (d) {
       return color(d);
     }).on("mouseover", highlight).on("mouseleave", noHighlight);
     svg.selectAll("mylabels") // Add one dot in the legend for each name.
-    .data(keys).enter().append("text").attr("x", width + size * 1.2).attr("y", function (_, i) {
+    .data(keys.sort()).enter().append("text").attr("x", width + size * 1.2).attr("y", function (_, i) {
       return 10 + i * (size + 5) + size / 2;
     }) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", function (d) {
       return color(d);
     }).text(function (d) {
       return d;
-    }).attr("text-anchor", "left").style("alignment-baseline", "middle") // .attr("stroke-width", 0.2)
-    // .attr("stroke", "black")
-    .on("mouseover", highlight).on("mouseleave", noHighlight);
+    }).attr("text-anchor", "left").style("alignment-baseline", "middle").on("mouseover", highlight).on("mouseleave", noHighlight);
   });
 }
 },{"./vesselTypeClasses.js":"LdDo"}],"LFDw":[function(require,module,exports) {
@@ -641,4 +638,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet3.ba35349b.js.map
+//# sourceMappingURL=/INF8808-Projet.61171e8d.js.map

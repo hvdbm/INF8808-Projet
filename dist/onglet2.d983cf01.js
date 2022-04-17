@@ -330,4 +330,4 @@ function vesselTypeClasses() {
   return ["Barges", "Excursion", "Fishing", "Merchant", "Other", "PleasureCrafts", "Tanker", "Tugs", "Other"];
 }
 },{}]},{},["nI8S"], null)
-//# sourceMappingURL=/onglet2.a410a9e5.js.map
+//# sourceMappingURL=/onglet2.d983cf01.js.map
