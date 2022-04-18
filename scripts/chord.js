@@ -1,4 +1,3 @@
-import { chord } from 'd3';
 import * as preproc from './preprocess.js'
 
 // https://d3-graph-gallery.com/chord.html
