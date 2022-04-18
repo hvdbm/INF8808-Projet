@@ -10,12 +10,12 @@ export function rebuild(div, startDate, endDate) {
 
 // https://d3-graph-gallery.com/heatmap.html
 export function buildHeatmap(div, startDate, endDate) {
-  // TODO : adapt to div size
 
+  const size = 0.28*window.innerWidth
   // set the dimensions and margins of the graph
   const margin = {top: 10, right: 5, bottom: 90, left: 115},
-    width = 450 - margin.left - margin.right,
-    height = 450 - margin.top - margin.bottom;
+    width = size - margin.left - margin.right,
+    height = size - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
   const svg = div.select("#tab-3-heatmap")

@@ -331,16 +331,16 @@ function rebuild(div, startDate, endDate) {
 
 
 function buildHeatmap(div, startDate, endDate) {
-  // TODO : adapt to div size
-  // set the dimensions and margins of the graph
+  var size = 0.28 * window.innerWidth; // set the dimensions and margins of the graph
+
   var margin = {
     top: 10,
     right: 5,
     bottom: 90,
     left: 115
   },
-      width = 450 - margin.left - margin.right,
-      height = 450 - margin.top - margin.bottom; // append the svg object to the body of the page
+      width = size - margin.left - margin.right,
+      height = size - margin.top - margin.bottom; // append the svg object to the body of the page
 
   var svg = div.select("#tab-3-heatmap").append("svg").attr("width", width + margin.left + margin.right + 50).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ",").concat(margin.top, ")")); // Labels of row and columns
 
@@ -500,20 +500,16 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 // https://jyu-theartofml.github.io/posts/circos_plot
 // http://strongriley.github.io/d3/ex/chord.html
 function build(div, data, startDate, endDate) {
-  // TODO : Comment trouver la taille d'une div encore non chargée ?
-  var chordWidth = window.innerWidth / 2; // screen.width/2;
-
+  var chordWidth = window.innerWidth / 2;
   var margin = {
-    top: chordWidth * 0.17,
+    top: chordWidth * 0.175,
     right: chordWidth * 0.05,
     bottom: chordWidth * 0.07,
     left: chordWidth * 0.20
   },
       // TODO : Revoir valeur
   width = chordWidth - margin.left - margin.right,
-      height = chordWidth - margin.top - margin.bottom; //const innerRadius = chordWidth / 4 // TODO : Revoir valeur
-  //const outerRadius = innerRadius + 10
-
+      height = chordWidth - margin.top - margin.bottom;
   var outerRadius = width / 3.5;
   var innerRadius = outerRadius - 10; // create the svg area
 
@@ -535,18 +531,14 @@ function build(div, data, startDate, endDate) {
     tooltip.select('span#tooltip-chord-region-to-text').text(preproc.REGION_NAME[source.subindex]).style('color', colors[source.subindex]);
     tooltip.select('span#tooltip-chord-value').text(source.value);
     return tooltip.style("visibility", "visible");
-  }).on('mousemove', function (_ref2, _) {
-    var source = _ref2.source,
-        target = _ref2.target;
-    tooltip.style('left', d3.event.pageX - 256 + 10);
+  }).on('mousemove', function () {
+    tooltip.style('left', d3.event.pageX - 246);
     tooltip.style('top', d3.event.pageY + 5);
-  }).on('mouseleave', function (_ref3, _) {
-    var source = _ref3.source,
-        target = _ref3.target;
+  }).on('mouseleave', function () {
     return tooltip.style("visibility", "hidden");
   }).attr("d", d3.ribbon().radius(innerRadius)).style("fill", function (d) {
     return colors[d.source.index];
-  }) // colors depend on the source group. Change to target otherwise.
+  }) // colors depend on the source group
   .style("stroke", "black").attr("opacity", 0.5); // add the groups on the outer part of the circle
 
   svg.datum(res).append("g").attr("id", "groups").selectAll("g").data(function (d) {
@@ -572,15 +564,7 @@ function build(div, data, startDate, endDate) {
   }).style("fill", function (_, i) {
     return colors[i];
   }).style("font-weight", "bold").style("font-size", 12).text(function (d) {
-    return preproc.REGION_NAME[d.index]; // if (d.index != 7 && d.index != 8) {
-    //   return preproc.REGION_NAME[d.index]
-    // } else if (d.index == 7) {
-    //   console.log(preproc.REGION_NAME[d.index])
-    //   return preproc.REGION_NAME[d.index].slice(0, 12) + "tspan" + preproc.REGION_NAME[d.index].slice(12,)
-    // } else {
-    //   console.log(preproc.REGION_NAME[d.index])
-    //   return preproc.REGION_NAME[d.index].slice(0, 13) 
-    // }
+    return preproc.REGION_NAME[d.index];
   });
 }
 
@@ -638,4 +622,4 @@ $('.tab-button').click(function () {
   }
 });
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.848c224b.js.map
+//# sourceMappingURL=/INF8808-Projet.b417becc.js.map

@@ -5,22 +5,19 @@ import * as preproc from './preprocess.js'
 // https://jyu-theartofml.github.io/posts/circos_plot
 // http://strongriley.github.io/d3/ex/chord.html
 export function build(div, data, startDate, endDate) {
-  // TODO : Comment trouver la taille d'une div encore non chargée ?
-
-  let chordWidth = window.innerWidth / 2 // screen.width/2;
+  let chordWidth = window.innerWidth / 2
 
   var margin = {
-    top: chordWidth*0.17,
+    top: chordWidth*0.175,
     right: chordWidth*0.05, 
     bottom: chordWidth*0.07,
     left: chordWidth*0.20 }, // TODO : Revoir valeur
   width = chordWidth - margin.left - margin.right,
   height = chordWidth - margin.top - margin.bottom;
 
-  //const innerRadius = chordWidth / 4 // TODO : Revoir valeur
-  //const outerRadius = innerRadius + 10
   const outerRadius = width/3.5;
   const innerRadius = outerRadius-10
+
   // create the svg area
   const svg = div.select('#tab-3-chord-diagram')
   .append("svg")

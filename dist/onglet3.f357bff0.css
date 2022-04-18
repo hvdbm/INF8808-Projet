@@ -109,10 +109,9 @@ button#date-control-refresh {
     padding: 3px;
     font-size: 12px;
     font-weight: bold;
+    -webkit-text-stroke-width:0.005px;
+    -webkit-text-stroke-color: black;
 }
 
-#tooltip-chord-region-from-text, #tooltip-chord-region-to-text {
-    text-shadow: -1px 1px 0px black;
-}
 
-/*# sourceMappingURL=/onglet3.21d0f492.css.map */
+/*# sourceMappingURL=/onglet3.f357bff0.css.map */
