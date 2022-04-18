@@ -1,3 +1,4 @@
+import { chord } from 'd3';
 import * as preproc from './preprocess.js'
 
 // https://d3-graph-gallery.com/chord.html
@@ -33,6 +34,8 @@ export function build(div, data, startDate, endDate) {
   const matrix = preproc.chordMatrix(data, startDate, endDate)
   
   const colors = preproc.REGION_COLOR
+  
+  const tooltip = d3.select('#tooltip-chord-container')
 
   // give this matrix to d3.chord(): it will calculates all the info we need to draw arc and ribbon
   const res = d3.chord()
@@ -51,11 +54,21 @@ export function build(div, data, startDate, endDate) {
   .append("path")
     .attr("class", "chord")
     .on('mouseenter', function({source, target}, _) {
-      const tooltip = d3.select(`#${preproc.REGION_NAME_ALT[source.index]}${preproc.REGION_NAME_ALT[source.subindex]}`)
+      tooltip.select('span#tooltip-chord-region-from-text')
+      .text(preproc.REGION_NAME[source.index])
+      .style('color', colors[source.index])
+      tooltip.select('span#tooltip-chord-region-to-text')
+      .text(preproc.REGION_NAME[source.subindex])
+      .style('color', colors[source.subindex])
+      tooltip.select('span#tooltip-chord-value')
+      .text(source.value)
       return tooltip.style("visibility", "visible");
     })
+    .on('mousemove', function({source, target}, _) {
+      tooltip.style('left', d3.event.pageX - 256 + 10)
+      tooltip.style('top', d3.event.pageY + 5)
+    })
     .on('mouseleave', function({source, target}, _) {
-      const tooltip = d3.select(`#${preproc.REGION_NAME_ALT[source.index]}${preproc.REGION_NAME_ALT[source.subindex]}`)
       return tooltip.style("visibility", "hidden");
     })
     .attr("d", d3.ribbon()
@@ -64,26 +77,6 @@ export function build(div, data, startDate, endDate) {
     .style("fill", function(d){ return(colors[d.source.index]) }) // colors depend on the source group. Change to target otherwise.
     .style("stroke", "black")
     .attr("opacity", 0.5)
-
-  const tooltips = svg
-    .datum(res)
-    .append("g")
-    .attr("id","tooltip")
-    .selectAll("path")
-    .data(function(d) { return d; })
-    .enter()
-    .append("text")
-      .attr("id",function(d) {
-        return (`${preproc.REGION_NAME_ALT[d.source.index]}${preproc.REGION_NAME_ALT[d.source.subindex]}`);})
-      .attr("class", "tooltip")
-      .attr("x",0)
-      .attr("y",outerRadius+25)
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'middle')
-      .text(function(d) {
-        return `${preproc.REGION_NAME[d.source.index]} --> ${preproc.REGION_NAME[d.source.subindex]} : ${d.source.value} navires`
-      })
-      .style("visibility", "hidden")
 
   // add the groups on the outer part of the circle
   svg.datum(res)
