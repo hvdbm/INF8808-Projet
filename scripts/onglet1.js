@@ -57,7 +57,7 @@ export function build(div) {
 
     // Add Y axis
     const y = d3.scaleLinear()
-      .domain([0, 12000])     // TODO : Y Automatique ?
+      .domain([0, 12000])
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y).ticks(15))
@@ -101,21 +101,21 @@ export function build(div) {
     // LEGEND //
     const size = 20
     svg.selectAll("myrect")   // Add one dot in the legend for each name.
-      .data(keys)
+      .data(keys.sort())
       .enter()
       .append("rect")
         .attr("x", width)
         .attr("y", function(_,i){ return 10 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
         .attr("width", size)
         .attr("height", size)
-        .attr("stroke-width", 0.5)
-        .attr("stroke", "black")
+        .attr("rx", 4)
+        .attr("ry", 4)
         .style("fill", function(d){ return color(d)})
         .on("mouseover", highlight)
         .on("mouseleave", noHighlight)
 
     svg.selectAll("mylabels")   // Add one dot in the legend for each name.
-      .data(keys)
+      .data(keys.sort())
       .enter()
       .append("text")
         .attr("x", width + size*1.2)
@@ -124,8 +124,6 @@ export function build(div) {
         .text(function(d){ return d})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
-        // .attr("stroke-width", 0.2)
-        // .attr("stroke", "black")
         .on("mouseover", highlight)
         .on("mouseleave", noHighlight)
     })

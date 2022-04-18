@@ -30,8 +30,7 @@
   },
   "staticFiles": {
     "staticPath": [
-      "assets/data",
-      "assets/images"
+      "assets/data"
     ]
   }
 }
