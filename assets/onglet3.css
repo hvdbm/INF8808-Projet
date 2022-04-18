@@ -110,7 +110,3 @@ button#date-control-refresh {
     font-size: 12px;
     font-weight: bold;
 }
-
-#tooltip-chord-region-from-text, #tooltip-chord-region-to-text {
-    text-shadow: -1px 1px 0px black;
-}
