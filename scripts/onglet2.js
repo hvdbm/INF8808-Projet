@@ -171,8 +171,8 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 const minDate = vesselTraffic.bottom(1)[0].departureDate
                 const maxDate = vesselTraffic.top(1)[0].departureDate
 
-                const vesselTrafficRange = maxDate - minDate
-                const vesselTrafficBarWidth = vesselTrafficRange / chartNbBars
+                // const vesselTrafficRange = maxDate - minDate
+                // const vesselTrafficBarWidth = vesselTrafficRange / chartNbBars
 
                 const vesselTrafficChart = new dc.BarChart('#traffic-chart')
                 .width(timeSelectWidth)
@@ -194,7 +194,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 const portDim = ndx.dimension(d => d.departurePort)
 
                 ndx.dimension(d=> d.departurePort)
-                .filter(d => !d.includes('Virtual Harbour'))
+                    .filter(d => !d.includes('Virtual harbour'))
 
                 const portTraffic = portDim.group().reduceCount()
                 const filteredGroup = remove_empty_bins(portTraffic)
