@@ -10,7 +10,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 // 6079000000783579,    2011-01-01 00:00:00.000,Virtual Harbour (Central Region),Central Region,45.71666667,-84.24861111,2011-01-01 15:30:00.000,Goderich,Central Region,43.745,-81.7294441666667,Merchant Bulk,222.509994506836,22.9400005340576,31751,8.72999954223633
                 // 23079000000766048,   2011-01-01 00:10:00.000,Whiffen Head,Newfoundland Region,47.7727836111111,-54.0171797222222,2011-01-01 01:00:00.000,Whiffen Head,Newfoundland Region,47.7727836111111,-54.0171797222222,Tug Fire,38.9000015258789,13.8999996185303,314,3.5
                 // 23079000000766035,   2011-01-01 00:57:00.000,Whiffen Head,Newfoundland Region,47.7727836111111,-54.0171797222222,2011-01-02 12:45:00.000,Virtual Harbour (Newfoundland Region),Newfoundland Region,47.75,-53,Merchant Crude,271.799987792969,46.0499992370606,126646,15.3459997177124
-    
+
                 let data = data1.concat(data2).concat(data3)
 
                 let dataVesselTypes = new Map()
@@ -224,6 +224,11 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 })
 
                 portChart.render()
+
+                d3.select("#loader")
+                    .style("display", "none")
+                d3.select("#loader-container")
+                    .style("display", "none")
             })
         })
     })
