@@ -5,7 +5,7 @@ let data = []
 let v1 = []
 let map = new Map();
 
-fs.createReadStream('TRIP_Part3.csv')
+fs.createReadStream('TRIP_PART_3.csv')
   .pipe(csv())
   .on('data', (row) => {
     // clean(row)
@@ -22,7 +22,7 @@ fs.createReadStream('TRIP_Part3.csv')
     // console.log('v1:', v1.length)
     console.log('map;', map.size)
     console.log('Format V1 succeed')
-    fs.writeFile('TRIP_PART_3.csv', writeClean2(), (err) => {
+    fs.writeFile('TRIP_PART_3_C.csv', writeClean2(), (err) => {
       if (err) throw err;
     }) 
 });
@@ -69,6 +69,12 @@ function clean(element) {
   }
 }
 
+function cleanHarbord(harbor) {
+  if (harbor === "Saint John NB" || harbor === "St. John's") return "St. John's";
+
+  return harbor[0] + harbor.toLowerCase().slice(1)
+}
+
 function clean2(element) {
   // 'Arrival Date'
   // data.push({
@@ -85,8 +91,9 @@ function clean2(element) {
   // })
   // console.log(element)
 
-  delete element['Arrival Region']
-  delete element['Departure Region']
+
+  element['Arrival Hardour'] = cleanHarbord(element['Arrival Hardour'])
+  element['Departure Hardour'] = cleanHarbord(element['Departure Hardour'])
   data.push(element)
 }
 
