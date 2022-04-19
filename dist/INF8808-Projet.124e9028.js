@@ -611,20 +611,17 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+var chordData;
+
 (function (d3) {
-  onglet1.build(d3.select('#tab-1-content'));
-  var chordData;
-  d3.csv('./TRIP_CHORD.csv').then(function (data) {
-    chordData = data;
-    chord.build(d3.select('#tab-3-content'), data, "2010-01-01", "2023-01-01");
-  });
-  onglet3.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01");
-  d3.select('#tab-3-content #date-control-refresh').on('click', function () {
-    var start = d3.select('#date-start-control').property('value');
-    var end = d3.select('#date-end-control').property('value');
-    console.log(start, end);
-    chord.rebuild(d3.select('#tab-3-content'), chordData, start, end);
-    onglet3.rebuild(d3.select('#tab-3-content'), start, end);
+  d3.csv('./TRIP_STACK_HALF_MONTH.csv').then(function (stackData) {
+    onglet1.build(d3.select('#tab-1-content'), stackData);
+    d3.csv('./TRIP_CHORD.csv').then(function (data) {
+      chordData = data;
+      chord.build(d3.select('#tab-3-content'), data, "2010-01-01", "2023-01-01");
+      time_graph(stackData);
+    });
+    onglet3.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01");
   });
 })(d3);
 
@@ -637,5 +634,52 @@ $('.tab-button').click(function () {
     $(".tab-content#tab-".concat(tab, "-content")).addClass('visible-tab');
   }
 });
+
+function time_graph(stackData) {
+  var data = stackData.map(function (d) {
+    return {
+      date: d3.timeParse("%Y-%m-%d")(d.date),
+      traffic: +d.Merchant + +d.Barges + +d.Other + +d.Tugs + +d.Tanker + +d.Fishing + +d.PleasureCrafts + +d.Excursion
+    };
+  });
+  var ndx = crossfilter(data);
+  var vesselTraffic = ndx.dimension(function (d) {
+    return d3.timeMonth(d.date);
+  });
+  var vesselTraffics = vesselTraffic.group().reduceSum(function (d) {
+    return d.traffic;
+  });
+  var minDate = vesselTraffic.bottom(1)[0].date;
+  var maxDate = vesselTraffic.top(1)[0].date;
+  var timeScale = d3.scaleTime().domain([minDate, maxDate]).rangeRound([0, 950]);
+  var vesselTrafficChart = new dc.BarChart('#tab-3-content .traffic-chart').width(950).height(125).margins({
+    top: 10,
+    right: 50,
+    bottom: 30,
+    left: 30
+  }).dimension(vesselTraffic).group(vesselTraffics).round(d3.timeMonth).x(timeScale).brushOn(true).elasticY(true);
+  vesselTrafficChart.yAxis().ticks(5);
+  vesselTrafficChart.render();
+  vesselTrafficChart.on('preRedraw', function () {
+    var selection = d3.select('#tab-3-content .traffic-chart g.brush rect.selection');
+    var x = selection.attr('x');
+    var width = selection.attr('width');
+    var startString;
+    var endString;
+
+    if (x == null || width == null) {
+      startString = minDate.toISOString().split('T')[0];
+      endString = maxDate.toISOString().split('T')[0];
+    } else {
+      var start = timeScale.invert(x);
+      var end = timeScale.invert(x + width);
+      startString = start.toISOString().split('T')[0];
+      endString = end.toISOString().split('T')[0];
+    }
+
+    chord.rebuild(d3.select('#tab-3-content'), chordData, startString, endString);
+    onglet3.rebuild(d3.select('#tab-3-content'), startString, endString);
+  });
+}
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.848c224b.js.map
+//# sourceMappingURL=/INF8808-Projet.124e9028.js.map
