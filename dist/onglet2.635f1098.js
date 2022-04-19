@@ -277,7 +277,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         var maxDate = vesselTraffic.top(1)[0].departureDate; // const vesselTrafficRange = maxDate - minDate
         // const vesselTrafficBarWidth = vesselTrafficRange / chartNbBars
 
-        var vesselTrafficChart = new dc.BarChart('#traffic-chart').width(timeSelectWidth).height(125).margins({
+        var vesselTrafficChart = new dc.BarChart('#tab-2-content .traffic-chart').width(timeSelectWidth).height(125).margins({
           top: 10,
           right: 50,
           bottom: 30,
@@ -332,4 +332,4 @@ function vesselTypeClasses() {
   return ["Barges", "Excursion", "Fishing", "Merchant", "Other", "PleasureCrafts", "Tanker", "Tugs", "Other"];
 }
 },{}]},{},["nI8S"], null)
-//# sourceMappingURL=/onglet2.824ffcd6.js.map
+//# sourceMappingURL=/onglet2.635f1098.js.map

@@ -174,7 +174,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 // const vesselTrafficRange = maxDate - minDate
                 // const vesselTrafficBarWidth = vesselTrafficRange / chartNbBars
 
-                const vesselTrafficChart = new dc.BarChart('#traffic-chart')
+                const vesselTrafficChart = new dc.BarChart('#tab-2-content .traffic-chart')
                 .width(timeSelectWidth)
                 .height(125)
                 .margins({top: 10, right: 50, bottom: 30, left: 50})
