@@ -41,6 +41,10 @@ body {
     color: white;
 }
 
+.tab-button-active span.tab-subtitle {
+    color: white;
+}
+
 button.tab-button:not(.tab-button-active):hover {
     background-color: #b9b9b9;
 }
@@ -48,14 +52,15 @@ button.tab-button:not(.tab-button-active):hover {
 button.tab-button {
     border: none;
     width: calc(100% - 30px);
-    height: 64px;
+    height: 100px;
     text-align: left;
     padding: 20px;
     cursor: pointer;
     background-color: #afafaf;
     border-radius: 0 12px 12px 0;
-    display: block;
     background: transparent;
+    display: flex;
+    flex-direction: column;
 }
 
 .tab {
@@ -75,7 +80,11 @@ span.tab-name {
     font-size: 16px;
 }
 
-#warning {
+span.tab-subtitle {
+    width: 176px;
+}
+
+.nav-tips {
     color: #606060;
     font-size: 16px;
     margin-right: 10px;
@@ -113,4 +122,44 @@ span.time-select-title {
     padding: 7px;
     padding-top: 0;
     box-sizing: border-box;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loader-container {
+    position: absolute;
+    left: calc(50% - 90px);
+    top: calc(50% - 90px);
+    z-index: 2;
+    width: 180px;
+    height: 180px;
+    border-radius: 15px;
+    background-color: #f9f9f9;
+}
+
+#loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    width: 120px;
+    height: 120px;
+    margin: -76px 0 0 -76px;
+    border: 16px solid #e5e5e5;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    display: block;
+}
+
+#tab-2-tips {
+    display: none;
+}
+
+#tab-3-tips {
+    display: none;
 }

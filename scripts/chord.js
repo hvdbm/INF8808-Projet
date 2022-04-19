@@ -5,22 +5,19 @@ import * as preproc from './preprocess.js'
 // https://jyu-theartofml.github.io/posts/circos_plot
 // http://strongriley.github.io/d3/ex/chord.html
 export function build(div, data, startDate, endDate) {
-  // TODO : Comment trouver la taille d'une div encore non chargée ?
-
-  let chordWidth = window.innerWidth / 2 // screen.width/2;
+  let chordWidth = window.innerWidth / 2
 
   var margin = {
-    top: chordWidth*0.17,
+    top: chordWidth*0.175,
     right: chordWidth*0.05, 
     bottom: chordWidth*0.07,
     left: chordWidth*0.20 }, // TODO : Revoir valeur
   width = chordWidth - margin.left - margin.right,
   height = chordWidth - margin.top - margin.bottom;
 
-  //const innerRadius = chordWidth / 4 // TODO : Revoir valeur
-  //const outerRadius = innerRadius + 10
   const outerRadius = width/3.5;
   const innerRadius = outerRadius-10
+
   // create the svg area
   const svg = div.select('#tab-3-chord-diagram')
   .append("svg")
@@ -61,19 +58,15 @@ export function build(div, data, startDate, endDate) {
       .style('color', colors[source.subindex])
       tooltip.select('span#tooltip-chord-value')
       .text(source.value)
-      return tooltip.style("visibility", "visible");
+      return tooltip.style("visibility", "visible")
     })
-    .on('mousemove', function({source, target}, _) {
-      tooltip.style('left', d3.event.pageX - 256 + 10)
+    .on('mousemove', function() {
+      tooltip.style('left', d3.event.pageX - 246)
       tooltip.style('top', d3.event.pageY + 5)
     })
-    .on('mouseleave', function({source, target}, _) {
-      return tooltip.style("visibility", "hidden");
-    })
-    .attr("d", d3.ribbon()
-      .radius(innerRadius)
-    )
-    .style("fill", function(d){ return(colors[d.source.index]) }) // colors depend on the source group. Change to target otherwise.
+    .on('mouseleave', function() { return tooltip.style("visibility", "hidden") })
+    .attr("d", d3.ribbon().radius(innerRadius))
+    .style("fill", function(d){ return(colors[d.source.index]) }) // colors depend on the source group
     .style("stroke", "black")
     .attr("opacity", 0.5)
 
@@ -117,19 +110,8 @@ export function build(div, data, startDate, endDate) {
     .style("text-anchor", function(d) { return d.startAngle > Math.PI ? "end" : null; })
     .style("fill", function(_, i){ return(colors[i]) })
     .style("font-weight", "bold")
-    .style("font-size",12)
-    .text(function(d) {
-      return preproc.REGION_NAME[d.index]
-      // if (d.index != 7 && d.index != 8) {
-      //   return preproc.REGION_NAME[d.index]
-      // } else if (d.index == 7) {
-      //   console.log(preproc.REGION_NAME[d.index])
-      //   return preproc.REGION_NAME[d.index].slice(0, 12) + "tspan" + preproc.REGION_NAME[d.index].slice(12,)
-      // } else {
-      //   console.log(preproc.REGION_NAME[d.index])
-      //   return preproc.REGION_NAME[d.index].slice(0, 13) 
-      // }
-    })
+    .style("font-size", 12)
+    .text(function(d) { return preproc.REGION_NAME[d.index] })
 }
 
 function highlightGroup(event, links) {

@@ -21,44 +21,44 @@
                 <div class="tab" id="tab-1">
                     <button class="tab-button tab-button-active" id="tab-button-1" data-tab="1">
                         <span class="tab-name">Aperçu global</span>
+                        <span class="tab-subtitle">Résumé des données intégrant la dimension temporelle.</span>
                     </button>
                 </div>
                 <div class="tab" id="tab-2">
                     <button class="tab-button" id="tab-button-2" data-tab="2">
                         <span class="tab-name">Les ports</span>
+                        <span class="tab-subtitle">Caractéristiques des navires et des ports/régions qu'ils fréquentent.</span>
                     </button>
                 </div>
                 <div class="tab" id="tab-3">
                     <button class="tab-button" id="tab-button-3" data-tab="3">
                         <span class="tab-name">Les trajets</span>
+                        <span class="tab-subtitle">Liens entre les différentes régions.</span>
                     </button>
                 </div>
                 <hr>
                 <div>
-                    <p class="tab-name" id="warning">
-                        Note : Il est possible d'avoir un ralentissement / figement de l'application lors du chargement des données.
-                        Attendre quelques instants réglera le problème.
+                    <p class="nav-tips visible-tips" id="tab-1-tips">
+                        Passer la souris sur la légende permet d'isoler la répartition d'un type de navire. 
                     </p>
+                    <p class="nav-tips" id="tab-2-tips">
+                        Cliquer sur un port permet de présenter ses données individuellement.
+                        <br><br>Il est possible de sélectionner une période de temps précise dans le coin inférieur droit.
+                    </p>
+                    <p class="nav-tips" id="tab-3-tips">
+                        Passer la souris sur les extrémités du diagramme d'accord isole les trajets débutant dans cette région.
+                        <br><br>Passer la souris sur un flux (lien d'une région à une autre) présente la quantité exact de navires.
+                        <br><br>Passer la souris sur une cellule de la matrice de corrélation présente la proportion exacte de navires.
+                        <br><br>Il est possible de sélectionner une période de temps précise dans le coin inférieur droit.
+                    </p>
+                </div>
+                <div id="loader-container">
+                    <div id="loader"></div>
                 </div>
             </div>
             <div id="content">
                 <div class="tab-content visible-tab" id="tab-1-content">
-                    <div id="tab-1-text">
-                        <div id="intro">
-                            <h1>À propos de ces visualisations</h1>
-                            <p>Naviguez entre ces visualisations à l'aide des onglets à gauche :</p>
-                            <ul>
-                                <li> <b>Aperçu global :</b> résumé des données intégrant la dimension temporelle</p></li>
-                                <li> <b>Les ports :</b> données liées aux caractéristiques des navires et aux ports et régions qu'ils fréquentent</p></li>
-                                <li> <b>Les trajets :</b> permet d'étudier les liens entre les différentes régions</p></li>
-                            </ul>
-                            <p>Les valeurs aberrantes ont été ignorées</p>
-                        </div>
-                        <div id="tab-1-tooltip">
-                            <p> <b> Tooltip :</b> Passer la souris sur la légende permet d'isoler la répartition d'un type de navire </p>
-                        </div>
-                    </div>
-					<div class="viz-container">
+					<div id="viz-container">
 						<div class="graph" id="stacked-area-chart"></div>
 					</div>
                 </div>
@@ -162,7 +162,7 @@
                     <div id="tooltip-chord">
                         <div id="tooltip-chord-text-container">
                             <span id="tooltip-chord-region-from-text" class="tooltip-chord-text"></span>
-                            <span id="tooltip-chord-arrow" class="tooltip-chord-text">🡲</span>
+                            <span id="tooltip-chord-arrow" class="tooltip-chord-text">--></span>
                             <span id="tooltip-chord-region-to-text" class="tooltip-chord-text"></span>
                             <span id="tooltip-chord-colon" class="tooltip-chord-text">:</span>
                             <span id="tooltip-chord-value" class="tooltip-chord-text">900</span>

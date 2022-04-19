@@ -23,6 +23,10 @@ let chordData
 $('.tab-button').click(function () {
     if (!$(this).hasClass('tab-button-active')) {
         const tab = $(this).data('tab')
+
+        d3.select(".visible-tips").style("display", "none")
+        d3.select(".visible-tips").classed("visible-tips", false)
+        d3.select(`#tab-${tab}-tips`).style("display", "block").classed("visible-tips", true)
     
         $('button.tab-button').removeClass('tab-button-active')
         $(this).addClass('tab-button-active')
