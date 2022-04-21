@@ -82,12 +82,6 @@ span#caracteristics-title-port {
     flex-grow: 0;
     display: flex;
     flex-direction: column;
-    width: 150px;
-    padding-right: 20px;
-}
-
-#type-chart-title {
-    text-align: center;
 }
 
 .discrete-repartition-container {
@@ -138,3 +132,5 @@ span#caracteristics-title-port {
 #type-chart .axis {
     display: none;
 }
+
+/*# sourceMappingURL=/onglet2.8cdd8742.css.map */

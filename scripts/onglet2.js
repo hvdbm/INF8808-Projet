@@ -70,7 +70,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselLengthRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
-                .xAxisLabel("Longueur")
+                .xAxisLabel('Longueur (m)')
                 .elasticY(true)
                 .dimension(vesselLength)
                 .group(vesselLengths)
@@ -92,7 +92,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselWidthRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
-                .xAxisLabel("Largeur")
+                .xAxisLabel('Largeur (m)')
                 .elasticY(true)
                 .dimension(vesselWidth)
                 .group(vesselWidths)
@@ -114,7 +114,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselCapacityRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
-                .xAxisLabel("Capacité")
+                .xAxisLabel('Capacité (t)')
                 .elasticY(true)
                 .dimension(vesselCapacity)
                 .group(vesselCapacities)
@@ -136,7 +136,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselDraughtRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
-                .xAxisLabel("Tirant d'eau")
+                .xAxisLabel("Tirant d'eau (m)")
                 .elasticY(true)
                 .dimension(vesselDraught)
                 .group(vesselDraughts)
@@ -145,21 +145,44 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 vesselDraughtChart.render()
 
-                const vesselType = ndx.dimension(d => d.vesselClass)
-                const vesselTypes = vesselType.group()
+                
+                const vesselTypeX = ndx.dimension(d => d.vesselClass)
+                const types = vesselTypeX.group().all().map(d => d.key)
 
-                const typeColorScale = d3.scaleOrdinal(d3.schemeSet2).domain(vesselTypeClasses())
+                const vesselTypeY = ndx.dimension(_ => 0)
+                const vesselTypesY = vesselTypeY.group().reduce(
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
+                      return p;}, 
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
+                      return p;}, 
+                    function() {
+                      return {};
+                    })
 
-                const vesselTypeChart = new dc.PieChart("#type-chart")
-                .width(150)
-                .height(310)
-                .cy(75)
-                .innerRadius(50)
-                .dimension(vesselTypes)
-                .group(vesselTypes)
+                const typeColorScale = d3.scaleOrdinal(d3.schemeSet2).domain(types)
+
+                const firstType = types[0]
+
+                const vesselTypeChart = new dc.BarChart("#type-chart")
+                .x(d3.scaleOrdinal().domain([0, 0]))
+                .width(200)
+                .height(750)
+                .margins({top: 10, right: 50, bottom: 180, left: 0})
+                .dimension(vesselTypeY)
+                .group(vesselTypesY, firstType, d => d.value[firstType])
+                .xUnits(() => 1)
                 .colors(typeColorScale)
-                .minAngleForLabel(360)
-                .legend(dc.legend().y(160))
+                .brushOn(false)
+                .elasticY(true)
+                .legend(dc.legend().y(600))
+                
+
+                for (let i = 1; i < types.length; i++) {
+                    const type = types[i]
+                    vesselTypeChart.stack(vesselTypesY, type, d => d.value[type])
+                }
 
                 vesselTypeChart.filter = function() {};
 
@@ -177,7 +200,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 const vesselTrafficChart = new dc.BarChart('#tab-2-content .traffic-chart')
                 .width(timeSelectWidth)
                 .height(125)
-                .margins({top: 10, right: 50, bottom: 30, left: 50})
+                .margins({top: 10, right: 50, bottom: 30, left: 30})
                 .dimension(vesselTraffic)
                 .group(vesselTraffics)
                 .round(d3.timeMonth)
@@ -234,6 +257,54 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
     })
 })
 
+class SingularStackedBarChart {
+    constructor(parent, group) {
+        this._groupAll = null;
+        this._colors = null;
+        this._width = this._height = 200;
+        this._duration = 500;
+        this._root = d3.select(parent);
+        dc.registerChart(this, group);
+        this._rect = null;
+    }
+
+    groupAll(groupAll) {
+        if(!arguments.length)
+            return this._groupAll;
+        this._groupAll = groupAll;
+        return this;
+    }
+
+    colors(colors) {
+        if(!arguments.length)
+            return this._colors;
+        this._colors = colors;
+        return this;
+    }
+
+    render() {
+        const width = 200, height = 200;
+        let svg = this._root.selectAll('svg')
+            .data([0])
+            .join('svg')
+            .attr('width', width)
+            .attr('height', width);
+        this._rect = svg.selectAll('rect.swatch')
+            .data([0])
+            .join('rect')
+            .attr('class', 'swatch')
+            .attr('width', width)
+            .attr('height', width);
+        this.redraw();
+    }
+
+    redraw() {
+        this._rect.transition()
+            .duration(this._duration)
+            .attr('fill', this._colors(this._groupAll.value()));
+    }
+}
+
 // https://github.com/dc-js/dc.js/wiki/FAQ#how-do-i-filter-the-data-before-its-charted
 function remove_empty_bins(source_group) {
     return {
@@ -243,18 +314,4 @@ function remove_empty_bins(source_group) {
             });
         }
     };
-}
-
-function vesselTypeClasses() {
-    return [
-        "Barges",
-        "Excursion",
-        "Fishing",
-        "Merchant",
-        "Other",
-        "PleasureCrafts",
-        "Tanker",
-        "Tugs",
-        "Other"
-    ]
 }
