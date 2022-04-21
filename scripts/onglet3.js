@@ -53,6 +53,17 @@ export function buildHeatmap(div, startDate, endDate) {
   const myColor = d3.scaleLinear()
     .range(["white", "#ff0000"])
 
+  const colorSet = {
+    colorBarges : d3.scaleLinear().range(["white", "#ff0000"]),
+    colorExcursion : d3.scaleLinear().range(["white", "#ff0000"]),
+    colorFishing : d3.scaleLinear().range(["white", "#ff0000"]),
+    colorMerchant : d3.scaleLinear().range(["white", "#ff0000"]),
+    colorOther : d3.scaleLinear().range(["white", "#ff0000"]),
+    colorPleasureCrafts : d3.scaleLinear().range(["white", "#ff0000"]),
+    colorTanker : d3.scaleLinear().range(["white", "#ff0000"]),
+    colorTugs : d3.scaleLinear().range(["white", "#ff0000"]),
+
+  }
 
   function transformData(d, departureDate, arrivalDate) {
     let map = heatmapMap()
@@ -87,7 +98,7 @@ export function buildHeatmap(div, startDate, endDate) {
         map.set(keyStop, current);
       }
     })
-
+    /*
     const p = [];
     let max = 0
     Array.from(map.values()).forEach((value) => {
@@ -101,7 +112,61 @@ export function buildHeatmap(div, startDate, endDate) {
       }
     })
     myColor.domain([0,max])
+    */
 
+    const p = [];
+    let sumShips = [0, 0, 0, 0, 0, 0, 0, 0];
+    let max=0;
+    Array.from(map.values()).forEach((value) => { 
+      p.push({
+        'Region': value.Region,
+        'Type': value.Type,
+        'count' : (value.count / (2*data.length)) * 100
+      })
+      if ((value.count / (2*data.length)) * 100 >= max) {
+        max = (value.count / (2*data.length)) * 100
+      }
+      let shipIndex;
+      switch (value.Type) {
+        case 'Barges':
+          shipIndex = 0;
+          break;
+        case 'Excursion':
+          shipIndex = 1;
+          break;
+        case 'Fishing':
+          shipIndex = 2;
+          break;
+        case 'Merchant':
+          shipIndex = 3;
+          break;
+        case 'Other':
+          shipIndex = 4;
+          break;
+        case 'Pleasure Crafts':
+          shipIndex = 5;
+          break;
+        case 'Tanker':
+          shipIndex = 6;
+          break;
+        case 'Tugs':
+          shipIndex = 7;
+          break;
+      }
+      sumShips[shipIndex] +=(value.count / (2*data.length)) * 100;
+    });
+    colorSet.colorBarges.domain([0,sumShips[0]]);
+    colorSet.colorExcursion.domain([0,sumShips[1]]);
+    colorSet.colorFishing.domain([0,sumShips[2]]);
+    colorSet.colorMerchant.domain([0,sumShips[3]]);
+    colorSet.colorOther.domain([0,sumShips[4]]);
+    colorSet.colorPleasureCrafts.domain([0,sumShips[5]]);
+    colorSet.colorTanker.domain([0,sumShips[6]]);
+    colorSet.colorTugs.domain([0,sumShips[7]]);
+    myColor.domain([0,max]);
+    console.log("sumship Barges", sumShips[0]);
+
+    console.log(sumShips)
     return p
   }
 
@@ -123,7 +188,29 @@ export function buildHeatmap(div, startDate, endDate) {
       .attr("y", function(d) { return y(d.Region) })
       .attr("width", x.bandwidth() )
       .attr("height", y.bandwidth() )
-      .style("fill", function(d) { return myColor(d.count) })
+      .style("fill", function(d) {
+        switch (d.Type) {
+          case 'Barges':
+            console.log("colorSet.colorBarges(d.count)" , colorSet.colorBarges(d.count));
+            console.log("d.count barges",d.count);
+            return colorSet.colorBarges(d.count);
+          case 'Excursion':
+            console.log("colorSet.colorExcursion(d.count)",colorSet.colorExcursion(d.count));
+            return colorSet.colorExcursion(d.count);
+          case 'Fishing':
+            return colorSet.colorFishing(d.count);
+          case 'Merchant':
+            return colorSet.colorMerchant(d.count);
+          case 'Other':
+            return colorSet.colorOther(d.count);
+          case 'Pleasure Crafts':
+            return colorSet.colorPleasureCrafts(d.count);
+          case 'Tanker':
+            return colorSet.colorTanker(d.count);
+          case 'Tugs':
+            return colorSet.colorTugs(d.count);
+          }
+      })
     
       initLegend(svg,myColor)
       drawLegend(width + margin.right + 10, 0, height, 15, 'url(#gradient)', myColor)
