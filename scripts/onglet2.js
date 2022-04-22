@@ -50,17 +50,34 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 })
 
                 const chartWidth = 776
-                const chartHeight = 160
+                const chartHeight = 180
                 const chartNbBars = 50
 
                 const timeSelectWidth = 950
 
                 const ndx = crossfilter(data)
+                const vesselClassX = ndx.dimension(d => d.vesselClass)
+                const classes = vesselClassX.group().all().map(d => d.key)
+
+                const typeColorScale = d3.scaleOrdinal(d3.schemeSet2).domain(classes)
+                const firstClass = classes[0]
+
+                // Longueur
 
                 const vesselLengthRange = 400
                 const vesselLengthBarWidth = vesselLengthRange / chartNbBars
                 const vesselLength = ndx.dimension(d => d.vesselLength)
-                const vesselLengths = vesselLength.group(d => Math.floor(d / vesselLengthBarWidth) * vesselLengthBarWidth)
+                const vesselLengths = vesselLength.group(d => Math.floor(d / vesselLengthBarWidth) * vesselLengthBarWidth).reduce(
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
+                      return p;}, 
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
+                      return p;}, 
+                    function() {
+                      return {};
+                    }
+                )
 
                 const vesselLengthChart = new dc.BarChart('#length-chart')
                 .width(chartWidth)
@@ -70,19 +87,37 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselLengthRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
+                .colors(typeColorScale)
                 .xAxisLabel('Longueur (m)')
                 .elasticY(true)
                 .dimension(vesselLength)
-                .group(vesselLengths)
+                .group(vesselLengths, firstClass, d => d.value[firstClass])
+
+                for (let i = 1; i < classes.length; i++) {
+                    const type = classes[i]
+                    vesselLengthChart.stack(vesselLengths, type, d => d.value[type])
+                }
                 
                 vesselLengthChart.yAxis().ticks(8)
 
                 vesselLengthChart.render()
 
+                // Largeur
+
                 const vesselWidthRange = 180
                 const vesselWidthBarWidth = vesselWidthRange / chartNbBars
                 const vesselWidth = ndx.dimension(d => d.vesselWidth)
-                const vesselWidths = vesselWidth.group(d => Math.floor(d / vesselWidthBarWidth) * vesselWidthBarWidth)
+                const vesselWidths = vesselWidth.group(d => Math.floor(d / vesselWidthBarWidth) * vesselWidthBarWidth).reduce(
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
+                      return p;}, 
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
+                      return p;}, 
+                    function() {
+                      return {};
+                    }
+                )
 
                 const vesselWidthChart = new dc.BarChart('#width-chart')
                 .width(chartWidth)
@@ -92,19 +127,37 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselWidthRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
+                .colors(typeColorScale)
                 .xAxisLabel('Largeur (m)')
                 .elasticY(true)
                 .dimension(vesselWidth)
-                .group(vesselWidths)
+                .group(vesselWidths, firstClass, d => d.value[firstClass])
+
+                for (let i = 1; i < classes.length; i++) {
+                    const type = classes[i]
+                    vesselWidthChart.stack(vesselWidths, type, d => d.value[type])
+                }
 
                 vesselWidthChart.yAxis().ticks(7)
 
                 vesselWidthChart.render()
 
+                // Capacité
+
                 const vesselCapacityRange = 650000
                 const vesselCapacityBarWidth = vesselCapacityRange / chartNbBars
                 const vesselCapacity = ndx.dimension(d => d.vesselCapacity)
-                const vesselCapacities = vesselCapacity.group(d => Math.floor(d / vesselCapacityBarWidth) * vesselCapacityBarWidth)
+                const vesselCapacities = vesselCapacity.group(d => Math.floor(d / vesselCapacityBarWidth) * vesselCapacityBarWidth).reduce(
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
+                      return p;}, 
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
+                      return p;}, 
+                    function() {
+                      return {};
+                    }
+                )
 
                 const vesselCapacityChart = new dc.BarChart('#capacity-chart')
                 .width(chartWidth)
@@ -114,19 +167,37 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselCapacityRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
+                .colors(typeColorScale)
                 .xAxisLabel('Capacité (t)')
                 .elasticY(true)
                 .dimension(vesselCapacity)
-                .group(vesselCapacities)
+                .group(vesselCapacities, firstClass, d => d.value[firstClass])
+
+                for (let i = 1; i < classes.length; i++) {
+                    const type = classes[i]
+                    vesselCapacityChart.stack(vesselCapacities, type, d => d.value[type])
+                }
                 
                 vesselCapacityChart.yAxis().ticks(9)
 
                 vesselCapacityChart.render()
 
+                // Tirant d'eau
+
                 const vesselDraughtRange = 30
                 const vesselDraughtBarWidth = vesselDraughtRange / chartNbBars
                 const vesselDraught = ndx.dimension(d => d.vesselDraught)
-                const vesselDraughts = vesselDraught.group(d => Math.floor(d / vesselDraughtBarWidth) * vesselDraughtBarWidth)
+                const vesselDraughts = vesselDraught.group(d => Math.floor(d / vesselDraughtBarWidth) * vesselDraughtBarWidth).reduce(
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
+                      return p;}, 
+                    function(p, v) {
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
+                      return p;}, 
+                    function() {
+                      return {};
+                    }
+                )
 
                 const vesselDraughtChart = new dc.BarChart('#draught-chart')
                 .width(chartWidth)
@@ -136,18 +207,22 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     .domain([0, vesselDraughtRange]))
                 .xUnits(() => chartNbBars)
                 .brushOn(false)
+                .colors(typeColorScale)
                 .xAxisLabel("Tirant d'eau (m)")
                 .elasticY(true)
                 .dimension(vesselDraught)
-                .group(vesselDraughts)
+                .group(vesselDraughts, firstClass, d => d.value[firstClass])
+
+                for (let i = 1; i < classes.length; i++) {
+                    const type = classes[i]
+                    vesselDraughtChart.stack(vesselDraughts, type, d => d.value[type])
+                }
                 
                 vesselDraughtChart.yAxis().ticks(6)
 
                 vesselDraughtChart.render()
 
-                
-                const vesselTypeX = ndx.dimension(d => d.vesselClass)
-                const types = vesselTypeX.group().all().map(d => d.key)
+                // Types
 
                 const vesselTypeY = ndx.dimension(_ => 0)
                 const vesselTypesY = vesselTypeY.group().reduce(
@@ -159,11 +234,8 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                       return p;}, 
                     function() {
                       return {};
-                    })
-
-                const typeColorScale = d3.scaleOrdinal(d3.schemeSet2).domain(types)
-
-                const firstType = types[0]
+                    }
+                )
 
                 const vesselTypeChart = new dc.BarChart("#type-chart")
                 .x(d3.scaleOrdinal().domain([0, 0]))
@@ -171,7 +243,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .height(750)
                 .margins({top: 10, right: 50, bottom: 180, left: 0})
                 .dimension(vesselTypeY)
-                .group(vesselTypesY, firstType, d => d.value[firstType])
+                .group(vesselTypesY, firstClass, d => d.value[firstClass])
                 .xUnits(() => 1)
                 .colors(typeColorScale)
                 .brushOn(false)
@@ -179,14 +251,16 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .legend(dc.legend().y(600))
                 
 
-                for (let i = 1; i < types.length; i++) {
-                    const type = types[i]
+                for (let i = 1; i < classes.length; i++) {
+                    const type = classes[i]
                     vesselTypeChart.stack(vesselTypesY, type, d => d.value[type])
                 }
 
                 vesselTypeChart.filter = function() {};
 
                 vesselTypeChart.render()
+
+                // Trafic
 
                 const vesselTraffic = ndx.dimension(d => d.departureDate)
                 const vesselTraffics = vesselTraffic.group(d3.timeMonth)
