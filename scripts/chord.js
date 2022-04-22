@@ -65,7 +65,7 @@ export function build(div, data, startDate, endDate) {
       tooltip.style('top', event.pageY + 5)
     })
     .on('mouseleave', function() { return tooltip.style("visibility", "hidden") })
-    .attr("d", d3.ribbon().radius(innerRadius))
+    .attr("d", d3.ribbonArrow().radius(innerRadius))
     .style("fill", function(d){ return(colors[d.source.index]) }) // colors depend on the source group
     .style("stroke", "black")
     .attr("opacity", 0.5)
@@ -86,9 +86,8 @@ export function build(div, data, startDate, endDate) {
         .innerRadius(innerRadius)
         .outerRadius(outerRadius)
       )
-      .on("mouseover", function(event, _) {
-        console.log(`Région ${preproc.REGION_NAME[event.index]} (${event.value} navires)`)
-        highlightGroup(event, links)
+      .on("mouseover", function(_, d) {
+        highlightGroup(d, links)
       })
       .on("mouseleave", function() {
         unhighlightGroup(links)
@@ -114,9 +113,9 @@ export function build(div, data, startDate, endDate) {
     .text(function(d) { return preproc.REGION_NAME[d.index] })
 }
 
-function highlightGroup(event, links) {
+function highlightGroup(eventData, links) {
   links
-    .filter(function(d) { return d.source.index != event.index })
+    .filter(function(d) { return d.source.index != eventData.index })
     .attr("opacity", 0.1)
 }
 
