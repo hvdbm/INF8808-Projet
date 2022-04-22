@@ -519,21 +519,19 @@ function build(div, data, startDate, endDate) {
   var colors = preproc.REGION_COLOR;
   var tooltip = d3.select('#tooltip-chord-container'); // give this matrix to d3.chord(): it will calculates all the info we need to draw arc and ribbon
 
-  var res = d3.chord().padAngle(0.05) // padding between entities (black arc)
+  var res = d3.chordDirected().padAngle(0.05) // padding between entities (black arc)
   .sortSubgroups(d3.descending)(matrix); // add the links between groups
 
   var links = svg.datum(res).append("g").attr("id", "links").selectAll("path").data(function (d) {
     return d;
-  }).enter().append("path").attr("class", "chord").on('mouseenter', function (_ref, _) {
-    var source = _ref.source,
-        target = _ref.target;
-    tooltip.select('span#tooltip-chord-region-from-text').text(preproc.REGION_NAME[source.index]).style('color', colors[source.index]);
-    tooltip.select('span#tooltip-chord-region-to-text').text(preproc.REGION_NAME[source.subindex]).style('color', colors[source.subindex]);
-    tooltip.select('span#tooltip-chord-value').text(source.value);
+  }).enter().append("path").attr("class", "chord").on('mouseenter', function (_, d) {
+    tooltip.select('span#tooltip-chord-region-from-text').text(preproc.REGION_NAME[d.source.index]).style('color', colors[d.source.index]);
+    tooltip.select('span#tooltip-chord-region-to-text').text(preproc.REGION_NAME[d.target.index]).style('color', colors[d.target.index]);
+    tooltip.select('span#tooltip-chord-value').text(d.source.value);
     return tooltip.style("visibility", "visible");
-  }).on('mousemove', function () {
-    tooltip.style('left', d3.event.pageX - 246);
-    tooltip.style('top', d3.event.pageY + 5);
+  }).on('mousemove', function (event, _) {
+    tooltip.style('left', event.pageX - 246);
+    tooltip.style('top', event.pageY + 5);
   }).on('mouseleave', function () {
     return tooltip.style("visibility", "hidden");
   }).attr("d", d3.ribbon().radius(innerRadius)).style("fill", function (d) {
@@ -669,4 +667,4 @@ function time_graph(stackData) {
   });
 }
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.a32f804d.js.map
+//# sourceMappingURL=/INF8808-Projet.7799d488.js.map

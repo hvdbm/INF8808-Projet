@@ -34,7 +34,7 @@ export function build(div, data, startDate, endDate) {
   const tooltip = d3.select('#tooltip-chord-container')
 
   // give this matrix to d3.chord(): it will calculates all the info we need to draw arc and ribbon
-  const res = d3.chord()
+  const res = d3.chordDirected()
     .padAngle(0.05)     // padding between entities (black arc)
     .sortSubgroups(d3.descending)
     (matrix)
@@ -49,20 +49,20 @@ export function build(div, data, startDate, endDate) {
   .enter()
   .append("path")
     .attr("class", "chord")
-    .on('mouseenter', function({source, target}, _) {
+    .on('mouseenter', function(_, d) {
       tooltip.select('span#tooltip-chord-region-from-text')
-      .text(preproc.REGION_NAME[source.index])
-      .style('color', colors[source.index])
+      .text(preproc.REGION_NAME[d.source.index])
+      .style('color', colors[d.source.index])
       tooltip.select('span#tooltip-chord-region-to-text')
-      .text(preproc.REGION_NAME[source.subindex])
-      .style('color', colors[source.subindex])
+      .text(preproc.REGION_NAME[d.target.index])
+      .style('color', colors[d.target.index])
       tooltip.select('span#tooltip-chord-value')
-      .text(source.value)
+      .text(d.source.value)
       return tooltip.style("visibility", "visible")
     })
-    .on('mousemove', function() {
-      tooltip.style('left', d3.event.pageX - 246)
-      tooltip.style('top', d3.event.pageY + 5)
+    .on('mousemove', function(event, _) {
+      tooltip.style('left', event.pageX - 246)
+      tooltip.style('top', event.pageY + 5)
     })
     .on('mouseleave', function() { return tooltip.style("visibility", "hidden") })
     .attr("d", d3.ribbon().radius(innerRadius))
