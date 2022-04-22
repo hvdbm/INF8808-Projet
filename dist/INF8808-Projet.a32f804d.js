@@ -149,7 +149,7 @@ function build(div) {
     left: 70
   },
       width = bounds.width - margin.left - margin.right,
-      height = 550 - margin.top - margin.bottom; // append the svg object to the body of the page
+      height = 650 - margin.top - margin.bottom; // append the svg object to the body of the page
 
   var svg = div.select("#stacked-area-chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   d3.csv('./TRIP_STACK_HALF_MONTH.csv', function (d) {
@@ -669,4 +669,4 @@ function time_graph(stackData) {
   });
 }
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.aea30227.js.map
+//# sourceMappingURL=/INF8808-Projet.a32f804d.js.map

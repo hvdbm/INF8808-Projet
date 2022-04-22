@@ -6,7 +6,7 @@ export function build(div) {
   const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
   var margin = {top: 60, right: 230, bottom: 50, left: 70},
   width = bounds.width - margin.left - margin.right,
-  height = 550 - margin.top - margin.bottom;
+  height = 650 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
   var svg = div.select("#stacked-area-chart")

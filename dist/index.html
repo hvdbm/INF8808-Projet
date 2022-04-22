@@ -5,7 +5,7 @@
         <script src="https://d3js.org/d3.v5.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dc/4.2.7/dc.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.js"></script>
-        <script src="/INF8808-Projet.aea30227.js" type="module"></script>
+        <script src="/INF8808-Projet.a32f804d.js" type="module"></script>
         <script src="/onglet2.fa837485.js"></script>
 
         <link href="/style.a143ccdd.css" rel="stylesheet">
@@ -46,12 +46,13 @@
                         <br><br>Il est possible de sélectionner une période de temps précise dans le coin inférieur droit.
                     </p>
                     <p class="nav-tips" id="tab-3-tips">
-                        Passer la souris sur les extrémités du diagramme d'accord isole les trajets débutant dans cette région.
+                        Passer la souris sur les extrémités du diagramme de fluxs isole les trajets débutant dans cette région.
                         <br><br>Passer la souris sur un flux (lien d'une région à une autre) présente la quantité exact de navires.
                         <br><br>Passer la souris sur une cellule de la matrice de corrélation présente la proportion exacte de navires.
                         <br><br>Il est possible de sélectionner une période de temps précise dans le coin inférieur droit.
                     </p>
                 </div>
+                <hr>
                 <div id="loader-container">
                     <div id="loader"></div>
                 </div>
@@ -101,40 +102,40 @@
                             <div id="tab-3-legend-text">
                                 <span id="tab-3-legend-title">Légende</span>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#CAB2D6"></rect></svg>
-                                    <span>Arctique</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#CAB2D6" rx="4" ry="4"></rect></svg>
+                                    <span>Artic</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#6A3D9A"></rect></svg>
-                                    <span>Centre</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#6A3D9A" rx="4" ry="4"></rect></svg>
+                                    <span>Central</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#33A02C"></rect></svg>
-                                    <span>International (Est)</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#33A02C" rx="4" ry="4"></rect></svg>
+                                    <span>East Canadian Water</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#FB9A99"></rect></svg>
-                                    <span>International (Ouest)</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#FB9A99" rx="4" ry="4"></rect></svg>
+                                    <span>Newfoundland</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#FDBF6F"></rect></svg>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#FDBF6F" rx="4" ry="4"></rect></svg>
                                     <span>Maritimes</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#E31A1C"></rect></svg>
-                                    <span>Pacifique</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#E31A1C" rx="4" ry="4"></rect></svg>
+                                    <span>Pacific</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#1F78B4"></rect></svg>
-                                    <span>Québec</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#1F78B4" rx="4" ry="4"></rect></svg>
+                                    <span>Quebec</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#A6CEE3"></rect></svg>
-                                    <span>Saint-Laurent</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#A6CEE3" rx="4" ry="4"></rect></svg>
+                                    <span>St. Lawrence Seaway</span>
                                 </div>
                                 <div class="tab-3-legend-item">
-                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#FF7F00"></rect></svg>
-                                    <span>Terre-Neuve</span>
+                                    <svg height="15px" width="15px"><rect width="100%" height="100%" fill="#FF7F00" rx="4" ry="4"></rect></svg>
+                                    <span>West Canadian Water</span>
                                 </div>
                             </div>
                             <div id="tab-3-legend-map">
