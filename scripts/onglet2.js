@@ -92,6 +92,9 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .elasticY(true)
                 .dimension(vesselLength)
                 .group(vesselLengths, firstClass, d => d.value[firstClass])
+                .title(function (d) {
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                })
 
                 for (let i = 1; i < classes.length; i++) {
                     const type = classes[i]
@@ -132,6 +135,9 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .elasticY(true)
                 .dimension(vesselWidth)
                 .group(vesselWidths, firstClass, d => d.value[firstClass])
+                .title(function (d) {
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                })
 
                 for (let i = 1; i < classes.length; i++) {
                     const type = classes[i]
@@ -172,6 +178,9 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .elasticY(true)
                 .dimension(vesselCapacity)
                 .group(vesselCapacities, firstClass, d => d.value[firstClass])
+                .title(function (d) {
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                })
 
                 for (let i = 1; i < classes.length; i++) {
                     const type = classes[i]
@@ -212,6 +221,9 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .elasticY(true)
                 .dimension(vesselDraught)
                 .group(vesselDraughts, firstClass, d => d.value[firstClass])
+                .title(function (d) {
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                })
 
                 for (let i = 1; i < classes.length; i++) {
                     const type = classes[i]
@@ -249,6 +261,9 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .brushOn(false)
                 .elasticY(true)
                 .legend(dc.legend().y(600))
+                .title(function (d) {
+                    return this.layer + ': ' + d.value[this.layer];
+                })
                 
 
                 for (let i = 1; i < classes.length; i++) {

@@ -88,7 +88,7 @@ function time_graph(stackData) {
             endString = maxDate.toISOString().split('T')[0]
         } else {
             const start = timeScale.invert(x)
-            const end = timeScale.invert(x + width)
+            const end = timeScale.invert(+x + +width)
             startString = start.toISOString().split('T')[0]
             endString = end.toISOString().split('T')[0]
         }
