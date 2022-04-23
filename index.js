@@ -5,7 +5,7 @@ import * as chord from './scripts/chord.js'
 let chordData
 
 (function (d3) {
-    d3.csv('./TRIP_STACK_HALF_MONTH.csv').then (function(stackData) {
+    d3.csv('./TRIP_STACK_HALF_MONTH.csv').then(function(stackData) {
         onglet1.build(d3.select('#tab-1-content'), stackData)
     
         d3.csv('./TRIP_CHORD.csv').then(function(data) {

@@ -4,19 +4,24 @@ import { vesselTypeClasses } from './vesselTypeClasses.js'
 export function build(div) {
   // set the dimensions and margins of the graph
   const bounds = d3.select('#stacked-area-chart').node().getBoundingClientRect()
-  var margin = {top: 60, right: 230, bottom: 50, left: 70},
-  width = bounds.width - margin.left - margin.right,
-  height = 650 - margin.top - margin.bottom;
+  const margin = {
+    top: 60, 
+    right: 230, 
+    bottom: 50, 
+    left: 70
+  }
+  const width = bounds.width - margin.left - margin.right
+  const height = 650 - margin.top - margin.bottom;
 
-  // append the svg object to the body of the page
+  // create the svg area
   var svg = div.select("#stacked-area-chart")
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform",`translate(${margin.left},${margin.top})`)
 
+  // read and transform data
   d3.csv('./TRIP_STACK_HALF_MONTH.csv', function(d){
       return { 
         date : d3.timeParse("%Y-%m-%d")(d.date),
@@ -29,8 +34,8 @@ export function build(div) {
         Excursion : d.Excursion,
         Merchant : d.Merchant,
       }
-  }).then( function(data) {
-    const keys = data.columns.slice(1)  // List of Vessel Types = header of the csv files
+  }).then(function(data) {
+    const keys = data.columns.slice(1)  // list of Vessel Types = header of the csv files
 
     const color = d3.scaleOrdinal()
       .domain(vesselTypeClasses())
@@ -88,7 +93,7 @@ export function build(div) {
       .attr("d", area)
 
     // What to do when one group is hovered
-    const highlight = function(event, d) {
+    const highlight = function(_, d) {
       d3.selectAll(".myArea").style("opacity", .1)  // reduce opacity of all groups
       d3.select("."+d).style("opacity", 1)  // expect the one that is hovered
     }
@@ -114,7 +119,7 @@ export function build(div) {
         .on("mouseover", highlight)
         .on("mouseleave", noHighlight)
 
-    svg.selectAll("mylabels")   // Add one dot in the legend for each name.
+    svg.selectAll("mylabels")   // Add legend name.
       .data(keys.sort())
       .enter()
       .append("text")

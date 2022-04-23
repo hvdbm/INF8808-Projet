@@ -13,9 +13,14 @@ export function buildHeatmap(div, startDate, endDate) {
 
   const size = 0.28*window.innerWidth
   // set the dimensions and margins of the graph
-  const margin = {top: 10, right: 5, bottom: 90, left: 115},
-    width = size - margin.left - margin.right,
-    height = size - margin.top - margin.bottom;
+  const margin = {
+    top: 10,
+    right: 5, 
+    bottom: 90, 
+    left: 115
+  }
+  const width = size - margin.left - margin.right
+  const height = size - margin.top - margin.bottom
 
   // append the svg object to the body of the page
   const svg = div.select("#tab-3-heatmap")
@@ -106,7 +111,7 @@ export function buildHeatmap(div, startDate, endDate) {
   }
 
   //Read the data
-  d3.csv("./TRIP_HEATMAP.csv").then( function(data) {
+  d3.csv("./TRIP_HEATMAP.csv").then(function(data) {
     // add the squares and interaction
     const transformedData = transformData(data, startDate, endDate)
     svg.selectAll()
@@ -115,9 +120,9 @@ export function buildHeatmap(div, startDate, endDate) {
     })
     .enter()
     .append("g")
-    .attr("class", "square")
-    .on('mouseenter', function() { rectSelect(this, x, y) })
-    .on('mouseleave', function() { rectUnselect(this) })
+      .attr("class", "square")
+      .on('mouseenter', function() { rectSelect(this, x, y) })
+      .on('mouseleave', function() { rectUnselect(this) })
     .append("rect")
       .attr("x", function(d) { return x(d.Type) })
       .attr("y", function(d) { return y(d.Region) })
@@ -125,8 +130,8 @@ export function buildHeatmap(div, startDate, endDate) {
       .attr("height", y.bandwidth() )
       .style("fill", function(d) { return myColor(d.count) })
     
-      initLegend(svg,myColor)
-      drawLegend(width + margin.right + 10, 0, height, 15, 'url(#gradient)', myColor)
+    initLegend(svg,myColor)
+    drawLegend(width + margin.right + 10, 0, height, 15, 'url(#gradient)', myColor)
   })
 }
 
@@ -171,8 +176,8 @@ function initLegend(svg, colorScale) {
 
   const linearGradient = defs
   .append('linearGradient')
-  .attr('id', 'gradient')
-  .attr('x1', 0).attr('y1', 1).attr('x2', 0).attr('y2', 0)
+    .attr('id', 'gradient')
+    .attr('x1', 0).attr('y1', 1).attr('x2', 0).attr('y2', 0)
 
   linearGradient.selectAll('stop')
   .data(colorScale.ticks().map((tick, i, nodes) => (
@@ -181,8 +186,8 @@ function initLegend(svg, colorScale) {
       color: colorScale(tick)
     })))
   .join('stop')
-  .attr('offset', d => d.offset)
-  .attr('stop-color', d => d.color)
+    .attr('offset', d => d.offset)
+    .attr('stop-color', d => d.color)
 }
 
 function drawLegend(x, y, height, width, fill, colorScale) {
@@ -203,5 +208,5 @@ function drawLegend(x, y, height, width, fill, colorScale) {
 
   d3.select('.legend.axis')
   .call(axis)
-  .attr('transform', 'translate('+ (x+15) + ',' + y + ')')
+    .attr('transform', 'translate('+ (x+15) + ',' + y + ')')
 }

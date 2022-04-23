@@ -147,11 +147,12 @@ function build(div) {
     right: 230,
     bottom: 50,
     left: 70
-  },
-      width = bounds.width - margin.left - margin.right,
-      height = 650 - margin.top - margin.bottom; // append the svg object to the body of the page
+  };
+  var width = bounds.width - margin.left - margin.right;
+  var height = 650 - margin.top - margin.bottom; // create the svg area
 
-  var svg = div.select("#stacked-area-chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var svg = div.select("#stacked-area-chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ",").concat(margin.top, ")")); // read and transform data
+
   d3.csv('./TRIP_STACK_HALF_MONTH.csv', function (d) {
     return {
       date: d3.timeParse("%Y-%m-%d")(d.date),
@@ -165,7 +166,7 @@ function build(div) {
       Merchant: d.Merchant
     };
   }).then(function (data) {
-    var keys = data.columns.slice(1); // List of Vessel Types = header of the csv files
+    var keys = data.columns.slice(1); // list of Vessel Types = header of the csv files
 
     var color = d3.scaleOrdinal().domain((0, _vesselTypeClasses.vesselTypeClasses)()).range(d3.schemeSet2);
     var stackedData = d3.stack().keys(keys)(data); // Add X axis
@@ -197,7 +198,7 @@ function build(div) {
       return color(d.key);
     }).attr("d", area); // What to do when one group is hovered
 
-    var highlight = function highlight(event, d) {
+    var highlight = function highlight(_, d) {
       d3.selectAll(".myArea").style("opacity", .1); // reduce opacity of all groups
 
       d3.select("." + d).style("opacity", 1); // expect the one that is hovered
@@ -217,7 +218,7 @@ function build(div) {
     .attr("width", size).attr("height", size).attr("rx", 4).attr("ry", 4).style("fill", function (d) {
       return color(d);
     }).on("mouseover", highlight).on("mouseleave", noHighlight);
-    svg.selectAll("mylabels") // Add one dot in the legend for each name.
+    svg.selectAll("mylabels") // Add legend name.
     .data(keys.sort()).enter().append("text").attr("x", width + size * 1.2).attr("y", function (_, i) {
       return 10 + i * (size + 5) + size / 2;
     }) // 100 is where the first dot appears. 25 is the distance between dots
@@ -338,9 +339,9 @@ function buildHeatmap(div, startDate, endDate) {
     right: 5,
     bottom: 90,
     left: 115
-  },
-      width = size - margin.left - margin.right,
-      height = size - margin.top - margin.bottom; // append the svg object to the body of the page
+  };
+  var width = size - margin.left - margin.right;
+  var height = size - margin.top - margin.bottom; // append the svg object to the body of the page
 
   var svg = div.select("#tab-3-heatmap").append("svg").attr("width", width + margin.left + margin.right + 50).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ",").concat(margin.top, ")")); // Labels of row and columns
 
@@ -495,25 +496,26 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+// Source : 
 // https://d3-graph-gallery.com/chord.html
 // https://observablehq.com/@d3/directed-chord-diagram
 // https://jyu-theartofml.github.io/posts/circos_plot
 // http://strongriley.github.io/d3/ex/chord.html
 function build(div, data, startDate, endDate) {
+  // set the dimensions and margins of the graph
   var chordWidth = window.innerWidth / 2;
   var margin = {
     top: chordWidth * 0.175,
     right: chordWidth * 0.05,
     bottom: chordWidth * 0.07,
     left: chordWidth * 0.20
-  },
-      // TODO : Revoir valeur
-  width = chordWidth - margin.left - margin.right,
-      height = chordWidth - margin.top - margin.bottom;
+  };
+  var width = chordWidth - margin.left - margin.right;
+  var height = chordWidth - margin.top - margin.bottom;
   var outerRadius = width / 3.5;
   var innerRadius = outerRadius - 10; // create the svg area
 
-  var svg = div.select('#tab-3-chord-diagram').append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + (margin.left + outerRadius) + "," + (margin.top + outerRadius) + ")"); // create input data: a square matrix that provides flow between entities
+  var svg = div.select('#tab-3-chord-diagram').append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left + outerRadius, ",").concat(margin.top + outerRadius, ")")); // create input data: a square matrix that provides flow between entities
 
   var matrix = preproc.chordMatrix(data, startDate, endDate);
   var colors = preproc.REGION_COLOR;
@@ -524,7 +526,10 @@ function build(div, data, startDate, endDate) {
 
   var links = svg.datum(res).append("g").attr("id", "links").selectAll("path").data(function (d) {
     return d;
-  }).enter().append("path").attr("class", "chord").on('mouseenter', function (_, d) {
+  }).enter().append("path").attr("class", "chord").attr("d", d3.ribbonArrow().radius(innerRadius)).attr("opacity", 0.5).style("fill", function (d) {
+    return colors[d.source.index];
+  }) // colors depend on the source group
+  .style("stroke", "black").on('mouseenter', function (_, d) {
     tooltip.select('span#tooltip-chord-region-from-text').text(preproc.REGION_NAME[d.source.index]).style('color', colors[d.source.index]);
     tooltip.select('span#tooltip-chord-region-to-text').text(preproc.REGION_NAME[d.target.index]).style('color', colors[d.target.index]);
     tooltip.select('span#tooltip-chord-value').text(d.source.value);
@@ -534,10 +539,7 @@ function build(div, data, startDate, endDate) {
     tooltip.style('top', event.pageY + 5);
   }).on('mouseleave', function () {
     return tooltip.style("visibility", "hidden");
-  }).attr("d", d3.ribbonArrow().radius(innerRadius)).style("fill", function (d) {
-    return colors[d.source.index];
-  }) // colors depend on the source group
-  .style("stroke", "black").attr("opacity", 0.5); // add the groups on the outer part of the circle
+  }); // add the groups on the outer part of the circle
 
   svg.datum(res).append("g").attr("id", "groups").selectAll("g").data(function (d) {
     return d.groups;
@@ -666,4 +668,4 @@ function time_graph(stackData) {
   });
 }
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.da8420db.js.map
+//# sourceMappingURL=/INF8808-Projet.0aefcbc9.js.map
