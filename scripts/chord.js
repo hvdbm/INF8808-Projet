@@ -58,13 +58,13 @@ export function build(div, data, startDate, endDate) {
     .style("stroke", "black")
     .on('mouseenter', function(_, d) {
       tooltip.select('span#tooltip-chord-region-from-text')
-      .text(preproc.REGION_NAME[d.source.index])
-      .style('color', colors[d.source.index])
+        .text(preproc.REGION_NAME[d.source.index])
+        .style('color', colors[d.source.index])
       tooltip.select('span#tooltip-chord-region-to-text')
-      .text(preproc.REGION_NAME[d.target.index])
-      .style('color', colors[d.target.index])
+        .text(preproc.REGION_NAME[d.target.index])
+        .style('color', colors[d.target.index])
       tooltip.select('span#tooltip-chord-value')
-      .text(d.source.value)
+        .text(d.source.value)
       return tooltip.style("visibility", "visible")
     })
     .on('mousemove', function(event, _) {
@@ -89,12 +89,8 @@ export function build(div, data, startDate, endDate) {
         .innerRadius(innerRadius)
         .outerRadius(outerRadius)
       )
-      .on("mouseover", function(_, d) {
-        highlightGroup(d, links)
-      })
-      .on("mouseleave", function() {
-        unhighlightGroup(links)
-      })
+      .on("mouseover", function(_, d) { highlightGroup(d, links) })
+      .on("mouseleave", function() { unhighlightGroup(links) })
 
   // add the label of groups
   svg.datum(res)
@@ -104,12 +100,12 @@ export function build(div, data, startDate, endDate) {
     .data(function(d) { return d.groups; })
     .enter()
     .append("g")
-      .attr("transform", function(d) { return "rotate(" + (d.startAngle * 180 / Math.PI - 90) + ") translate(" + outerRadius + ",0)"; })  // TODO : Revoir valeur
+      .attr("transform", function(d) { return `rotate(${d.startAngle * 180 / Math.PI - 90}) translate(${outerRadius},0)` })
     .append("text")
       .attr("x", 8)
       .attr("dy", ".25em")
-      .attr("transform", function(d) { return d.startAngle > Math.PI ? "rotate(180) translate(-16)" : null; })
-      .style("text-anchor", function(d) { return d.startAngle > Math.PI ? "end" : null; })
+      .attr("transform", function(d) { return d.startAngle > Math.PI ? "rotate(180) translate(-16)" : null })
+      .style("text-anchor", function(d) { return d.startAngle > Math.PI ? "end" : null })
       .style("fill", function(_, i){ return(colors[i]) })
       .style("font-weight", "bold")
       .style("font-size", 12)

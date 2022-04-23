@@ -435,9 +435,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         });
         var vesselTraffics = vesselTraffic.group(d3.timeMonth);
         var minDate = vesselTraffic.bottom(1)[0].departureDate;
-        var maxDate = vesselTraffic.top(1)[0].departureDate; // const vesselTrafficRange = maxDate - minDate
-        // const vesselTrafficBarWidth = vesselTrafficRange / chartNbBars
-
+        var maxDate = vesselTraffic.top(1)[0].departureDate;
         var vesselTrafficChart = new dc.BarChart('#tab-2-content .traffic-chart').width(timeSelectWidth).height(125).margins({
           top: 10,
           right: 50,
@@ -500,7 +498,7 @@ var ReverseBarChart = /*#__PURE__*/function (_dc$BarChart) {
   }]);
 
   return ReverseBarChart;
-}(dc.BarChart); // https://github.com/dc-js/dc.js/wiki/FAQ#how-do-i-filter-the-data-before-its-charted
+}(dc.BarChart); // Source : https://github.com/dc-js/dc.js/wiki/FAQ#how-do-i-filter-the-data-before-its-charted
 
 
 function remove_empty_bins(source_group) {
@@ -513,4 +511,4 @@ function remove_empty_bins(source_group) {
   };
 }
 },{}]},{},["nI8S"], null)
-//# sourceMappingURL=/onglet2.b7cf1a52.js.map
+//# sourceMappingURL=/onglet2.853e15db.js.map

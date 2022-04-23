@@ -11,7 +11,7 @@ export function build(div) {
     left: 70
   }
   const width = bounds.width - margin.left - margin.right
-  const height = 650 - margin.top - margin.bottom;
+  const height = 650 - margin.top - margin.bottom
 
   // create the svg area
   var svg = div.select("#stacked-area-chart")
@@ -39,7 +39,7 @@ export function build(div) {
 
     const color = d3.scaleOrdinal()
       .domain(vesselTypeClasses())
-      .range(d3.schemeSet2);
+      .range(d3.schemeSet2)
 
     const stackedData = d3.stack()
       .keys(keys)
@@ -47,8 +47,8 @@ export function build(div) {
 
     // Add X axis
     const x = d3.scaleTime()
-    .domain(d3.extent(data, d => d.date))
-    .range([ 0, width ]);
+      .domain(d3.extent(data, d => d.date))
+      .range([ 0, width ])
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x).ticks(10))
@@ -58,12 +58,12 @@ export function build(div) {
       .attr("text-anchor", "end")
       .attr("x", width)
       .attr("y", height+40 )
-      .text("Temps");
+      .text("Temps")
 
     // Add Y axis
     const y = d3.scaleLinear()
       .domain([0, 12000])
-      .range([ height, 0 ]);
+      .range([ height, 0 ])
     svg.append("g")
       .call(d3.axisLeft(y).ticks(15))
 
@@ -78,9 +78,9 @@ export function build(div) {
     // Area generator
     const areaChart = svg.append('g')
     const area = d3.area()
-      .x(function(d) { return x(d.data.date); })
-      .y0(function(d) { return y(d[0]); })
-      .y1(function(d) { return y(d[1]); })
+      .x(function(d) { return x(d.data.date) })
+      .y0(function(d) { return y(d[0]) })
+      .y1(function(d) { return y(d[1]) })
 
     // Show the areas
     areaChart
@@ -89,7 +89,7 @@ export function build(div) {
     .enter()
     .append("path")
       .attr("class", function(d) { return "myArea " + d.key })
-      .style("fill", function(d) { return color(d.key); })
+      .style("fill", function(d) { return color(d.key) })
       .attr("d", area)
 
     // What to do when one group is hovered

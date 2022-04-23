@@ -328,12 +328,12 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 function rebuild(div, startDate, endDate) {
   div.select("#tab-3-heatmap").select('svg').remove();
   buildHeatmap(div, startDate, endDate);
-} // https://d3-graph-gallery.com/heatmap.html
+} // Source : https://d3-graph-gallery.com/heatmap.html
 
 
 function buildHeatmap(div, startDate, endDate) {
-  var size = 0.28 * window.innerWidth; // set the dimensions and margins of the graph
-
+  // set the dimensions and margins of the graph
+  var size = 0.28 * window.innerWidth;
   var margin = {
     top: 10,
     right: 5,
@@ -362,33 +362,14 @@ function buildHeatmap(div, startDate, endDate) {
       return departureDate <= line['Departure Date'] && arrivalDate >= line['Arrival Date'];
     });
     data.forEach(function (line) {
-      var keyStart = line['Departure Region'] + line['Global Vessel Type'];
-      var keyStop = line['Arrival Region'] + line['Global Vessel Type'];
-
-      if (!map.has(keyStart)) {
-        map.set(keyStart, {
-          'Region': line['Departure Region'].slice(0, -7),
-          'Type': line['Global Vessel Type'],
-          'count': 1
-        });
-      } else {
-        var current = map.get(keyStart);
-        current.count += 1;
-        map.set(keyStart, current);
-      }
-
-      if (!map.has(keyStop)) {
-        map.set(keyStop, {
-          'Region': line['Arrival Region'].slice(0, -7),
-          'Type': line['Global Vessel Type'],
-          'count': 1
-        });
-      } else {
-        var _current = map.get(keyStop);
-
-        _current.count += 1;
-        map.set(keyStop, _current);
-      }
+      var keyStart = line['Departure Region'].slice(0, -7) + line['Global Vessel Type'];
+      var keyStop = line['Arrival Region'].slice(0, -7) + line['Global Vessel Type'];
+      var current = map.get(keyStart);
+      current.count += 1;
+      map.set(keyStart, current);
+      current = map.get(keyStop);
+      current.count += 1;
+      map.set(keyStop, current);
     });
     var p = [];
     var max = 0;
@@ -479,7 +460,7 @@ function drawLegend(x, y, height, width, fill, colorScale) {
   d3.select('.legend.bar').attr('fill', fill).attr('x', x).attr('y', y).attr('height', height).attr('width', width);
   var scale = d3.scaleLinear().domain(colorScale.domain()).range([height, 0]);
   var axis = d3.axisRight().ticks(7).scale(scale);
-  d3.select('.legend.axis').call(axis).attr('transform', 'translate(' + (x + 15) + ',' + y + ')');
+  d3.select('.legend.axis').call(axis).attr('transform', "translate(".concat(x + 15, ", ").concat(y, ")"));
 }
 },{"./preprocess.js":"LFDw"}],"QAKd":[function(require,module,exports) {
 "use strict";
@@ -554,9 +535,8 @@ function build(div, data, startDate, endDate) {
   svg.datum(res).append("g").attr("id", "labels").selectAll("text").data(function (d) {
     return d.groups;
   }).enter().append("g").attr("transform", function (d) {
-    return "rotate(" + (d.startAngle * 180 / Math.PI - 90) + ") translate(" + outerRadius + ",0)";
-  }) // TODO : Revoir valeur
-  .append("text").attr("x", 8).attr("dy", ".25em").attr("transform", function (d) {
+    return "rotate(".concat(d.startAngle * 180 / Math.PI - 90, ") translate(").concat(outerRadius, ",0)");
+  }).append("text").attr("x", 8).attr("dy", ".25em").attr("transform", function (d) {
     return d.startAngle > Math.PI ? "rotate(180) translate(-16)" : null;
   }).style("text-anchor", function (d) {
     return d.startAngle > Math.PI ? "end" : null;
@@ -668,4 +648,4 @@ function time_graph(stackData) {
   });
 }
 },{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.0aefcbc9.js.map
+//# sourceMappingURL=/INF8808-Projet.283b169d.js.map

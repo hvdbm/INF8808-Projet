@@ -217,7 +217,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselDraught)
                 .group(vesselDraughts, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
@@ -240,7 +240,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                       p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
                       return p;}, 
                     function() {
-                      return {};
+                      return {}
                     }
                 )
 
@@ -257,7 +257,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .elasticY(true)
                 .legend(dc.legend().y(600))
                 .title(function (d) {
-                    return this.layer + ': ' + d.value[this.layer];
+                    return this.layer + ': ' + d.value[this.layer]
                 })
                 
 
@@ -266,7 +266,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     vesselTypeChart.stack(vesselClassesY, vesselClass, d => d.value[vesselClass])
                 }
 
-                vesselTypeChart.filter = function() {};
+                vesselTypeChart.filter = function() {}
 
                 vesselTypeChart.render()
 
@@ -277,9 +277,6 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 
                 const minDate = vesselTraffic.bottom(1)[0].departureDate
                 const maxDate = vesselTraffic.top(1)[0].departureDate
-
-                // const vesselTrafficRange = maxDate - minDate
-                // const vesselTrafficBarWidth = vesselTrafficRange / chartNbBars
 
                 const vesselTrafficChart = new dc.BarChart('#tab-2-content .traffic-chart')
                 .width(timeSelectWidth)
@@ -343,18 +340,18 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
 class ReverseBarChart extends dc.BarChart {
     legendables () {
-        const items = super.legendables();
-        return items.reverse();
+        const items = super.legendables()
+        return items.reverse()
     }
 }
 
-// https://github.com/dc-js/dc.js/wiki/FAQ#how-do-i-filter-the-data-before-its-charted
+// Source : https://github.com/dc-js/dc.js/wiki/FAQ#how-do-i-filter-the-data-before-its-charted
 function remove_empty_bins(source_group) {
     return {
         all:function () {
             return source_group.all().filter(function(d) {
-                return d.value !== 0;
-            });
+                return d.value !== 0
+            })
         }
-    };
+    }
 }

@@ -8,11 +8,11 @@ export function rebuild(div, startDate, endDate) {
   buildHeatmap(div, startDate, endDate)
 }
 
-// https://d3-graph-gallery.com/heatmap.html
+// Source : https://d3-graph-gallery.com/heatmap.html
 export function buildHeatmap(div, startDate, endDate) {
-
-  const size = 0.28*window.innerWidth
   // set the dimensions and margins of the graph
+  const size = 0.28*window.innerWidth
+  
   const margin = {
     top: 10,
     right: 5, 
@@ -67,33 +67,19 @@ export function buildHeatmap(div, startDate, endDate) {
     })
 
     data.forEach(line => {
-      const keyStart = line['Departure Region']+line['Global Vessel Type'];
-      const keyStop = line['Arrival Region']+line['Global Vessel Type'];
-      if (!map.has(keyStart)) {
-        map.set(keyStart, {
-          'Region': line['Departure Region'].slice(0,-7),
-          'Type': line['Global Vessel Type'],
-          'count': 1
-          });
-      } else {
-        const current = map.get(keyStart);
-        current.count += 1;
-        map.set(keyStart, current);
-      }
-      if (!map.has(keyStop)) {
-        map.set(keyStop, {
-          'Region': line['Arrival Region'].slice(0,-7),
-          'Type': line['Global Vessel Type'],
-          'count': 1
-          });
-      } else {
-        const current = map.get(keyStop);
-        current.count += 1;
-        map.set(keyStop, current);
-      }
+      const keyStart = line['Departure Region'].slice(0,-7)+line['Global Vessel Type']
+      const keyStop = line['Arrival Region'].slice(0,-7)+line['Global Vessel Type']
+
+      let current = map.get(keyStart)
+      current.count += 1
+      map.set(keyStart, current)
+
+      current = map.get(keyStop)
+      current.count += 1
+      map.set(keyStop, current)
     })
 
-    const p = [];
+    const p = []
     let max = 0
     Array.from(map.values()).forEach((value) => {
       p.push({
@@ -116,7 +102,7 @@ export function buildHeatmap(div, startDate, endDate) {
     const transformedData = transformData(data, startDate, endDate)
     svg.selectAll()
     .data(transformedData, function(d) {
-      return d.Type+':'+d.Region;
+      return d.Type+':'+d.Region
     })
     .enter()
     .append("g")
@@ -136,7 +122,7 @@ export function buildHeatmap(div, startDate, endDate) {
 }
 
 function heatmapMap() {
-  let map = new Map();
+  let map = new Map()
 
   preproc.REGION_NAME.forEach((region) => {
     preproc.GLOBAL_VESSEL_TYPE.forEach((type) => {
@@ -154,8 +140,8 @@ function heatmapMap() {
 function rectSelect(element, x, y) {
   d3.select(element)
     .append("text")
-    .attr('x', function(d) { return x(d.Type) + x.bandwidth() / 2; })
-    .attr('y', function(d) { return y(d.Region) + y.bandwidth() / 2; })
+    .attr('x', function(d) { return x(d.Type) + x.bandwidth() / 2 })
+    .attr('y', function(d) { return y(d.Region) + y.bandwidth() / 2 })
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'middle')
     .text(function(d) {
@@ -199,14 +185,14 @@ function drawLegend(x, y, height, width, fill, colorScale) {
     .attr('width', width)
     
   const scale = d3.scaleLinear()
-  .domain(colorScale.domain())
-  .range([height, 0])
+    .domain(colorScale.domain())
+    .range([height, 0])
 
   let axis = d3.axisRight()
-  .ticks(7)
-  .scale(scale);
+    .ticks(7)
+    .scale(scale)
 
   d3.select('.legend.axis')
   .call(axis)
-    .attr('transform', 'translate('+ (x+15) + ',' + y + ')')
+    .attr('transform', `translate(${x+15}, ${y})`)
 }
