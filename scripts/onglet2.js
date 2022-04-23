@@ -6,11 +6,6 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
     d3.csv("./TRIP_PART_2.csv").then( function(data2) {
         d3.csv("./TRIP_PART_3.csv").then( function(data3) {
             d3.csv("./Vessel Type Class.csv").then(function(dataTypes) {
-                // Id,Departure Date,Departure Hardour,Departure Region,Departure Latitude,Departure Longitude,Arrival Date,Arrival Hardour,Arrival Region,Arrival Latitude,Arrival Longitude,Vessel Type,Lenght,Width,DeadWeight Tonnage,Maximum Draugth
-                // 6079000000783579,    2011-01-01 00:00:00.000,Virtual Harbour (Central Region),Central Region,45.71666667,-84.24861111,2011-01-01 15:30:00.000,Goderich,Central Region,43.745,-81.7294441666667,Merchant Bulk,222.509994506836,22.9400005340576,31751,8.72999954223633
-                // 23079000000766048,   2011-01-01 00:10:00.000,Whiffen Head,Newfoundland Region,47.7727836111111,-54.0171797222222,2011-01-01 01:00:00.000,Whiffen Head,Newfoundland Region,47.7727836111111,-54.0171797222222,Tug Fire,38.9000015258789,13.8999996185303,314,3.5
-                // 23079000000766035,   2011-01-01 00:57:00.000,Whiffen Head,Newfoundland Region,47.7727836111111,-54.0171797222222,2011-01-02 12:45:00.000,Virtual Harbour (Newfoundland Region),Newfoundland Region,47.75,-53,Merchant Crude,271.799987792969,46.0499992370606,126646,15.3459997177124
-    
                 let data = data1.concat(data2).concat(data3)
 
                 let dataVesselTypes = new Map()
@@ -236,8 +231,8 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 // Types
 
-                const vesselTypeY = ndx.dimension(_ => 0)
-                const vesselTypesY = vesselTypeY.group().reduce(
+                const nullDimension = ndx.dimension(_ => 0)
+                const vesselClassesY = nullDimension.group().reduce(
                     function(p, v) {
                       p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
                       return p;}, 
@@ -249,13 +244,13 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     }
                 )
 
-                const vesselTypeChart = new dc.BarChart("#type-chart")
+                const vesselTypeChart = new ReverseBarChart("#type-chart")
                 .x(d3.scaleOrdinal().domain([0, 0]))
                 .width(200)
                 .height(750)
                 .margins({top: 10, right: 50, bottom: 180, left: 0})
-                .dimension(vesselTypeY)
-                .group(vesselTypesY, firstClass, d => d.value[firstClass])
+                .dimension(nullDimension)
+                .group(vesselClassesY, firstClass, d => d.value[firstClass])
                 .xUnits(() => 1)
                 .colors(typeColorScale)
                 .brushOn(false)
@@ -267,8 +262,8 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 
 
                 for (let i = 1; i < classes.length; i++) {
-                    const type = classes[i]
-                    vesselTypeChart.stack(vesselTypesY, type, d => d.value[type])
+                    const vesselClass = classes[i]
+                    vesselTypeChart.stack(vesselClassesY, vesselClass, d => d.value[vesselClass])
                 }
 
                 vesselTypeChart.filter = function() {};
@@ -346,51 +341,10 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
     })
 })
 
-class SingularStackedBarChart {
-    constructor(parent, group) {
-        this._groupAll = null;
-        this._colors = null;
-        this._width = this._height = 200;
-        this._duration = 500;
-        this._root = d3.select(parent);
-        dc.registerChart(this, group);
-        this._rect = null;
-    }
-
-    groupAll(groupAll) {
-        if(!arguments.length)
-            return this._groupAll;
-        this._groupAll = groupAll;
-        return this;
-    }
-
-    colors(colors) {
-        if(!arguments.length)
-            return this._colors;
-        this._colors = colors;
-        return this;
-    }
-
-    render() {
-        const width = 200, height = 200;
-        let svg = this._root.selectAll('svg')
-            .data([0])
-            .join('svg')
-            .attr('width', width)
-            .attr('height', width);
-        this._rect = svg.selectAll('rect.swatch')
-            .data([0])
-            .join('rect')
-            .attr('class', 'swatch')
-            .attr('width', width)
-            .attr('height', width);
-        this.redraw();
-    }
-
-    redraw() {
-        this._rect.transition()
-            .duration(this._duration)
-            .attr('fill', this._colors(this._groupAll.value()));
+class ReverseBarChart extends dc.BarChart {
+    legendables () {
+        const items = super.legendables();
+        return items.reverse();
     }
 }
 
