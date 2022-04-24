@@ -310,7 +310,7 @@ function chordMatrix(data, departureDate, arrivalDate) {
   });
   return matrix;
 }
-},{}],"YjD1":[function(require,module,exports) {
+},{}],"hKSW":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -566,7 +566,7 @@ function rebuild(div, data, startDate, endDate) {
 
 var onglet1 = _interopRequireWildcard(require("./scripts/onglet1.js"));
 
-var onglet3 = _interopRequireWildcard(require("./scripts/onglet3.js"));
+var heatmap = _interopRequireWildcard(require("./scripts/heatmap.js"));
 
 var chord = _interopRequireWildcard(require("./scripts/chord.js"));
 
@@ -584,7 +584,7 @@ var chordData;
       chord.build(d3.select('#tab-3-content'), data, "2010-01-01", "2023-01-01");
       time_graph(stackData);
     });
-    onglet3.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01");
+    heatmap.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01");
   });
 })(d3);
 
@@ -644,8 +644,8 @@ function time_graph(stackData) {
     }
 
     chord.rebuild(d3.select('#tab-3-content'), chordData, startString, endString);
-    onglet3.rebuild(d3.select('#tab-3-content'), startString, endString);
+    heatmap.rebuild(d3.select('#tab-3-content'), startString, endString);
   });
 }
-},{"./scripts/onglet1.js":"DNGJ","./scripts/onglet3.js":"YjD1","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.ff8efdf8.js.map
+},{"./scripts/onglet1.js":"DNGJ","./scripts/heatmap.js":"hKSW","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
+//# sourceMappingURL=/INF8808-Projet.0cfc4005.js.map

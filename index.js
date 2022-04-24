@@ -1,5 +1,5 @@
 import * as onglet1 from './scripts/onglet1.js'
-import * as onglet3 from './scripts/onglet3.js'
+import * as heatmap from './scripts/heatmap.js'
 import * as chord from './scripts/chord.js'
 
 let chordData
@@ -15,7 +15,7 @@ let chordData
             time_graph(stackData)
         })
     
-        onglet3.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01")
+        heatmap.buildHeatmap(d3.select('#tab-3-content'), "2010-01-01", "2023-01-01")
     })
 
 })(d3)
@@ -93,6 +93,6 @@ function time_graph(stackData) {
             endString = end.toISOString().split('T')[0]
         }
         chord.rebuild(d3.select('#tab-3-content'), chordData, startString, endString)
-        onglet3.rebuild(d3.select('#tab-3-content'), startString, endString)
+        heatmap.rebuild(d3.select('#tab-3-content'), startString, endString)
     })
 }
