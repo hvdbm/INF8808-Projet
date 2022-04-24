@@ -252,7 +252,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }).brushOn(false).colors(typeColorScale).xAxisLabel('Longueur (m)').elasticY(true).dimension(vesselLength).group(vesselLengths, firstClass, function (d) {
           return d.value[firstClass];
         }).title(function (d) {
-          return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+          return this.layer + ': ' + d.value[this.layer];
         });
 
         var _loop = function _loop(i) {
@@ -295,7 +295,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }).brushOn(false).colors(typeColorScale).xAxisLabel('Largeur (m)').elasticY(true).dimension(vesselWidth).group(vesselWidths, firstClass, function (d) {
           return d.value[firstClass];
         }).title(function (d) {
-          return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+          return this.layer + ': ' + d.value[this.layer];
         });
 
         var _loop2 = function _loop2(_i) {
@@ -338,7 +338,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }).brushOn(false).colors(typeColorScale).xAxisLabel('Capacité (t)').elasticY(true).dimension(vesselCapacity).group(vesselCapacities, firstClass, function (d) {
           return d.value[firstClass];
         }).title(function (d) {
-          return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+          return this.layer + ': ' + d.value[this.layer];
         });
 
         var _loop3 = function _loop3(_i2) {
@@ -381,7 +381,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }).brushOn(false).colors(typeColorScale).xAxisLabel("Tirant d'eau (m)").elasticY(true).dimension(vesselDraught).group(vesselDraughts, firstClass, function (d) {
           return d.value[firstClass];
         }).title(function (d) {
-          return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+          return this.layer + ': ' + d.value[this.layer];
         });
 
         var _loop4 = function _loop4(_i3) {
@@ -522,4 +522,4 @@ function remove_empty_bins(source_group) {
   };
 }
 },{}]},{},["nI8S"], null)
-//# sourceMappingURL=/onglet2.99033d7a.js.map
+//# sourceMappingURL=/onglet2.6de65f35.js.map
