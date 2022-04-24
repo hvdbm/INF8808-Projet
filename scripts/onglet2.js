@@ -97,7 +97,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselLength)
                 .group(vesselLengths, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
+                    return this.layer + ': ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
@@ -141,7 +141,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselWidth)
                 .group(vesselWidths, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
+                    return this.layer + ': ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
@@ -185,7 +185,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselCapacity)
                 .group(vesselCapacities, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
+                    return this.layer + ': ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
@@ -229,7 +229,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselDraught)
                 .group(vesselDraughts, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
+                    return this.layer + ': ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
