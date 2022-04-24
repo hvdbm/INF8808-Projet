@@ -151,20 +151,23 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 var ROW_CHART_HEIGHT = 16.68;
-var ROW_CHART_HEIGHT_MARGIN = 21.75; // Reading the data
+var ROW_CHART_HEIGHT_MARGIN = 21.75; // Lecture des données
 
 d3.csv("./TRIP_PART_1.csv").then(function (data1) {
   d3.csv("./TRIP_PART_2.csv").then(function (data2) {
     d3.csv("./TRIP_PART_3.csv").then(function (data3) {
       d3.csv("./Vessel Type Class.csv").then(function (dataTypes) {
-        var data = data1.concat(data2).concat(data3);
-        var dataVesselTypes = new Map();
+        // Concaténation des données de trajet
+        var data = data1.concat(data2).concat(data3); // Tableau des paires classes (regroupement de types) de navire et types de navire
+
         var dataVesselTypesArray = dataTypes.map(function (d) {
           return {
             vesselClass: d.Class,
             vesselType: d.Type
           };
-        });
+        }); // Map des classes de navire selon le type de navire
+
+        var dataVesselTypes = new Map();
 
         var _iterator = _createForOfIteratorHelper(dataVesselTypesArray),
             _step;
@@ -175,7 +178,8 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
             var vesselClass = entry.vesselClass;
             var vesselType = entry.vesselType;
             dataVesselTypes.set(vesselType, vesselClass);
-          }
+          } // On réorganise et transforme les données de trajet en types de données utilisables
+
         } catch (err) {
           _iterator.e(err);
         } finally {
@@ -207,16 +211,20 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         var chartWidth = 776;
         var chartHeight = 180;
         var chartNbBars = 50;
-        var timeSelectWidth = 950;
+        var timeSelectWidth = 950; // Regroupment des données via la librairie crossfilter
+        // Les changements de tout graphique l'utilisant sera répercuté dans les autres graphiques
+
         var ndx = crossfilter(data);
         var vesselClassX = ndx.dimension(function (d) {
           return d.vesselClass;
-        });
+        }); // Liste des classes de navire
+
         var classes = vesselClassX.group().all().map(function (d) {
           return d.key;
-        });
+        }); // Schema de couleurs utilisé pour les classes de navire
+
         var typeColorScale = d3.scaleOrdinal(d3.schemeSet2).domain(classes);
-        var firstClass = classes[0]; // Longueur
+        var firstClass = classes[0]; // Graphique des longueurs des navires
 
         var vesselLengthRange = 400;
         var vesselLengthBarWidth = vesselLengthRange / chartNbBars;
@@ -259,7 +267,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }
 
         vesselLengthChart.yAxis().ticks(8);
-        vesselLengthChart.render(); // Largeur
+        vesselLengthChart.render(); // Graphique des largeurs des navires
 
         var vesselWidthRange = 180;
         var vesselWidthBarWidth = vesselWidthRange / chartNbBars;
@@ -302,7 +310,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }
 
         vesselWidthChart.yAxis().ticks(7);
-        vesselWidthChart.render(); // Capacité
+        vesselWidthChart.render(); // Graphique des capacités des navires
 
         var vesselCapacityRange = 650000;
         var vesselCapacityBarWidth = vesselCapacityRange / chartNbBars;
@@ -345,7 +353,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }
 
         vesselCapacityChart.yAxis().ticks(9);
-        vesselCapacityChart.render(); // Tirant d'eau
+        vesselCapacityChart.render(); // Graphique des tirants d'eau des navires
 
         var vesselDraughtRange = 30;
         var vesselDraughtBarWidth = vesselDraughtRange / chartNbBars;
@@ -388,7 +396,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
         }
 
         vesselDraughtChart.yAxis().ticks(6);
-        vesselDraughtChart.render(); // Types
+        vesselDraughtChart.render(); // Graphique des types des navires
 
         var nullDimension = ndx.dimension(function (_) {
           return 0;
@@ -428,7 +436,7 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
 
         vesselTypeChart.filter = function () {};
 
-        vesselTypeChart.render(); // Trafic
+        vesselTypeChart.render(); // Graphique du trafic total
 
         var vesselTraffic = ndx.dimension(function (d) {
           return d.departureDate;
@@ -443,7 +451,8 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
           left: 30
         }).dimension(vesselTraffic).group(vesselTraffics).round(d3.timeMonth).x(d3.scaleTime().domain([minDate, maxDate]).rangeRound([0, timeSelectWidth])).brushOn(true).elasticY(true);
         vesselTrafficChart.yAxis().ticks(5);
-        vesselTrafficChart.render();
+        vesselTrafficChart.render(); // Graphique de liste des ports
+
         var portDim = ndx.dimension(function (d) {
           return d.departurePort;
         });
@@ -461,7 +470,8 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
           left: 30
         }).dimension(portDim).group(filteredGroup).x(d3.scaleLinear().domain([0, portTraffic.top(1)[0].value]).rangeRound([0, 500])).xAxis(d3.axisTop()).colors(d3.scaleOrdinal(['#1f77b4'])).othersGrouper(false).elasticX(true).label(function (d) {
           return d.key + ': ' + d.value;
-        }).fixedBarHeight(ROW_CHART_HEIGHT);
+        }).fixedBarHeight(ROW_CHART_HEIGHT); // Change la grandeur du graphique selon le nombre de ports présents dans la sélection temporelle
+
         portChart.on('pretransition', function () {
           portChart.select('g.axis').attr('transform', 'translate(0,0)');
           portChart.selectAll('line.grid-line').attr('y2', portChart.effectiveHeight());
@@ -469,13 +479,14 @@ d3.csv("./TRIP_PART_1.csv").then(function (data1) {
           var height = count * ROW_CHART_HEIGHT_MARGIN + 20;
           portChart.select('svg').attr('height', height);
         });
-        portChart.render();
+        portChart.render(); // Fin du chargement, on enlève l'icône de chargement
+
         d3.select("#loader").style("display", "none");
         d3.select("#loader-container").style("display", "none");
       });
     });
   });
-});
+}); // Permet d'inverser l'ordre de la légende pour que l'ordre soit identique aux couleurs sur le graphique
 
 var ReverseBarChart = /*#__PURE__*/function (_dc$BarChart) {
   _inherits(ReverseBarChart, _dc$BarChart);
@@ -511,4 +522,4 @@ function remove_empty_bins(source_group) {
   };
 }
 },{}]},{},["nI8S"], null)
-//# sourceMappingURL=/onglet2.853e15db.js.map
+//# sourceMappingURL=/onglet2.2ee76a08.js.map

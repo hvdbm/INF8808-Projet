@@ -1,15 +1,15 @@
 const ROW_CHART_HEIGHT = 16.68
 const ROW_CHART_HEIGHT_MARGIN = 21.75
 
-// Reading the data
+// Lecture des données
 d3.csv("./TRIP_PART_1.csv").then( function(data1) {
     d3.csv("./TRIP_PART_2.csv").then( function(data2) {
         d3.csv("./TRIP_PART_3.csv").then( function(data3) {
             d3.csv("./Vessel Type Class.csv").then(function(dataTypes) {
+                // Concaténation des données de trajet
                 let data = data1.concat(data2).concat(data3)
 
-                let dataVesselTypes = new Map()
-
+                // Tableau des paires classes (regroupement de types) de navire et types de navire
                 const dataVesselTypesArray = dataTypes.map((d) => {
                     return {
                         vesselClass: d.Class,
@@ -17,12 +17,15 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                     }
                 })
 
+                // Map des classes de navire selon le type de navire
+                let dataVesselTypes = new Map()
                 for (const entry of dataVesselTypesArray) {
                     const vesselClass = entry.vesselClass
                     const vesselType = entry.vesselType
                     dataVesselTypes.set(vesselType, vesselClass)
                 }
                 
+                // On réorganise et transforme les données de trajet en types de données utilisables
                 data = data.map((d, i) => {
                     const vesselType = d['Vessel Type']
                     let vesselClass = dataVesselTypes.get(d['Vessel Type'])
@@ -50,27 +53,33 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 const timeSelectWidth = 950
 
+                // Regroupment des données via la librairie crossfilter
+                // Les changements de tout graphique l'utilisant sera répercuté dans les autres graphiques
                 const ndx = crossfilter(data)
+
                 const vesselClassX = ndx.dimension(d => d.vesselClass)
+                // Liste des classes de navire
                 const classes = vesselClassX.group().all().map(d => d.key)
 
+                // Schema de couleurs utilisé pour les classes de navire
                 const typeColorScale = d3.scaleOrdinal(d3.schemeSet2).domain(classes)
                 const firstClass = classes[0]
 
-                // Longueur
+
+                // Graphique des longueurs des navires
 
                 const vesselLengthRange = 400
                 const vesselLengthBarWidth = vesselLengthRange / chartNbBars
                 const vesselLength = ndx.dimension(d => d.vesselLength)
                 const vesselLengths = vesselLength.group(d => Math.floor(d / vesselLengthBarWidth) * vesselLengthBarWidth).reduce(
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1
+                      return p}, 
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1
+                      return p}, 
                     function() {
-                      return {};
+                      return {}
                     }
                 )
 
@@ -88,7 +97,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselLength)
                 .group(vesselLengths, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
@@ -100,20 +109,21 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 vesselLengthChart.render()
 
-                // Largeur
+
+                // Graphique des largeurs des navires
 
                 const vesselWidthRange = 180
                 const vesselWidthBarWidth = vesselWidthRange / chartNbBars
                 const vesselWidth = ndx.dimension(d => d.vesselWidth)
                 const vesselWidths = vesselWidth.group(d => Math.floor(d / vesselWidthBarWidth) * vesselWidthBarWidth).reduce(
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1
+                      return p}, 
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1
+                      return p}, 
                     function() {
-                      return {};
+                      return {}
                     }
                 )
 
@@ -131,7 +141,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselWidth)
                 .group(vesselWidths, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
@@ -143,20 +153,21 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 vesselWidthChart.render()
 
-                // Capacité
+
+                // Graphique des capacités des navires
 
                 const vesselCapacityRange = 650000
                 const vesselCapacityBarWidth = vesselCapacityRange / chartNbBars
                 const vesselCapacity = ndx.dimension(d => d.vesselCapacity)
                 const vesselCapacities = vesselCapacity.group(d => Math.floor(d / vesselCapacityBarWidth) * vesselCapacityBarWidth).reduce(
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1
+                      return p}, 
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1
+                      return p}, 
                     function() {
-                      return {};
+                      return {}
                     }
                 )
 
@@ -174,7 +185,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .dimension(vesselCapacity)
                 .group(vesselCapacities, firstClass, d => d.value[firstClass])
                 .title(function (d) {
-                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer];
+                    return d.key + '[' + this.layer + ']: ' + d.value[this.layer]
                 })
 
                 for (let i = 1; i < classes.length; i++) {
@@ -186,20 +197,21 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 vesselCapacityChart.render()
 
-                // Tirant d'eau
+                
+                // Graphique des tirants d'eau des navires
 
                 const vesselDraughtRange = 30
                 const vesselDraughtBarWidth = vesselDraughtRange / chartNbBars
                 const vesselDraught = ndx.dimension(d => d.vesselDraught)
                 const vesselDraughts = vesselDraught.group(d => Math.floor(d / vesselDraughtBarWidth) * vesselDraughtBarWidth).reduce(
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1
+                      return p}, 
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1
+                      return p}, 
                     function() {
-                      return {};
+                      return {}
                     }
                 )
 
@@ -229,16 +241,17 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 vesselDraughtChart.render()
 
-                // Types
+
+                // Graphique des types des navires
 
                 const nullDimension = ndx.dimension(_ => 0)
                 const vesselClassesY = nullDimension.group().reduce(
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) + 1
+                      return p}, 
                     function(p, v) {
-                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1;
-                      return p;}, 
+                      p[v.vesselClass] = (p[v.vesselClass] || 0) - 1
+                      return p}, 
                     function() {
                       return {}
                     }
@@ -270,7 +283,8 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 vesselTypeChart.render()
 
-                // Trafic
+
+                // Graphique du trafic total
 
                 const vesselTraffic = ndx.dimension(d => d.departureDate)
                 const vesselTraffics = vesselTraffic.group(d3.timeMonth)
@@ -294,6 +308,9 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 vesselTrafficChart.yAxis().ticks(5)
 
                 vesselTrafficChart.render()
+
+                
+                // Graphique de liste des ports
 
                 const portDim = ndx.dimension(d => d.departurePort)
 
@@ -319,6 +336,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
                 .label(d => d.key + ': ' + d.value)
                 .fixedBarHeight(ROW_CHART_HEIGHT)
 
+                // Change la grandeur du graphique selon le nombre de ports présents dans la sélection temporelle
                 portChart.on('pretransition', function() {
                     portChart.select('g.axis').attr('transform', 'translate(0,0)')
                     portChart.selectAll('line.grid-line').attr('y2', portChart.effectiveHeight())
@@ -329,6 +347,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
 
                 portChart.render()
 
+                // Fin du chargement, on enlève l'icône de chargement
                 d3.select("#loader")
                     .style("display", "none")
                 d3.select("#loader-container")
@@ -338,6 +357,7 @@ d3.csv("./TRIP_PART_1.csv").then( function(data1) {
     })
 })
 
+// Permet d'inverser l'ordre de la légende pour que l'ordre soit identique aux couleurs sur le graphique
 class ReverseBarChart extends dc.BarChart {
     legendables () {
         const items = super.legendables()
