@@ -237,7 +237,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.REGION_NAME_ALT = exports.REGION_NAME = exports.REGION_COLOR = exports.GLOBAL_VESSEL_TYPE = void 0;
 exports.chordMatrix = chordMatrix;
-exports.clean = clean;
+exports.heatmapMap = heatmapMap;
 var GLOBAL_VESSEL_TYPE = ['Barges', 'Excursion', 'Fishing', 'Merchant', 'Other', 'Pleasure Crafts', 'Tanker', 'Tugs'];
 exports.GLOBAL_VESSEL_TYPE = GLOBAL_VESSEL_TYPE;
 var REGION_NAME = ['Arctic', 'Central', 'East Canadian Water', 'Newfoundland', 'Maritimes', 'Pacific', 'Quebec', 'St. Lawrence Seaway', 'West Canadian Water'];
@@ -247,47 +247,19 @@ exports.REGION_COLOR = REGION_COLOR;
 var REGION_NAME_ALT = ['Arctic', 'Central', 'East_Canadian_Water', 'Newfoundland', 'Maritimes', 'Pacific', 'Quebec', 'St_Lawrence_Seaway', 'West_Canadian_Water'];
 exports.REGION_NAME_ALT = REGION_NAME_ALT;
 
-function findGlobalVesselType(vesselType) {
-  if (['Barge Bulk Cargo', 'Barge Chemical', 'Barge Chips', 'Barge Derrick', 'Barge General', 'Barge Log', 'Barge Miscellaneous', 'Barge Oil Drilling Rig', 'Barge Oil/Petroleum', 'Barge Rail/Trailer', 'Barge Self-Propelled', 'Barge Towed', "Don't use", 'Landing Craft', 'Logs Raft Section'].includes(vesselType)) {
-    return 'Barges';
-  } else if (['Excursion Passenger'].includes(vesselType)) {
-    return 'Excursion';
-  } else if (['Crab Boat', 'Dragger (Scallop, Clam, etc.)', 'Factory Ship', 'Fishery Patrol', 'Fishing Vessel', 'Gillnetter', 'Groundfish Boat (Open Boat)', 'Lobster Boat', 'Longliner', 'Other Fishing VSL (Open Boat)', 'Seiner', 'Shrimp Boat', 'Trawler', 'Troller'].includes(vesselType)) {
-    return 'Fishing';
-  } else if (['Cruise', 'Merchant (Dry)', 'Merchant Auto', 'Merchant Bulk', 'Merchant Cement', 'Merchant Coastal', 'Merchant Container', 'Merchant Ferry', 'Merchant General', 'Merchant Lash', 'Merchant Livestock', 'Merchant Ore', 'Merchant Passenger', 'Merchant Rail/Trailer Ferry', 'Merchant Reefer', 'Merchant RO/RO'].includes(vesselType)) {
-    return 'Merchant';
-  } else if (['Yacht - Pleasure Crafts', 'Yacht Power', 'Yacht Sails'].includes(vesselType)) {
-    return 'Pleasure Crafts';
-  } else if (['Merchant (Tanker)', 'Merchant Chemical', 'Merchant Chemical/Oil Products Tanker', 'Merchant Crude', 'Merchant Gasoline', 'Merchant Liquified Gas', 'Merchant Molasses', 'Merchant Ore/Bulk/Oil', 'Merchant Super Tanker', 'Merchant ULCC', 'Merchant VLCC', 'Merchant Water'].includes(vesselType)) {
-    return 'Tanker';
-  } else if (['Tug', 'Tug Fire', 'Tug Harbour', 'Tug Ocean', 'Tug Supply', 'Tugs Workboat'].includes(vesselType)) {
-    return 'Tugs';
-  } else {
-    return 'Other';
-  }
-}
-
-function clean(data) {
-  var cleanData = [];
-  data.forEach(function (element) {
-    if (element['Lenght'] != 0 && element['Width'] != 0 & element['Maximum Draugth'] < 30 && element['Departure Date'] < ['Arrival Date']) {
-      cleanData.push({
-        'Arrival Date': element['Arrival Date'].substring(0, 10),
-        'Arrival Hardour': element['Arrival Hardour'],
-        'Arrival Region': element['Arrival Region'],
-        'DeadWeight Tonnage': element['DeadWeight Tonnage'],
-        'Departure Date': element['Departure Date'].substring(0, 10),
-        'Departure Hardour': element['Departure Hardour'],
-        'Departure Region': element['Departure Region'],
-        'Lenght': element['Lenght'],
-        'Maximum Draugth': element['Maximum Draugth'],
-        'Vessel Type': element['Vessel Type'],
-        'Global Vessel Type': findGlobalVesselType(element['Vessel Type']),
-        'Width': element['Width']
+function heatmapMap() {
+  var map = new Map();
+  REGION_NAME.forEach(function (region) {
+    GLOBAL_VESSEL_TYPE.forEach(function (type) {
+      var key = region + type;
+      map.set(key, {
+        'Region': region,
+        'Type': type,
+        'count': 0
       });
-    }
+    });
   });
-  return cleanData;
+  return map;
 }
 
 function chordMatrix(data, departureDate, arrivalDate) {
@@ -325,12 +297,7 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function rebuild(div, startDate, endDate) {
-  div.select("#tab-3-heatmap").select('svg').remove();
-  buildHeatmap(div, startDate, endDate);
-} // Source : https://d3-graph-gallery.com/heatmap.html
-
-
+// Source : https://d3-graph-gallery.com/heatmap.html
 function buildHeatmap(div, startDate, endDate) {
   // set the dimensions and margins of the graph
   var size = 0.28 * window.innerWidth;
@@ -357,10 +324,11 @@ function buildHeatmap(div, startDate, endDate) {
   var myColor = d3.scaleLinear().range(["white", "#ff0000"]);
 
   function transformData(d, departureDate, arrivalDate) {
-    var map = heatmapMap();
+    var map = preproc.heatmapMap();
     var data = d.filter(function (line) {
       return departureDate <= line['Departure Date'] && arrivalDate >= line['Arrival Date'];
-    });
+    }); // Count the number of vessel of certain region and type
+
     data.forEach(function (line) {
       var keyStart = line['Departure Region'].slice(0, -7) + line['Global Vessel Type'];
       var keyStop = line['Arrival Region'].slice(0, -7) + line['Global Vessel Type'];
@@ -370,7 +338,8 @@ function buildHeatmap(div, startDate, endDate) {
       current = map.get(keyStop);
       current.count += 1;
       map.set(keyStop, current);
-    });
+    }); // Convert the number of vessel to percentage
+
     var p = [];
     var max = 0;
     Array.from(map.values()).forEach(function (value) {
@@ -384,7 +353,8 @@ function buildHeatmap(div, startDate, endDate) {
         max = value.count / (2 * data.length) * 100;
       }
     });
-    myColor.domain([0, max]);
+    myColor.domain([0, max]); // Update color scale
+
     return p;
   } //Read the data
 
@@ -404,25 +374,11 @@ function buildHeatmap(div, startDate, endDate) {
       return y(d.Region);
     }).attr("width", x.bandwidth()).attr("height", y.bandwidth()).style("fill", function (d) {
       return myColor(d.count);
-    });
+    }); // add legend
+
     initLegend(svg, myColor);
     drawLegend(width + margin.right + 10, 0, height, 15, 'url(#gradient)', myColor);
   });
-}
-
-function heatmapMap() {
-  var map = new Map();
-  preproc.REGION_NAME.forEach(function (region) {
-    preproc.GLOBAL_VESSEL_TYPE.forEach(function (type) {
-      var key = region + type;
-      map.set(key, {
-        'Region': region,
-        'Type': type,
-        'count': 0
-      });
-    });
-  });
-  return map;
 }
 
 function rectSelect(element, x, y) {
@@ -461,6 +417,11 @@ function drawLegend(x, y, height, width, fill, colorScale) {
   var scale = d3.scaleLinear().domain(colorScale.domain()).range([height, 0]);
   var axis = d3.axisRight().ticks(7).scale(scale);
   d3.select('.legend.axis').call(axis).attr('transform', "translate(".concat(x + 15, ", ").concat(y, ")"));
+}
+
+function rebuild(div, startDate, endDate) {
+  div.select("#tab-3-heatmap").select('svg').remove();
+  buildHeatmap(div, startDate, endDate);
 }
 },{"./preprocess.js":"LFDw"}],"QAKd":[function(require,module,exports) {
 "use strict";
@@ -648,4 +609,4 @@ function time_graph(stackData) {
   });
 }
 },{"./scripts/onglet1.js":"DNGJ","./scripts/heatmap.js":"hKSW","./scripts/chord.js":"QAKd"}]},{},["Focm"], null)
-//# sourceMappingURL=/INF8808-Projet.0cfc4005.js.map
+//# sourceMappingURL=/INF8808-Projet.5061bf51.js.map

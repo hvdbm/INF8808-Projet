@@ -1,18 +1,9 @@
 import * as preproc from './preprocess.js'
 
-export function rebuild(div, startDate, endDate) {
-  div.select("#tab-3-heatmap")
-    .select('svg')
-    .remove()
-
-  buildHeatmap(div, startDate, endDate)
-}
-
 // Source : https://d3-graph-gallery.com/heatmap.html
 export function buildHeatmap(div, startDate, endDate) {
   // set the dimensions and margins of the graph
   const size = 0.28*window.innerWidth
-  
   const margin = {
     top: 10,
     right: 5, 
@@ -60,12 +51,13 @@ export function buildHeatmap(div, startDate, endDate) {
 
 
   function transformData(d, departureDate, arrivalDate) {
-    let map = heatmapMap()
+    let map = preproc.heatmapMap()
 
     const data = d.filter((line) => {
       return departureDate <= line['Departure Date'] && arrivalDate >= line['Arrival Date']
     })
 
+    // Count the number of vessel of certain region and type
     data.forEach(line => {
       const keyStart = line['Departure Region'].slice(0,-7)+line['Global Vessel Type']
       const keyStop = line['Arrival Region'].slice(0,-7)+line['Global Vessel Type']
@@ -79,6 +71,7 @@ export function buildHeatmap(div, startDate, endDate) {
       map.set(keyStop, current)
     })
 
+    // Convert the number of vessel to percentage
     const p = []
     let max = 0
     Array.from(map.values()).forEach((value) => {
@@ -91,7 +84,8 @@ export function buildHeatmap(div, startDate, endDate) {
         max = (value.count / (2*data.length)) * 100
       }
     })
-    myColor.domain([0,max])
+
+    myColor.domain([0,max])   // Update color scale
 
     return p
   }
@@ -116,25 +110,10 @@ export function buildHeatmap(div, startDate, endDate) {
       .attr("height", y.bandwidth() )
       .style("fill", function(d) { return myColor(d.count) })
     
+    // add legend
     initLegend(svg,myColor)
     drawLegend(width + margin.right + 10, 0, height, 15, 'url(#gradient)', myColor)
   })
-}
-
-function heatmapMap() {
-  let map = new Map()
-
-  preproc.REGION_NAME.forEach((region) => {
-    preproc.GLOBAL_VESSEL_TYPE.forEach((type) => {
-      const key = region + type
-      map.set(key, {
-        'Region': region,
-        'Type': type,
-        'count': 0
-      })
-    })
-  })
-  return map
 }
 
 function rectSelect(element, x, y) {
@@ -195,4 +174,12 @@ function drawLegend(x, y, height, width, fill, colorScale) {
   d3.select('.legend.axis')
   .call(axis)
     .attr('transform', `translate(${x+15}, ${y})`)
+}
+
+export function rebuild(div, startDate, endDate) {
+  div.select("#tab-3-heatmap")
+    .select('svg')
+    .remove()
+
+  buildHeatmap(div, startDate, endDate)
 }
